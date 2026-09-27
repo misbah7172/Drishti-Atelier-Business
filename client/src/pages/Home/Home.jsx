@@ -4,10 +4,10 @@ import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/Eyeglass
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import FrameExplorer from '../../components/FrameExplorer/FrameExplorer';
 import EditorialCollections from '../../components/EditorialCollections/EditorialCollections';
-import FrameFinder from '../../components/FrameFinder/FrameFinder';
 import BrandStory from '../../components/BrandStory/BrandStory';
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
 import FinalCTA from '../../components/FinalCTA/FinalCTA';
+import OurBrands from '../../components/OurBrands/OurBrands';
 import './Home.css';
 
 export default function Home() {
@@ -25,14 +25,11 @@ export default function Home() {
       {/* 04. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
 
-      {/* 04. Studio White Interactive Angle Explorer */}
+      {/* 05. Studio White Interactive Angle Explorer */}
       <FrameExplorer />
 
-      {/* 05. Curated Architectural Collections & Cards */}
+      {/* 06. Curated Architectural Collections & Cards */}
       <EditorialCollections />
-
-      {/* 06. Interactive Face & Style Advisor */}
-      <FrameFinder />
 
       {/* 07. Editorial Benefit Statements & Brand Manifesto */}
       <BrandStory />
@@ -42,6 +39,9 @@ export default function Home() {
 
       {/* 09. High-Impact Conversion Finale */}
       <FinalCTA />
+
+      {/* 10. Our House Brands (Over Footer) */}
+      <OurBrands />
     </div>
   );
 }
