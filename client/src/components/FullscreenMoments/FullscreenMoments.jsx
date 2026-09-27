@@ -4,7 +4,7 @@ import './FullscreenMoments.css';
 
 export default function FullscreenMoments() {
   return (
-    <section className="fullscreen-moment-section">
+    <section className="fullscreen-moment-section" id="fullscreen-moment">
       <div className="fullscreen-moment-bg" aria-hidden="true">
         <img
           src="/images/dark-silhouette.png"

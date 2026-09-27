@@ -1,5 +1,4 @@
 import HeroProductReveal from '../../components/HeroProductReveal/HeroProductReveal';
-import ProductAnatomy from '../../components/ProductAnatomy/ProductAnatomy';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import FrameExplorer from '../../components/FrameExplorer/FrameExplorer';
 import EditorialCollections from '../../components/EditorialCollections/EditorialCollections';
@@ -15,10 +14,7 @@ export default function Home() {
       {/* 01. Hero Product Entrance */}
       <HeroProductReveal />
 
-      {/* 02. The Frame Engineering Breakdown */}
-      <ProductAnatomy />
-
-      {/* 03. Dark Full-Screen Advertising Spread */}
+      {/* 02. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
 
       {/* 04. Studio White Interactive Angle Explorer */}

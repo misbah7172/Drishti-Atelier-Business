@@ -27,8 +27,8 @@ export default function HeroProductReveal() {
     };
   }, []);
 
-  const scrollToCraft = () => {
-    const section = document.getElementById('anatomy-section');
+  const scrollToNext = () => {
+    const section = document.getElementById('fullscreen-moment') || document.getElementById('explorer-section');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
@@ -102,7 +102,7 @@ export default function HeroProductReveal() {
 
             <button
               type="button"
-              onClick={scrollToCraft}
+              onClick={scrollToNext}
               className="btn-editorial-outline"
               id="hero-discover-craft"
             >
@@ -113,7 +113,7 @@ export default function HeroProductReveal() {
         </div>
 
         {/* Minimalist Scroll Cue */}
-        <div className="hero-scroll-cue" onClick={scrollToCraft} role="button" tabIndex={0}>
+        <div className="hero-scroll-cue" onClick={scrollToNext} role="button" tabIndex={0}>
           <span className="scroll-cue-label">Scroll to Explore</span>
           <div className="scroll-cue-line">
             <div className="scroll-cue-pulse" />
