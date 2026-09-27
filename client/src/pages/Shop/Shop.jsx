@@ -20,9 +20,17 @@ export default function Shop() {
 
   // URL state synchronization
   const activeCategory = searchParams.get('category') || 'all';
+  const urlShape = searchParams.get('shape') || 'all';
   const searchParam = searchParams.get('search') || '';
 
-  const [selectedShape, setSelectedShape] = useState('all');
+  const [selectedShape, setSelectedShape] = useState(urlShape);
+  const [prevUrlShape, setPrevUrlShape] = useState(urlShape);
+
+  if (urlShape !== prevUrlShape) {
+    setPrevUrlShape(urlShape);
+    setSelectedShape(urlShape);
+  }
+
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [searchQuery, setSearchQuery] = useState(searchParam);

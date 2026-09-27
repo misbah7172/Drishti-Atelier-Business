@@ -1,4 +1,6 @@
-import HeroProductReveal from '../../components/HeroProductReveal/HeroProductReveal';
+import HeroSlidingBanner from '../../components/HeroSlidingBanner/HeroSlidingBanner';
+import TopCategories from '../../components/TopCategories/TopCategories';
+import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import FrameExplorer from '../../components/FrameExplorer/FrameExplorer';
 import EditorialCollections from '../../components/EditorialCollections/EditorialCollections';
@@ -11,10 +13,16 @@ import './Home.css';
 export default function Home() {
   return (
     <div className="home-editorial-page">
-      {/* 01. Hero Product Entrance */}
-      <HeroProductReveal />
+      {/* 01. Hero Sliding Banner Carousel */}
+      <HeroSlidingBanner />
 
-      {/* 02. Dark Full-Screen Advertising Spread */}
+      {/* 02. Curated Taxonomy & Top Categories */}
+      <TopCategories />
+
+      {/* 03. Get the perfect shape - Eyeglasses Guide */}
+      <EyeglassesShapeGuide />
+
+      {/* 04. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
 
       {/* 04. Studio White Interactive Angle Explorer */}

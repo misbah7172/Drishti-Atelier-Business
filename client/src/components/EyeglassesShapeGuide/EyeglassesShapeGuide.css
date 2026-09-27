@@ -1,0 +1,362 @@
+/* ==========================================================================
+   Drishti Atelier — Get the perfect shape - Eyeglasses Guide
+   Strict Palette: Black (#050505, #000000), White (#ffffff), Gray (#161616, #888888), #F97D01
+   ========================================================================== */
+
+.shape-guide-section {
+  position: relative;
+  background-color: #050505;
+  color: #ffffff;
+  padding: 7rem 0 6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Header Area */
+.shape-guide-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 840px) {
+  .shape-guide-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.shape-guide-intro {
+  max-width: 680px;
+}
+
+.shape-guide-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.shape-guide-desc {
+  color: #a0a0a0;
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+
+.shape-guide-badge-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.25rem;
+  background: rgba(249, 125, 1, 0.08);
+  border: 1px solid rgba(249, 125, 1, 0.3);
+  border-radius: var(--radius-full);
+}
+
+.shape-sparkle-icon {
+  color: var(--color-accent);
+}
+
+.shape-badge-text {
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* Interactive Face Shape Selector Filter */
+.face-selector-wrapper {
+  margin-bottom: 3.5rem;
+  padding: 1.5rem;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+}
+
+.face-selector-label-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .face-selector-label-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.face-selector-heading {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.face-selector-active-tip {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-weight: 400;
+}
+
+.face-selector-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.face-selector-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  color: #999999;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.face-selector-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.face-selector-btn.active {
+  background: rgba(249, 125, 1, 0.12);
+  border-color: var(--color-accent);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(249, 125, 1, 0.2);
+}
+
+.active-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--color-accent);
+}
+
+/* Shapes Grid */
+.shapes-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .shapes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .shapes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Shape Card */
+.shape-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem 1.75rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shape-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+/* Recommended Match State */
+.shape-card.recommended-match {
+  border-color: rgba(249, 125, 1, 0.6);
+  background: linear-gradient(
+    180deg,
+    rgba(249, 125, 1, 0.05) 0%,
+    #0f0f0f 40%
+  );
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(249, 125, 1, 0.15);
+}
+
+/* Card Top Bar */
+.shape-card-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.shape-card-badge {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888888;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+}
+
+.shape-match-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: rgba(249, 125, 1, 0.12);
+  border: 1px solid rgba(249, 125, 1, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+/* Blueprint SVG Stage */
+.shape-blueprint-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.75rem;
+  color: #777777;
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.shape-card:hover .shape-blueprint-stage {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.shape-card.recommended-match .shape-blueprint-stage {
+  color: var(--color-accent);
+  border-color: rgba(249, 125, 1, 0.25);
+}
+
+.shape-svg {
+  width: 100%;
+  max-width: 190px;
+  height: auto;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shape-card:hover .shape-svg {
+  transform: scale(1.06);
+}
+
+/* Card Info */
+.shape-card-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.shape-card-name {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.shape-face-fit-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.8rem;
+}
+
+.face-fit-label {
+  color: #777777;
+  font-family: var(--font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.face-fit-value {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.shape-card-desc {
+  color: #999999;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.shape-specs-row {
+  padding-top: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.shape-specs-text {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #777777;
+}
+
+/* Card CTA */
+.shape-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all var(--transition-normal);
+}
+
+.shape-card-cta:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000000;
+}
+
+.cta-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.shape-card-cta:hover .cta-arrow {
+  transform: translateX(4px);
+}
