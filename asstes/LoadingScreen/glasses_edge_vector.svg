@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#d8d8d8"/>
+      <stop offset="1" stop-color="#777777"/>
+    </linearGradient>
+    <linearGradient id="highlight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7f7f7f"/>
+      <stop offset="0.5" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#8a8a8a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Transparent background: place over any dark/black background -->
+
+  <!-- Left lens rim -->
+  <path d="M 91,610
+           C 120,535 205,472 315,456
+           C 423,440 516,459 590,520
+           C 641,562 673,615 694,682"
+        fill="none" stroke="url(#metal)" stroke-width="5" stroke-linecap="round"/>
+
+  <path d="M 91,610
+           C 83,635 78,670 77,706
+           C 76,758 84,809 105,846
+           C 135,898 183,924 239,926
+           C 331,930 432,916 520,875
+           C 592,842 646,792 680,731"
+        fill="none" stroke="#626262" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Right lens rim -->
+  <path d="M 842,682
+           C 863,615 895,562 946,520
+           C 1020,459 1113,440 1221,456
+           C 1331,472 1416,535 1445,610"
+        fill="none" stroke="url(#metal)" stroke-width="5" stroke-linecap="round"/>
+
+  <path d="M 1445,610
+           C 1453,635 1458,670 1459,706
+           C 1460,758 1452,809 1431,846
+           C 1401,898 1353,924 1297,926
+           C 1205,930 1104,916 1016,875
+           C 944,842 890,792 856,731"
+        fill="none" stroke="#626262" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Upper lens contours / stronger rim highlights -->
+  <path d="M 94,607 C 126,532 207,479 313,462 C 423,445 514,463 585,522"
+        fill="none" stroke="#f4f4f4" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 951,522 C 1022,463 1113,445 1223,462 C 1329,479 1410,532 1442,607"
+        fill="none" stroke="#f4f4f4" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Bridge -->
+  <path d="M 590,520
+           C 622,533 650,553 676,579
+           C 690,593 700,606 711,621
+           C 740,581 769,559 800,559
+           C 831,559 860,581 889,621
+           C 900,606 910,593 924,579
+           C 950,553 978,533 1010,520"
+        fill="none" stroke="url(#metal)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Nose bridge highlight -->
+  <path d="M 711,621 C 738,585 768,566 800,566 C 832,566 862,585 889,621"
+        fill="none" stroke="#eeeeee" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Top connecting brow bar -->
+  <path d="M 454,447
+           C 575,429 681,423 800,423
+           C 919,423 1025,429 1146,447"
+        fill="none" stroke="url(#metal)" stroke-width="7" stroke-linecap="round"/>
+
+  <path d="M 456,442
+           C 578,424 684,418 800,418
+           C 916,418 1022,424 1144,442"
+        fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Left end piece -->
+  <path d="M 91,610 L 35,606" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 35,606 L 18,602" fill="none" stroke="#777777" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="35" cy="602" rx="9" ry="5" fill="none" stroke="#ededed" stroke-width="2"/>
+
+  <!-- Right end piece -->
+  <path d="M 1445,610 L 1501,606" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 1501,606 L 1518,602" fill="none" stroke="#777777" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="1501" cy="602" rx="9" ry="5" fill="none" stroke="#ededed" stroke-width="2"/>
+
+  <!-- Nose pads -->
+  <path d="M 705,655 C 692,674 688,702 695,724 C 701,743 712,751 721,741
+           C 730,730 731,704 724,682 C 719,665 713,654 705,655 Z"
+        fill="none" stroke="#bdbdbd" stroke-width="3"/>
+  <path d="M 895,655 C 908,674 912,702 905,724 C 899,743 888,751 879,741
+           C 870,730 869,704 876,682 C 881,665 887,654 895,655 Z"
+        fill="none" stroke="#bdbdbd" stroke-width="3"/>
+
+  <!-- Subtle lower lens edge accents -->
+  <path d="M 105,846 C 134,897 184,919 240,921"
+        fill="none" stroke="#bdbdbd" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 1297,921 C 1353,919 1403,897 1431,846"
+        fill="none" stroke="#bdbdbd" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

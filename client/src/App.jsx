@@ -1,17 +1,23 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
+// Components
+import CinematicGlassesIntro from './components/CinematicGlassesIntro';
+
 // Layouts
 import MainLayout from './layouts/MainLayout';
 
 // Pages
 import Home from './pages/Home/Home';
+import Shop from './pages/Shop/Shop';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
 import NotFound from './pages/NotFound/NotFound';
 import PlaceholderPage from './pages/PlaceholderPage/PlaceholderPage';
 
 export default function App() {
   return (
     <BrowserRouter>
+      <CinematicGlassesIntro />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -25,7 +31,7 @@ export default function App() {
           },
           success: {
             iconTheme: {
-              primary: '#DFFF00',
+              primary: '#F97D01',
               secondary: '#050505',
             },
           },
@@ -41,8 +47,8 @@ export default function App() {
         <Route path="/" element={<MainLayout />}>
           {/* Public Routes */}
           <Route index element={<Home />} />
-          <Route path="shop" element={<PlaceholderPage title="Shop" phase={4} />} />
-          <Route path="product/:id" element={<PlaceholderPage title="Product Details" phase={4} />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="product/:id" element={<ProductDetail />} />
           <Route path="about" element={<PlaceholderPage title="About Us" phase={10} />} />
           <Route path="contact" element={<PlaceholderPage title="Contact Us" phase={10} />} />
           <Route path="faq" element={<PlaceholderPage title="FAQ" phase={10} />} />

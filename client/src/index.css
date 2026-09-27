@@ -5,41 +5,63 @@
    ============================================ */
 
 @theme {
-  /* Brand Colors */
-  --color-black: #050505;
-  --color-dark-black: #0B0B0B;
-  --color-neon-yellow: #DFFF00;
-  --color-neon-yellow-hover: #c8e600;
-  --color-neon-yellow-light: rgba(223, 255, 0, 0.1);
-  --color-neon-yellow-glow: rgba(223, 255, 0, 0.3);
+  /* Brand & Editorial Palette */
+  --color-black: #000000;
+  --color-obsidian: #050505;
+  --color-dark-black: #070707;
+  --color-studio-white: #FBFBFB;
+  --color-pure-white: #FFFFFF;
   --color-white: #FFFFFF;
-  --color-light-gray: #F4F4F4;
-  --color-dark-gray: #171717;
-  --color-muted-gray: #A1A1A1;
-  --color-border-gray: #292929;
+  --color-titanium-dark: #0E0E0E;
+  --color-titanium-card: #131313;
+  --color-charcoal-border: #1F1F1F;
+  --color-border-gray: #242424;
+  --color-hairline: rgba(255, 255, 255, 0.08);
+  --color-hairline-dark: rgba(0, 0, 0, 0.08);
+  --color-silver-text: #969696;
+  --color-muted-gray: #8E8E8E;
+  --color-light-gray: #F2F2F2;
+  --color-dark-gray: #121212;
+
+  /* Accent (Strict Palette: Black, White, Gray, #F97D01) */
+  --color-accent: #F97D01;
+  --color-accent-hover: #E06F00;
+  --color-accent-light: rgba(249, 125, 1, 0.10);
+  --color-accent-glow: rgba(249, 125, 1, 0.28);
+
+  /* Legacy color aliases mapped to #F97D01 */
+  --color-neon-yellow: #F97D01;
+  --color-neon-yellow-hover: #E06F00;
+  --color-neon-yellow-light: rgba(249, 125, 1, 0.10);
+  --color-neon-yellow-glow: rgba(249, 125, 1, 0.28);
 
   /* Semantic Colors */
-  --color-success: #22c55e;
+  --color-success: #F97D01;
   --color-error: #ef4444;
-  --color-warning: #f59e0b;
-  --color-info: #3b82f6;
+  --color-warning: #F97D01;
+  --color-info: #8E8E8E;
 
-  /* Typography */
-  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  /* Editorial Typography */
+  --font-sans: 'Google Sans', 'Titillium Web', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Oswald', 'Google Sans', sans-serif;
+  --font-brand: 'Oswald', 'Google Sans', sans-serif;
 
-  /* Spacing */
-  --spacing-section: 5rem;
+  /* Spacing Scale */
+  --spacing-section: 6.5rem;
+  --spacing-section-lg: 9rem;
 
   /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
 
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 400ms ease;
+  /* Easing & Transitions */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-theme: 800ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ============================================
@@ -64,6 +86,14 @@ body {
   color: var(--color-white);
   line-height: 1.6;
   min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.hero-title,
+.promo-title {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
 }
 
 a {
@@ -108,6 +138,139 @@ select {
   .container {
     padding-inline: 2rem;
   }
+}
+
+/* Editorial Wide Container (HEAVN-style full immersion) */
+.container-editorial {
+  width: 100%;
+  max-width: 1540px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+/* Editorial Typography Utilities */
+.editorial-hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3.2rem, 9.5vw, 8.5rem);
+  font-weight: 300;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.editorial-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.editorial-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-silver-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.editorial-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-neon-yellow);
+  border-radius: 50%;
+}
+
+.editorial-body {
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  line-height: 1.75;
+  font-weight: 300;
+  color: #b0b0b0;
+}
+
+.editorial-wordmark {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  letter-spacing: 0.38em;
+  text-indent: 0.38em;
+  text-transform: uppercase;
+}
+
+/* Theme Environments */
+.theme-dark {
+  background-color: var(--color-obsidian);
+  color: var(--color-white);
+}
+
+.theme-light {
+  background-color: var(--color-studio-white);
+  color: #070707;
+}
+
+.theme-transition {
+  transition: background-color var(--transition-theme),
+              color var(--transition-theme);
+}
+
+/* Editorial Minimalist Buttons */
+.btn-editorial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem 2rem;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background-color: var(--color-white);
+  color: #050505;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-white);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn-editorial:hover {
+  background-color: var(--color-neon-yellow);
+  border-color: var(--color-neon-yellow);
+  color: #050505;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(223, 255, 0, 0.2);
+}
+
+.btn-editorial-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem 2rem;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn-editorial-outline:hover {
+  border-color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
 }
 
 /* Buttons */

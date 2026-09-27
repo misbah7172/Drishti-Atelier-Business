@@ -1,0 +1,135 @@
+/* ==========================================================================
+   Drishti Atelier — Editorial Collections
+   ========================================================================== */
+
+.collections-section {
+  position: relative;
+  background-color: #050505;
+  color: #ffffff;
+  padding-block: var(--spacing-section-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.collections-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4.5rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.collections-header .editorial-section-title {
+  margin-top: 1rem;
+}
+
+.collections-view-all {
+  margin-bottom: 0.5rem;
+}
+
+/* Feature Hero Product Banner (Asymmetric Layout) */
+.collections-hero-feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 5rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+@media (min-width: 900px) {
+  .collections-hero-feature {
+    grid-template-columns: 1fr 1.35fr;
+    min-height: 480px;
+  }
+}
+
+.feature-content-side {
+  padding: clamp(2.5rem, 5vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.feature-tag {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.feature-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.feature-desc {
+  color: #a0a0a0;
+  max-width: 480px;
+}
+
+.feature-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.feature-price {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.feature-visual-side {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0d0d0d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  min-height: 320px;
+}
+
+.feature-image {
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collections-hero-feature:hover .feature-image {
+  transform: scale(1.04);
+}
+
+/* Staggered Curated Grid */
+.collections-editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .collections-editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .collections-editorial-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

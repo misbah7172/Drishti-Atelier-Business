@@ -1,0 +1,247 @@
+/* ==========================================================================
+   Drishti Atelier — Frame Explorer (Interactive Light / Studio White Space)
+   ========================================================================== */
+
+.explorer-section {
+  position: relative;
+  background-color: #F8F8F8;
+  color: #050505;
+  padding-block: var(--spacing-section-lg);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background-color var(--transition-theme);
+}
+
+.explorer-header {
+  max-width: 680px;
+  margin-bottom: 3.5rem;
+}
+
+.explorer-header .editorial-eyebrow {
+  color: #666666;
+}
+
+.explorer-header .editorial-eyebrow::before {
+  background-color: #050505;
+}
+
+.explorer-header .editorial-section-title {
+  margin-block: 1rem 1.25rem;
+  color: #050505;
+}
+
+.explorer-header .editorial-body {
+  color: #555555;
+}
+
+/* Perspective Switcher Controls */
+.explorer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2.5rem;
+  scrollbar-width: none;
+}
+
+.explorer-controls::-webkit-scrollbar {
+  display: none;
+}
+
+.explorer-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-full);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #666666;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.explorer-pill-btn:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #050505;
+  transform: translateY(-1px);
+}
+
+.explorer-pill-btn.pill-active {
+  background-color: #050505;
+  border-color: #050505;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.pill-index {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.explorer-pill-btn:not(.pill-active) .pill-index {
+  color: #999999;
+}
+
+/* Stage Grid */
+.explorer-stage-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 980px) {
+  .explorer-stage-grid {
+    grid-template-columns: 1.35fr 1fr;
+    gap: 4rem;
+  }
+}
+
+/* Main Canvas */
+.explorer-canvas {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fadeInImage 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInImage {
+  from {
+    opacity: 0.5;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.explorer-caption-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.explorer-caption-text {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #333333;
+}
+
+.explorer-scale-indicator {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #777777;
+}
+
+/* Sidebar Metrics Card */
+.explorer-specs-card {
+  background-color: #ffffff;
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.04);
+}
+
+.specs-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #050505;
+  margin-bottom: 0.5rem;
+}
+
+.specs-card-sub {
+  font-family: var(--font-sans);
+  font-size: 0.925rem;
+  color: #666666;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.specs-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.metric-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.metric-name {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #555555;
+}
+
+.metric-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.15);
+  margin-inline: 0.5rem;
+}
+
+.metric-val {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #050505;
+}
+
+.specs-footer-note {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.badge-titanium {
+  padding: 0.35rem 0.85rem;
+  background-color: #f0f0f0;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #333333;
+}

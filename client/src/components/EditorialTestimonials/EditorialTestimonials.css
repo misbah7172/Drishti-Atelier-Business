@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Drishti Atelier — Editorial Testimonials (High-Fashion Quotes)
+   ========================================================================== */
+
+.testimonials-editorial-section {
+  position: relative;
+  background-color: #060606;
+  color: #ffffff;
+  padding-block: var(--spacing-section-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.testimonials-editorial-wrapper {
+  max-width: 980px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.testimonial-quote-box {
+  margin-block: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: quoteFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes quoteFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.testimonial-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+}
+
+.star-icon {
+  fill: currentColor;
+}
+
+.testimonial-editorial-quote {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 2.5rem;
+}
+
+.testimonial-attribution {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.testimonial-author-name {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.testimonial-author-role {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: #888888;
+}
+
+.testimonial-frame-tag {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-top: 0.4rem;
+}
+
+/* Minimalist Switcher Dots */
+.testimonial-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testimonial-dot {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dot-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: width var(--transition-base),
+              background-color var(--transition-base);
+}
+
+.testimonial-dot.dot-active .dot-line {
+  width: 48px;
+  background-color: var(--color-accent);
+}

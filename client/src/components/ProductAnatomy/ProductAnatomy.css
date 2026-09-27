@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Drishti Atelier — Product Anatomy Breakdown (HEAVN-Style Deep Dive)
+   ========================================================================== */
+
+.anatomy-section {
+  position: relative;
+  background-color: #070707;
+  color: #ffffff;
+  padding-block: var(--spacing-section-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.anatomy-header {
+  max-width: 680px;
+  margin-bottom: 5rem;
+}
+
+.anatomy-header .editorial-section-title {
+  margin-block: 1rem 1.25rem;
+}
+
+.text-muted-editorial {
+  color: #777777;
+}
+
+.anatomy-header-desc {
+  color: #a0a0a0;
+}
+
+/* Two-Column Sticky Showcase */
+.anatomy-showcase {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+@media (min-width: 980px) {
+  .anatomy-showcase {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 5rem;
+  }
+}
+
+/* Left: Sticky Macro Visual Stage */
+.anatomy-visual-stage {
+  width: 100%;
+}
+
+@media (min-width: 980px) {
+  .anatomy-visual-stage {
+    position: sticky;
+    top: 110px;
+  }
+}
+
+.anatomy-image-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: #121212;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7),
+              0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.anatomy-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s ease;
+}
+
+.anatomy-image-card:hover .anatomy-product-img {
+  transform: scale(1.03);
+}
+
+.anatomy-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  pointer-events: none;
+}
+
+.anatomy-spec-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  z-index: 5;
+}
+
+.badge-chapter-num {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.badge-spec-text {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #d8d8d8;
+}
+
+/* Right: Narrative Chapters Track */
+.anatomy-track {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.anatomy-chapter-card {
+  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              border-color var(--transition-base),
+              transform var(--transition-base);
+  outline: none;
+}
+
+.anatomy-chapter-card:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+}
+
+.anatomy-chapter-card.chapter-active {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.chapter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-number {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #777777;
+  transition: color var(--transition-fast);
+}
+
+.chapter-active .chapter-number {
+  color: var(--color-accent);
+}
+
+.chapter-subtitle {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #777777;
+}
+
+.chapter-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  color: #dddddd;
+  transition: color var(--transition-fast);
+}
+
+.chapter-active .chapter-title {
+  color: #ffffff;
+}
+
+.chapter-desc {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #888888;
+  font-weight: 300;
+  transition: color var(--transition-fast);
+}
+
+.chapter-active .chapter-desc {
+  color: #c4c4c4;
+}
+
+.chapter-progress-bar {
+  margin-top: 1.5rem;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.chapter-progress-fill {
+  width: 0;
+  height: 100%;
+  background-color: var(--color-accent);
+  transition: width 0.4s ease;
+}
+
+.chapter-active .chapter-progress-fill {
+  width: 100%;
+}

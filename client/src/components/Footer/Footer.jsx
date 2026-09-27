@@ -1,22 +1,29 @@
 import { Link } from 'react-router-dom';
 import {
   HiOutlineEnvelope,
-  HiOutlinePhone,
   HiOutlineMapPin,
+  HiArrowRight,
 } from 'react-icons/hi2';
-import { FaFacebookF, FaInstagram, FaXTwitter } from 'react-icons/fa6';
+import { FaInstagram, FaXTwitter } from 'react-icons/fa6';
 import './Footer.css';
 
+const shopLinks = [
+  { to: '/shop?category=new', label: 'New Arrivals' },
+  { to: '/shop?category=sunglasses', label: 'Sunglasses' },
+  { to: '/shop?category=prescription-glasses', label: 'Optical Frames' },
+  { to: '/shop?category=blue-light-glasses', label: 'Blue Light Optics' },
+];
+
 const companyLinks = [
-  { to: '/about', label: 'About Us' },
-  { to: '/contact', label: 'Contact' },
-  { to: '/faq', label: 'FAQ' },
+  { to: '/about', label: 'The Atelier' },
+  { to: '/contact', label: 'Bespoke Inquiries' },
+  { to: '/faq', label: 'Fitting & Care' },
 ];
 
 const customerLinks = [
-  { to: '/shop', label: 'Shop' },
-  { to: '/cart', label: 'My Cart' },
-  { to: '/wishlist', label: 'Wishlist' },
+  { to: '/shop', label: 'Archive Index' },
+  { to: '/cart', label: 'Shopping Bag' },
+  { to: '/wishlist', label: 'Saved Pieces' },
   { to: '/account/orders', label: 'Order Tracking' },
 ];
 
@@ -29,44 +36,55 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer" id="main-footer">
-      <div className="container">
-        <div className="footer-grid">
-          {/* Brand */}
-          <div className="footer-brand">
-            <Link to="/" className="footer-logo">
-              <span className="logo-icon">👓</span>
-              <span className="logo-text">
-                Drishti<span className="logo-accent">Atelier</span>
-              </span>
+    <footer className="footer-editorial" id="main-footer">
+      <div className="container-editorial">
+        <div className="footer-editorial-grid">
+          {/* Brand Manifesto Column */}
+          <div className="footer-brand-col">
+            <Link to="/" className="footer-brand-wordmark" aria-label="Drishti Atelier">
+              <img src="/logo.svg" alt="Drishti Logo" className="footer-brand-emblem" />
+              <div className="footer-brand-text">
+                <span className="footer-brand-title">DRISHTI</span>
+                <span className="footer-brand-sub">ATELIER</span>
+              </div>
             </Link>
-            <p className="footer-desc">
-              Premium eyewear for every style. Discover your perfect pair with
-              Drishti — where clarity meets fashion.
+            <p className="footer-editorial-desc">
+              Architectural eyewear sculpted in aerospace titanium and hand-buffed
+              crystal optics. Form, clarity, and structural poise.
             </p>
-            <div className="footer-contact-list">
-              <div className="footer-contact-item">
-                <HiOutlineMapPin size={16} />
-                <span>Dhaka, Bangladesh</span>
+            <div className="footer-atelier-location">
+              <div className="footer-loc-item">
+                <HiOutlineMapPin size={15} />
+                <span>Atelier: Dhaka & Tokyo</span>
               </div>
-              <div className="footer-contact-item">
-                <HiOutlinePhone size={16} />
-                <span>+880 1XXX-XXXXXX</span>
-              </div>
-              <div className="footer-contact-item">
-                <HiOutlineEnvelope size={16} />
-                <span>support@drishtiatelier.com</span>
+              <div className="footer-loc-item">
+                <HiOutlineEnvelope size={15} />
+                <span>concierge@drishtiatelier.com</span>
               </div>
             </div>
           </div>
 
-          {/* Company Links */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Company</h4>
-            <ul className="footer-link-list">
+          {/* Shop Column */}
+          <div className="footer-links-col">
+            <h4 className="footer-col-heading">COLLECTIONS</h4>
+            <ul className="footer-nav-list">
+              {shopLinks.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="footer-nav-link">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Column */}
+          <div className="footer-links-col">
+            <h4 className="footer-col-heading">THE HOUSE</h4>
+            <ul className="footer-nav-list">
               {companyLinks.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to} className="footer-link">
+                  <Link to={link.to} className="footer-nav-link">
                     {link.label}
                   </Link>
                 </li>
@@ -74,13 +92,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Customer Service */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Customer Service</h4>
-            <ul className="footer-link-list">
+          {/* Client Service Column */}
+          <div className="footer-links-col">
+            <h4 className="footer-col-heading">SERVICE</h4>
+            <ul className="footer-nav-list">
               {customerLinks.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to} className="footer-link">
+                  <Link to={link.to} className="footer-nav-link">
                     {link.label}
                   </Link>
                 </li>
@@ -88,50 +106,62 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Stay Updated</h4>
-            <p className="footer-newsletter-text">
-              Subscribe to get the latest offers and new arrivals.
+          {/* Newsletter Column */}
+          <div className="footer-newsletter-col">
+            <h4 className="footer-col-heading">DISPATCHES</h4>
+            <p className="footer-newsletter-sub">
+              Receive private invitations to limited archive releases and architectural updates.
             </p>
-            <form className="footer-newsletter-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="footer-minimal-form" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
-                placeholder="Your email"
-                className="footer-newsletter-input"
-                id="newsletter-email"
+                placeholder="Email address..."
+                className="footer-minimal-input"
+                id="footer-email-input"
+                required
               />
-              <button type="submit" className="btn btn-primary btn-sm" id="newsletter-subscribe">
-                Subscribe
+              <button
+                type="submit"
+                className="footer-submit-arrow"
+                id="footer-email-submit"
+                aria-label="Subscribe to dispatches"
+              >
+                <HiArrowRight size={16} />
               </button>
             </form>
-            <div className="footer-socials">
-              <a href="#" className="footer-social-link" aria-label="Facebook">
-                <FaFacebookF size={16} />
+
+            <div className="footer-social-icons">
+              <a href="#" className="footer-social-btn" aria-label="Instagram">
+                <FaInstagram size={15} />
               </a>
-              <a href="#" className="footer-social-link" aria-label="Instagram">
-                <FaInstagram size={16} />
-              </a>
-              <a href="#" className="footer-social-link" aria-label="X / Twitter">
-                <FaXTwitter size={16} />
+              <a href="#" className="footer-social-btn" aria-label="X / Twitter">
+                <FaXTwitter size={15} />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="footer-bottom">
-          <div className="footer-bottom-inner">
-            <p className="footer-copyright">
-              © {currentYear} Drishti. All rights reserved.
-            </p>
-            <div className="footer-legal-links">
-              {legalLinks.map((link) => (
-                <Link key={link.to} to={link.to} className="footer-legal-link">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+        {/* Minimal Bottom Bar */}
+        <div className="footer-editorial-bottom">
+          <p className="footer-copyright-text">
+            © {currentYear} Drishti Atelier Inc. Engineered for Human Contours.
+          </p>
+          <div className="footer-bottom-links">
+            {legalLinks.map((link) => (
+              <Link key={link.to} to={link.to} className="footer-sub-link">
+                {link.label}
+              </Link>
+            ))}
+            <button
+              type="button"
+              className="footer-sub-link replay-btn"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('drishti:replay-intro'));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              Replay Intro
+            </button>
           </div>
         </div>
       </div>
