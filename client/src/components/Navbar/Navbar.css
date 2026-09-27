@@ -434,3 +434,144 @@
   color: #555555;
   font-weight: 300;
 }
+
+/* ==========================================================================
+   Theme Switcher & Light Theme Navbar Adaptations
+   ========================================================================== */
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  color: var(--color-accent);
+}
+
+.theme-toggle-btn:hover {
+  color: var(--color-accent);
+  background-color: var(--color-accent-light);
+  transform: rotate(18deg) scale(1.08);
+}
+
+.theme-toggle-icon {
+  transition: transform var(--transition-base);
+}
+
+/* Mobile Theme Switcher Row */
+.mobile-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.mobile-theme-label {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.mobile-theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  background: rgba(249, 125, 1, 0.1);
+  border: 1px solid rgba(249, 125, 1, 0.35);
+  border-radius: var(--radius-full);
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobile-theme-toggle-btn:hover {
+  background: var(--color-accent);
+  color: #000000;
+}
+
+/* Light Theme Navbar */
+[data-theme="light"] .navbar-editorial {
+  color: #050505;
+}
+
+[data-theme="light"] .navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .navbar-brand-name {
+  color: #050505;
+}
+
+[data-theme="light"] .navbar-nav-link {
+  color: #555555;
+}
+
+[data-theme="light"] .navbar-nav-link:hover,
+[data-theme="light"] .navbar-nav-link.nav-link-active {
+  color: #050505;
+}
+
+[data-theme="light"] .navbar-action-btn {
+  color: #444444;
+}
+
+[data-theme="light"] .navbar-action-btn:hover {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background-color: rgba(249, 125, 1, 0.12);
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .navbar-search-overlay {
+  background-color: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .navbar-search-input {
+  color: #050505;
+}
+
+[data-theme="light"] .navbar-search-input::placeholder {
+  color: #888888;
+}
+
+[data-theme="light"] .navbar-mobile-drawer {
+  background-color: #ffffff;
+}
+
+[data-theme="light"] .mobile-editorial-link {
+  color: #111111;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .mobile-drawer-eyebrow {
+  color: #777777;
+}
+
+[data-theme="light"] .mobile-theme-row {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .mobile-footer-link {
+  color: #666666;
+}
+
+[data-theme="light"] .mobile-footer-link:hover {
+  color: #000000;
+}
+

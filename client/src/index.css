@@ -489,3 +489,557 @@ select {
 .animate-slide-up {
   animation: slideUp 0.6s ease forwards;
 }
+
+/* ==========================================================================
+   Theme Adaptations: Dark & Light Themes
+   Strict Color Palette: Black, White, Gray, and #F97D01
+   ========================================================================== */
+
+/* Universal Theme Transitions */
+body,
+section,
+header,
+nav,
+footer,
+article,
+div.card,
+.top-category-card,
+.shape-card,
+.our-brand-card,
+.product-card,
+.hero-slider-section,
+.top-categories-section,
+.shape-guide-section,
+.our-brands-section {
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Light Theme (Art Gallery & Museum Architecture)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] body {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+/* Typography in Light Mode */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+[data-theme="light"] .editorial-hero-title,
+[data-theme="light"] .editorial-section-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .editorial-body {
+  color: #4A4A4A;
+}
+
+[data-theme="light"] .editorial-eyebrow {
+  color: #666666;
+}
+
+[data-theme="light"] .text-muted-editorial {
+  color: #888888;
+}
+
+/* Buttons in Light Mode */
+[data-theme="light"] .btn-editorial {
+  background-color: #050505;
+  color: #FFFFFF;
+  border-color: #050505;
+}
+
+[data-theme="light"] .btn-editorial:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000000;
+  box-shadow: 0 10px 30px rgba(249, 125, 1, 0.25);
+}
+
+[data-theme="light"] .btn-editorial-outline {
+  color: #0A0A0A;
+  border-color: rgba(0, 0, 0, 0.25);
+  background-color: transparent;
+}
+
+[data-theme="light"] .btn-editorial-outline:hover {
+  border-color: #0A0A0A;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Hero Sliding Banner in Light Mode */
+[data-theme="light"] .hero-slider-section {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .hero-slider-backdrop {
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(249, 125, 1, 0.02) 0%,
+    rgba(255, 255, 255, 0.96) 65%,
+    #FFFFFF 100%
+  );
+}
+
+[data-theme="light"] .slide-title-main {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .slide-title-accent {
+  color: #666666;
+}
+
+[data-theme="light"] .hero-slide-desc {
+  color: #4A4A4A;
+}
+
+[data-theme="light"] .hero-slide-spec-pill {
+  background: #F5F5F5;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #333333;
+}
+
+[data-theme="light"] .hero-slide-image-card {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08),
+              0 0 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .hero-slider-controls-wrapper {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .hero-slider-arrow-btn {
+  background: #F5F5F5;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #222222;
+}
+
+[data-theme="light"] .hero-slider-arrow-btn:hover {
+  background: rgba(249, 125, 1, 0.12);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .hero-slider-dot {
+  color: #888888;
+}
+
+[data-theme="light"] .hero-slider-dot.active {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .hero-slider-dot .dot-track {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .counter-current {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .counter-total {
+  color: #777777;
+}
+
+[data-theme="light"] .hero-slider-scroll-cue .scroll-cue-label {
+  color: #777777;
+}
+
+[data-theme="light"] .hero-slider-scroll-cue .scroll-cue-line {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Top Categories in Light Mode */
+[data-theme="light"] .top-categories-section {
+  background-color: #F8F8F8;
+  color: #0A0A0A;
+  border-top-color: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .top-categories-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .top-categories-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .top-category-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .top-category-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08),
+              0 0 20px rgba(249, 125, 1, 0.1);
+}
+
+[data-theme="light"] .top-category-card-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .top-category-card-sub {
+  color: #666666;
+}
+
+[data-theme="light"] .top-category-action-link {
+  color: #444444;
+}
+
+[data-theme="light"] .top-category-action-link:hover {
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .action-link-icon {
+  background: #F2F2F2;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #0A0A0A;
+}
+
+/* Eyeglasses Shape Guide in Light Mode */
+[data-theme="light"] .shape-guide-section {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .shape-guide-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shape-guide-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .shape-badge-text {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .face-selector-wrapper {
+  background: #F6F6F6;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .face-selector-heading {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .face-selector-btn {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #555555;
+}
+
+[data-theme="light"] .face-selector-btn:hover {
+  background: #EAEAEA;
+  color: #000000;
+}
+
+[data-theme="light"] .face-selector-btn.active {
+  background: rgba(249, 125, 1, 0.12);
+  border-color: var(--color-accent);
+  color: #000000;
+}
+
+[data-theme="light"] .shape-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .shape-card:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="light"] .shape-card.recommended-match {
+  background: linear-gradient(
+    180deg,
+    rgba(249, 125, 1, 0.06) 0%,
+    #FFFFFF 40%
+  );
+  border-color: var(--color-accent);
+}
+
+[data-theme="light"] .shape-card-name {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shape-card-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .shape-blueprint-stage {
+  background: #F4F4F4;
+  border-color: rgba(0, 0, 0, 0.06);
+  color: #333333;
+}
+
+[data-theme="light"] .shape-card:hover .shape-blueprint-stage {
+  color: #000000;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .shape-card.recommended-match .shape-blueprint-stage {
+  color: var(--color-accent);
+  border-color: rgba(249, 125, 1, 0.3);
+}
+
+[data-theme="light"] .shape-card-badge {
+  background: #F2F2F2;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #666666;
+}
+
+[data-theme="light"] .shape-card-cta {
+  background: #F6F6F6;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shape-card-cta:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000000;
+}
+
+/* Editorial Collections in Light Mode */
+[data-theme="light"] .collections-section {
+  background-color: #F8F8F8;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .collection-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .collection-card-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .collection-card-desc {
+  color: #555555;
+}
+
+/* Brand Story Manifesto in Light Mode */
+[data-theme="light"] .brand-story-section {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .manifesto-quote {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .pillar-card {
+  background: #F8F8F8;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .pillar-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .pillar-desc {
+  color: #555555;
+}
+
+/* Editorial Testimonials in Light Mode */
+[data-theme="light"] .testimonials-section {
+  background-color: #F8F8F8;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .testimonial-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .testimonial-quote {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .testimonial-author {
+  color: #222222;
+}
+
+/* Final CTA in Light Mode */
+[data-theme="light"] .final-cta-section {
+  background-color: #F3F3F3;
+  color: #0A0A0A;
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .final-cta-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .final-cta-desc {
+  color: #555555;
+}
+
+/* Our Brands Section in Light Mode */
+[data-theme="light"] .our-brands-section {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  border-top-color: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .our-brands-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .our-brands-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .our-brand-card {
+  background: #FBFBFB;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .our-brand-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08),
+              0 0 20px rgba(249, 125, 1, 0.1);
+}
+
+[data-theme="light"] .our-brand-monogram-box {
+  background: #F0F0F0;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .our-brand-monogram {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .our-brand-name {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .our-brand-headline {
+  color: #222222;
+}
+
+[data-theme="light"] .our-brand-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .our-brand-attr-item {
+  color: #333333;
+}
+
+[data-theme="light"] .our-brands-marquee-strip {
+  border-top-color: rgba(0, 0, 0, 0.08);
+  color: #777777;
+}
+
+[data-theme="light"] .marquee-item:hover {
+  color: #000000;
+}
+
+/* Shop Catalog in Light Mode */
+[data-theme="light"] .shop-page {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shop-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shop-desc {
+  color: #555555;
+}
+
+[data-theme="light"] .shop-search-bar {
+  background: #F6F6F6;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .shop-search-input {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .shop-search-input::placeholder {
+  color: #888888;
+}
+
+[data-theme="light"] .filter-chip {
+  background: #F5F5F5;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #555555;
+}
+
+[data-theme="light"] .filter-chip:hover {
+  background: #ECECEC;
+  color: #000000;
+}
+
+[data-theme="light"] .filter-chip.chip-active {
+  background: #050505;
+  color: #FFFFFF;
+  border-color: #050505;
+}
+
+[data-theme="light"] .shop-sort-select {
+  background: #F6F6F6;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .product-card {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .product-card-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .product-card-material {
+  color: #666666;
+}
+
+[data-theme="light"] .product-card-price {
+  color: #0A0A0A;
+}
+
+/* Product Detail Page in Light Mode */
+[data-theme="light"] .product-detail-page {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .detail-title {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .detail-desc {
+  color: #4A4A4A;
+}
+
+[data-theme="light"] .detail-price-main {
+  color: #0A0A0A;
+}
+
+[data-theme="light"] .detail-spec-tag {
+  background: #F5F5F5;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #333333;
+}

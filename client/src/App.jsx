@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Components
 import CinematicGlassesIntro from './components/CinematicGlassesIntro';
@@ -16,8 +17,9 @@ import PlaceholderPage from './pages/PlaceholderPage/PlaceholderPage';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <CinematicGlassesIntro />
+    <ThemeProvider>
+      <BrowserRouter>
+        <CinematicGlassesIntro />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -85,5 +87,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+  </ThemeProvider>
   );
 }

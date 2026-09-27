@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo Transition</title>
+<style>
+  :root {
+    --bg: #14161a;
+    --duration: 2s;               /* total transition time */
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    overflow: hidden;             /* hides the logo while it is off-screen right */
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+  }
+
+  /* Logo stays fixed in the center */
+  .stage {
+    width: min(70vw, 700px);
+  }
+
+  .stage svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* 1. Starting point: the circle on the right side appears first */
+  .dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    animation: pop calc(var(--duration) * .15) cubic-bezier(.3, 1.6, .5, 1) both;
+  }
+
+  /* 2. Arrow head follows from the circle */
+  .arrow {
+    opacity: 0;
+    animation: fade calc(var(--duration) * .12) ease-out calc(var(--duration) * .1) both;
+  }
+
+  /* 3. Main stroke draws from the right until the full logo is formed */
+  .stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation:
+      draw   calc(var(--duration) * .8) cubic-bezier(.45, .05, .25, 1) calc(var(--duration) * .2) both,
+      appear .01s linear calc(var(--duration) * .2) both;
+  }
+
+  @keyframes draw   { to { stroke-dashoffset: 0; } }
+  @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fade   { to { opacity: 1; } }
+  @keyframes pop    { to { transform: scale(1); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stroke, .arrow, .dot { animation: none; }
+    .stroke { stroke-dashoffset: 0; }
+    .arrow  { opacity: 1; }
+    .dot    { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350" role="img" aria-label="Logo">
+      <defs>
+        <linearGradient id="champagneGold" gradientUnits="userSpaceOnUse" x1="60" y1="44" x2="640" y2="282">
+          <stop offset="0%"   stop-color="#FFF0B3"/>
+          <stop offset="35%"  stop-color="#E7B84A"/>
+          <stop offset="65%"  stop-color="#C88A1A"/>
+          <stop offset="100%" stop-color="#F6D77A"/>
+        </linearGradient>
+      </defs>
+      <g transform="translate(10 10)">
+        <path class="stroke" pathLength="1" fill="none" stroke="url(#champagneGold)"
+          stroke-width="28" stroke-linecap="round" stroke-linejoin="round"
+          d="M418 102 C442 74 476 60 512 60 C572 60 620 106 620 166 C620 226 572 270 512 270 C452 270 422 234 397 194 C384 172 370 152 352 152 C330 152 306 174 283 189 C246 213 206 264 150 264 C92 264 60 224 60 180 C60 130 100 94 150 94 C200 94 232 130 258 160 C270 174 290 180 308 170"/>
+        <path class="arrow" fill="url(#champagneGold)" stroke="url(#champagneGold)"
+          stroke-width="3" stroke-linejoin="round" d="M497 177.5 L566 130 L507 188.5 Z"/>
+        <circle class="dot" cx="502" cy="183" r="13" fill="url(#champagneGold)"/>
+      </g>
+    </svg>
+  </div>
+
+</body>
+</html>

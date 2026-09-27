@@ -1,193 +1,117 @@
 /* ==========================================================================
-   Drishti Atelier — Cinematic Glasses Intro Screen
-   Single Continuous Studio-Light Sweep (0.5s – 2.5s)
-   Luxury Eyewear Minimalist Physical Reflection
+   Drishti Atelier — Logo Transition Loading Screen
+   Faithfully matches d:\Drishti\asstes\LoadingScreen\logo-transition.html
+   Transition time strictly less than 2 seconds (duration: ~1.35s, exit: 300ms)
    ========================================================================== */
 
-/* Root Fullscreen Overlay */
-.cinematic-intro-root {
+:root {
+  --logo-intro-bg: #14161a;
+  --logo-intro-duration: 1.35s; /* total logo stroke animation time */
+}
+
+/* Fullscreen Overlay */
+.logo-intro-root {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000000;
+  margin: 0;
+  background-color: var(--logo-intro-bg);
   z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   user-select: none;
-  touch-action: none;
+  cursor: pointer;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
 }
 
-/* Background: Pure Absolute Black (no gradients) */
-.cinematic-intro-bg {
-  position: absolute;
-  inset: 0;
-  background-color: #000000;
-  pointer-events: none;
-}
-
-/* Exit Transition: Smoothly dissolves into the homepage */
-.cinematic-intro-root.intro-exiting {
+/* Smooth Exit: Dissolves into the homepage */
+.logo-intro-root.intro-exiting {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-/* Eyeglasses Stage: Centered horizontally, slightly below vertical center */
-.cinematic-glasses-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  transform: translateY(2%);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
+/* Logo Stage centered */
+.logo-transition-stage {
+  width: min(70vw, 700px);
 }
 
-/* Stage Exit Animation: Subtle scale-down and fade */
-.cinematic-glasses-stage.stage-exit {
-  transform: translateY(2%) scale(0.97);
-  opacity: 0;
-}
-
-/* SVG Sizing — Responsive Eyewear Composition */
-.cinematic-glasses-svg {
+.logo-transition-stage svg {
   display: block;
-  width: 68vw;
-  max-width: 1120px;
-  min-width: 480px;
+  width: 100%;
   height: auto;
   overflow: visible;
 }
 
-/* ==========================================================================
-   LAYER 1: Ultra-Faint Baseline Frame (Almost completely black/invisible)
-   ========================================================================== */
-
-.glasses-faint-baseline {
-  opacity: 0.15;
-  transition: opacity 0.8s ease;
-  pointer-events: none;
+/* 1. Starting point: the circle on the right side appears first */
+.logo-transition-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: logoPop calc(var(--logo-intro-duration) * 0.15) cubic-bezier(0.3, 1.6, 0.5, 1) both;
 }
 
-/* ==========================================================================
-   LAYER 2: Exactly ONE Single Studio-Light Sweep (0.5s – 2.5s)
-   A narrow, physical studio softbox light beam that sweeps from LEFT to RIGHT.
-   Masked strictly to the upper frame geometry.
-   Behind the beam, the metal returns immediately to near-black.
-   ========================================================================== */
-
-.studio-light-sweep-beam {
-  pointer-events: none;
-  will-change: transform, opacity;
-  animation: singleStudioLightSweep 2.0s cubic-bezier(0.3, 0.05, 0.2, 1) forwards;
+/* 2. Arrow head follows from the circle */
+.logo-transition-arrow {
+  opacity: 0;
+  animation: logoFade calc(var(--logo-intro-duration) * 0.12) ease-out calc(var(--logo-intro-duration) * 0.1) both;
 }
 
-@keyframes singleStudioLightSweep {
-  0% {
-    transform: translate3d(0, 0, 0);
+/* 3. Main stroke draws from the right until the full logo is formed */
+.logo-transition-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    logoDraw calc(var(--logo-intro-duration) * 0.8) cubic-bezier(0.45, 0.05, 0.25, 1) calc(var(--logo-intro-duration) * 0.2) both,
+    logoAppear 0.01s linear calc(var(--logo-intro-duration) * 0.2) both;
+}
+
+@keyframes logoDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes logoAppear {
+  from {
     opacity: 0;
   }
-  5% {
+  to {
     opacity: 1;
   }
-  92% {
+}
+
+@keyframes logoFade {
+  to {
     opacity: 1;
   }
-  100% {
-    transform: translate3d(2350px, 0, 0);
-    opacity: 0;
+}
+
+@keyframes logoPop {
+  to {
+    transform: scale(1);
   }
 }
-
-/* ==========================================================================
-   Minimalist Skip Control (Corner)
-   ========================================================================== */
-
-.cinematic-skip-btn {
-  position: absolute;
-  bottom: 2.25rem;
-  right: 2.5rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.35rem;
-  padding: 0.5rem;
-  z-index: 100;
-  opacity: 0.35;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.cinematic-skip-btn:hover {
-  opacity: 0.85;
-  transform: translateY(-1px);
-}
-
-.skip-btn-label {
-  font-family: 'Oswald', 'Google Sans', sans-serif;
-  font-size: 0.6875rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #a0a0a0;
-}
-
-.skip-btn-line {
-  width: 20px;
-  height: 1px;
-  background-color: #666666;
-  transition: width 0.3s ease, background-color 0.3s ease;
-}
-
-.cinematic-skip-btn:hover .skip-btn-line {
-  width: 32px;
-  background-color: #ffffff;
-}
-
-/* ==========================================================================
-   Responsive Adaptations
-   ========================================================================== */
-
-@media (max-width: 768px) {
-  .cinematic-glasses-svg {
-    width: 90vw;
-    min-width: 320px;
-  }
-
-  .cinematic-skip-btn {
-    bottom: 1.5rem;
-    right: 1.25rem;
-  }
-}
-
-/* ==========================================================================
-   Accessibility: prefers-reduced-motion
-   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .cinematic-intro-root {
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+  .logo-transition-stroke,
+  .logo-transition-arrow,
+  .logo-transition-dot {
+    animation: none;
   }
-
-  .studio-light-sweep-beam {
-    display: none !important;
-    animation: none !important;
+  .logo-transition-stroke {
+    stroke-dashoffset: 0;
   }
-
-  .glasses-faint-baseline {
-    opacity: 0.3;
+  .logo-transition-arrow {
+    opacity: 1;
+  }
+  .logo-transition-dot {
+    transform: none;
   }
 }

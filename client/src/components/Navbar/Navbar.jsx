@@ -7,7 +7,10 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlineBars3,
   HiOutlineXMark,
+  HiOutlineSun,
+  HiOutlineMoon,
 } from 'react-icons/hi2';
+import { useTheme } from '../../hooks/useTheme';
 import './Navbar.css';
 
 const navLinks = [
@@ -24,6 +27,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const { toggleTheme, isDark } = useTheme();
 
   const cartCount = 0; // Connected to CartContext
   const wishlistCount = 0; // Connected to WishlistContext
@@ -150,6 +154,22 @@ export default function Navbar() {
             <HiOutlineUser size={19} />
           </Link>
 
+          {/* Theme Toggle Button */}
+          <button
+            type="button"
+            className="navbar-action-btn theme-toggle-btn"
+            id="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+          >
+            {isDark ? (
+              <HiOutlineSun size={19} className="theme-toggle-icon" />
+            ) : (
+              <HiOutlineMoon size={19} className="theme-toggle-icon" />
+            )}
+          </button>
+
           {/* Mobile Hamburger Toggle */}
           <button
             type="button"
@@ -237,6 +257,28 @@ export default function Navbar() {
           </nav>
 
           <div className="mobile-drawer-footer">
+            <div className="mobile-theme-row">
+              <span className="mobile-theme-label">Atmosphere</span>
+              <button
+                type="button"
+                className="mobile-theme-toggle-btn"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+              >
+                {isDark ? (
+                  <>
+                    <HiOutlineSun size={17} />
+                    <span>Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <HiOutlineMoon size={17} />
+                    <span>Dark Mode</span>
+                  </>
+                )}
+              </button>
+            </div>
+
             <div className="mobile-footer-actions">
               <Link to="/login" className="mobile-footer-link" onClick={closeMobile}>
                 Account Login
