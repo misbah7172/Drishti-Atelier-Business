@@ -1,0 +1,2 @@
+-- Database migrations directory
+-- Migrations will be added as needed for schema changes
