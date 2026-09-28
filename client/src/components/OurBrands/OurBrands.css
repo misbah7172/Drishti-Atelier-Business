@@ -1,37 +1,38 @@
 /* ==========================================================================
-   Drishti Atelier — Our Brands Section (House Portfolio)
-   Strict Palette: Black (#050505, #000000), White (#ffffff), Gray (#161616, #888888), #F97D01
+   Drishti Atelier — The Atelier Houses (Our Brands)
+   Permanent Light Theme: Pure White (#FFFFFF), Warm Light (#FAFAFA, #F7F7F7),
+   Dark Text (#0A0A0A, #333333), Accent Orange (#F97D01)
    ========================================================================== */
 
 .our-brands-section {
   position: relative;
-  background-color: #060606;
-  color: #ffffff;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
   padding: 3.5rem 0 3rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
-/* Subtle Ambient Gradient */
+/* Subtle architectural ambient wash */
 .our-brands-backdrop {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    circle at 50% 30%,
-    rgba(255, 255, 255, 0.03) 0%,
+    circle at 50% 10%,
+    rgba(249, 125, 1, 0.02) 0%,
     transparent 65%
   );
   pointer-events: none;
 }
 
-/* Header Area */
+/* Section Header */
 .our-brands-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 @media (min-width: 768px) {
@@ -43,75 +44,74 @@
 }
 
 .our-brands-intro {
-  max-width: 660px;
+  max-width: 650px;
 }
 
 .our-brands-eyebrow-row {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .our-brands-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.2rem 0.65rem;
+  gap: 0.35rem;
+  padding: 0.18rem 0.55rem;
   background: rgba(249, 125, 1, 0.08);
   border: 1px solid rgba(249, 125, 1, 0.25);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
   font-family: var(--font-heading);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: #F97D01;
 }
 
 .pill-sparkle {
-  color: var(--color-accent);
+  color: #F97D01;
 }
 
 .our-brands-title {
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-size: clamp(2rem, 3.8vw, 3rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
+  color: #0A0A0A;
+  margin-top: 0.35rem;
+  margin-bottom: 0.65rem;
 }
 
 .our-brands-desc {
-  color: #a0a0a0;
-  line-height: 1.65;
+  color: #555555;
+  line-height: 1.6;
   font-size: 0.95rem;
 }
 
 .our-brands-meta {
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
 }
 
 .our-brands-count {
   font-family: var(--font-heading);
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #777777;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   padding-bottom: 0.25rem;
 }
 
-/* Brands Dual Grid */
+/* ==========================================================================
+   Brands Dual Grid — Minimum 2 Columns on ALL Screens (including Mobile)
+   ========================================================================== */
+
 .our-brands-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-  margin-bottom: 4.5rem;
-}
-
-@media (min-width: 992px) {
-  .our-brands-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2.5vw, 2.5rem);
+  margin-bottom: 3.5rem;
+  width: 100%;
 }
 
 /* Brand Card */
@@ -119,20 +119,21 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: #0d0d0d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-lg, 12px);
   overflow: hidden;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .our-brand-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(249, 125, 1, 0.4);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7),
-              0 0 25px rgba(249, 125, 1, 0.12);
+  transform: translateY(-5px);
+  border-color: #F97D01;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08),
+              0 0 20px rgba(249, 125, 1, 0.1);
 }
 
 /* Card Top Row */
@@ -140,59 +141,62 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.75rem 2rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #FAFAFA;
 }
 
 .our-brand-monogram-box {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md, 8px);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-normal);
+  transition: all var(--transition-normal, 0.25s);
+  flex-shrink: 0;
 }
 
 .our-brand-card:hover .our-brand-monogram-box {
-  border-color: var(--color-accent);
-  background: rgba(249, 125, 1, 0.1);
+  border-color: #F97D01;
+  background: rgba(249, 125, 1, 0.08);
 }
 
 .our-brand-monogram {
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #ffffff;
+  letter-spacing: 0.1em;
+  color: #0A0A0A;
 }
 
 .our-brand-top-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .our-brand-tag {
   font-family: var(--font-heading);
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #777777;
 }
 
 .our-brand-badge {
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
-  padding: 0.15rem 0.55rem;
+  color: #F97D01;
+  padding: 0.15rem 0.5rem;
   border: 1px solid rgba(249, 125, 1, 0.25);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(249, 125, 1, 0.04);
 }
 
 /* Brand Image Stage */
@@ -200,20 +204,24 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
-  background: #ffffff;
+  background: #FFFFFF;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .our-brand-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
   display: block;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .our-brand-card:hover .our-brand-image {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .our-brand-image-sheen {
@@ -221,30 +229,30 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    transparent 65%,
-    rgba(13, 13, 13, 0.85) 100%
+    transparent 70%,
+    rgba(0, 0, 0, 0.03) 100%
   );
   pointer-events: none;
 }
 
 .our-brand-index-indicator {
   position: absolute;
-  bottom: 1rem;
-  right: 1.25rem;
+  bottom: 0.75rem;
+  right: 0.85rem;
   font-family: var(--font-heading);
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
-  color: #ffffff;
-  background: rgba(5, 5, 5, 0.7);
-  backdrop-filter: blur(8px);
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: #0A0A0A;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Brand Content */
+/* Brand Content (Streamlined without attributes and desc) */
 .our-brand-content {
-  padding: 2rem;
+  padding: 1.35rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -253,11 +261,11 @@
 .our-brand-title-row {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 0.75rem;
+  gap: 0.35rem;
+  margin-bottom: 0.65rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .our-brand-title-row {
     flex-direction: row;
     align-items: baseline;
@@ -267,122 +275,216 @@
 
 .our-brand-name {
   font-family: var(--font-heading);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: #0A0A0A;
 }
 
 .our-brand-taglines {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .our-brand-spirit-bangla {
   font-family: var(--font-body);
-  font-size: 0.92rem;
-  color: var(--color-accent);
+  font-size: 0.88rem;
+  color: #F97D01;
   letter-spacing: 0.02em;
 }
 
 .our-brand-spirit-en {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   color: #777777;
   font-style: italic;
 }
 
 .our-brand-headline {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
-  color: #e0e0e0;
+  font-size: 0.95rem;
+  color: #333333;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  margin-bottom: 0.75rem;
-}
-
-.our-brand-desc {
-  color: #999999;
-  font-size: 0.9rem;
-  line-height: 1.65;
-  margin-bottom: 1.75rem;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
   flex-grow: 1;
 }
 
-/* Attributes */
-.our-brand-attributes {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.25rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 2rem;
-}
-
-.our-brand-attr-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.82rem;
-  color: #cccccc;
-}
-
-.attr-dot {
-  width: 5px;
-  height: 5px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-}
-
-.attr-text {
-  font-family: var(--font-heading);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* CTA */
+/* Direct Action Link */
 .our-brand-cta-wrap {
   display: flex;
+  margin-top: auto;
 }
 
 .our-brand-cta {
   width: 100%;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md, 8px);
+  transition: all var(--transition-fast, 0.2s);
 }
 
-/* Marquee Ribbon */
+.our-brand-cta:hover {
+  background: #F97D01;
+  color: #000000;
+}
+
+.btn-arrow {
+  transition: transform 0.2s ease;
+}
+
+.our-brand-cta:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Minimalist House Marquee / Strip */
 .our-brands-marquee-strip {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1.5rem 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  color: #444444;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #888888;
   font-family: var(--font-heading);
-  font-size: 0.82rem;
-  letter-spacing: 0.28em;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   flex-wrap: wrap;
 }
 
 .marquee-item {
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast, 0.2s);
 }
 
 .marquee-item:hover {
-  color: #ffffff;
+  color: #0A0A0A;
 }
 
 .marquee-sep {
-  color: var(--color-accent);
+  color: #F97D01;
   font-size: 0.65rem;
 }
 
-@media (max-width: 640px) {
+/* ==========================================================================
+   Mobile Responsive Adaptations (< 768px)
+   Maintains Minimum 2 Columns in Mobile View
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .our-brands-section {
+    padding: 2.25rem 0 2rem;
+  }
+
+  .our-brands-header {
+    margin-bottom: 1.35rem;
+    gap: 0.75rem;
+  }
+
+  .our-brands-title {
+    font-size: 1.65rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .our-brands-desc {
+    font-size: 0.84rem;
+  }
+
+  .our-brands-meta {
+    display: none;
+  }
+
+  /* 2 Columns on Mobile */
+  .our-brands-grid {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .our-brand-card-top {
+    padding: 0.65rem 0.55rem 0.55rem;
+  }
+
+  .our-brand-monogram-box {
+    width: 32px;
+    height: 32px;
+  }
+
+  .our-brand-monogram {
+    font-size: 0.72rem;
+  }
+
+  .our-brand-tag {
+    display: none;
+  }
+
+  .our-brand-badge {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.35rem;
+  }
+
+  .our-brand-image-stage {
+    aspect-ratio: 16 / 11;
+    padding: 0.5rem;
+  }
+
+  .our-brand-index-indicator {
+    font-size: 0.62rem;
+    bottom: 0.4rem;
+    right: 0.4rem;
+    padding: 0.1rem 0.35rem;
+  }
+
+  .our-brand-content {
+    padding: 0.75rem 0.55rem 0.65rem;
+  }
+
+  .our-brand-title-row {
+    margin-bottom: 0.35rem;
+  }
+
+  .our-brand-name {
+    font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  }
+
+  .our-brand-spirit-bangla {
+    font-size: 0.72rem;
+  }
+
+  .our-brand-spirit-en {
+    font-size: 0.62rem;
+  }
+
+  .our-brand-headline {
+    font-size: 0.68rem;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .our-brand-cta {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+
   .our-brands-marquee-strip {
-    justify-content: center;
-    gap: 1.25rem;
+    gap: 0.85rem;
+    font-size: 0.65rem;
+    padding-top: 1rem;
   }
 }

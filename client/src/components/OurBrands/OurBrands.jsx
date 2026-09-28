@@ -120,17 +120,6 @@ export default function OurBrands() {
                 </div>
 
                 <p className="our-brand-headline">{brand.headline}</p>
-                <p className="our-brand-desc">{brand.description}</p>
-
-                {/* Technical Pillar Chips */}
-                <div className="our-brand-attributes">
-                  {brand.attributes.map((attr, aIdx) => (
-                    <div key={aIdx} className="our-brand-attr-item">
-                      <span className="attr-dot" />
-                      <span className="attr-text">{attr}</span>
-                    </div>
-                  ))}
-                </div>
 
                 {/* Direct Action Link */}
                 <div className="our-brand-cta-wrap">
