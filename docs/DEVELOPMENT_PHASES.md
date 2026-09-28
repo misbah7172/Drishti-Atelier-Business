@@ -5,7 +5,8 @@
 Use this file together with `BUILD_GUIDE.md`.
 
 - `BUILD_GUIDE.md` = complete project requirements and technical rules.
-- `DEVELOPMENT_PHASES.md` = execution order.
+- `DEVELOPMENT_PHASES.md` = full-stack execution order (this file).
+- `BACKEND_DEVELOPMENT.md` = **backend-only** phase-by-phase guide (use this to build the backend separately).
 - Complete **one phase at a time**.
 - Do not start the next phase until the current phase is working and tested.
 - Do not replace existing working functionality unnecessarily.
