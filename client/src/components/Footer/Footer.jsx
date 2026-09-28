@@ -39,7 +39,7 @@ export default function Footer() {
     <footer className="footer-editorial" id="main-footer">
       <div className="container-editorial">
         <div className="footer-editorial-grid">
-          {/* Brand Manifesto Column */}
+          {/* Brand Column */}
           <div className="footer-brand-col">
             <Link to="/" className="footer-brand-wordmark" aria-label="Drishti Atelier">
               <img src="/logo.svg" alt="Drishti Logo" className="footer-brand-emblem" />
@@ -54,63 +54,66 @@ export default function Footer() {
             </p>
             <div className="footer-atelier-location">
               <div className="footer-loc-item">
-                <HiOutlineMapPin size={15} />
-                <span>Atelier: Dhaka & Tokyo</span>
+                <HiOutlineMapPin size={14} />
+                <span>Dhaka &amp; Tokyo</span>
               </div>
               <div className="footer-loc-item">
-                <HiOutlineEnvelope size={15} />
+                <HiOutlineEnvelope size={14} />
                 <span>concierge@drishtiatelier.com</span>
               </div>
             </div>
           </div>
 
-          {/* Shop Column */}
-          <div className="footer-links-col">
-            <h4 className="footer-col-heading">COLLECTIONS</h4>
-            <ul className="footer-nav-list">
-              {shopLinks.map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to} className="footer-nav-link">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Navigation Links Group (Responsive 3-Column on mobile) */}
+          <div className="footer-links-group">
+            {/* Shop Column */}
+            <div className="footer-links-col">
+              <h4 className="footer-col-heading">COLLECTIONS</h4>
+              <ul className="footer-nav-list">
+                {shopLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link to={link.to} className="footer-nav-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Company Column */}
-          <div className="footer-links-col">
-            <h4 className="footer-col-heading">THE HOUSE</h4>
-            <ul className="footer-nav-list">
-              {companyLinks.map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to} className="footer-nav-link">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Company Column */}
+            <div className="footer-links-col">
+              <h4 className="footer-col-heading">THE HOUSE</h4>
+              <ul className="footer-nav-list">
+                {companyLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link to={link.to} className="footer-nav-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Client Service Column */}
-          <div className="footer-links-col">
-            <h4 className="footer-col-heading">SERVICE</h4>
-            <ul className="footer-nav-list">
-              {customerLinks.map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to} className="footer-nav-link">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Client Service Column */}
+            <div className="footer-links-col">
+              <h4 className="footer-col-heading">SERVICE</h4>
+              <ul className="footer-nav-list">
+                {customerLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link to={link.to} className="footer-nav-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Newsletter Column */}
           <div className="footer-newsletter-col">
             <h4 className="footer-col-heading">DISPATCHES</h4>
             <p className="footer-newsletter-sub">
-              Receive private invitations to limited archive releases and architectural updates.
+              Receive private invitations to limited archive releases.
             </p>
             <form className="footer-minimal-form" onSubmit={(e) => e.preventDefault()}>
               <input
@@ -132,10 +135,10 @@ export default function Footer() {
 
             <div className="footer-social-icons">
               <a href="#" className="footer-social-btn" aria-label="Instagram">
-                <FaInstagram size={15} />
+                <FaInstagram size={14} />
               </a>
               <a href="#" className="footer-social-btn" aria-label="X / Twitter">
-                <FaXTwitter size={15} />
+                <FaXTwitter size={14} />
               </a>
             </div>
           </div>

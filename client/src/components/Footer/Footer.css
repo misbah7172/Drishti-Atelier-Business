@@ -1,5 +1,7 @@
 /* ==========================================================================
    Drishti Atelier — Minimal Architectural Footer
+   Desktop: Expansive architectural layout
+   Mobile: Ultra-concise, non-overwhelming, compact grid
    ========================================================================== */
 
 .footer-editorial {
@@ -18,17 +20,19 @@
   margin-bottom: 2.5rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 1024px) {
   .footer-editorial-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1.5fr 3.2fr 1.3fr;
+    gap: 3rem;
+    align-items: start;
   }
 }
 
-@media (min-width: 1024px) {
-  .footer-editorial-grid {
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr;
-    gap: 3rem;
-  }
+/* Links Group */
+.footer-links-group {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
 }
 
 /* Brand Column */
@@ -44,8 +48,8 @@
   gap: 0.85rem;
   text-decoration: none;
   color: #ffffff;
-  margin-bottom: 0.75rem;
-  transition: opacity var(--transition-fast);
+  margin-bottom: 0.25rem;
+  transition: opacity var(--transition-fast, 0.2s);
 }
 
 .footer-brand-wordmark:hover {
@@ -57,7 +61,7 @@
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 10px rgba(249, 125, 1, 0.2));
-  transition: transform var(--transition-base);
+  transition: transform var(--transition-base, 0.3s);
 }
 
 .footer-brand-wordmark:hover .footer-brand-emblem {
@@ -85,22 +89,21 @@
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-accent, #F97D01);
 }
 
 .footer-editorial-desc {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   color: #888888;
-  line-height: 1.7;
+  line-height: 1.65;
   max-width: 320px;
 }
 
 .footer-atelier-location {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.45rem;
 }
 
 .footer-loc-item {
@@ -116,7 +119,7 @@
 .footer-links-col {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.15rem;
 }
 
 .footer-col-heading {
@@ -125,14 +128,16 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #666666;
+  color: #777777;
 }
 
 .footer-nav-list {
   list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.8rem;
 }
 
 .footer-nav-link {
@@ -140,7 +145,7 @@
   font-size: 0.875rem;
   color: #aaaaaa;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast, 0.2s);
 }
 
 .footer-nav-link:hover {
@@ -151,14 +156,14 @@
 .footer-newsletter-col {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.15rem;
 }
 
 .footer-newsletter-sub {
   font-family: var(--font-sans);
   font-size: 0.85rem;
   color: #888888;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .footer-minimal-form {
@@ -167,7 +172,7 @@
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 0.5rem;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast, 0.2s);
 }
 
 .footer-minimal-form:focus-within {
@@ -197,7 +202,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color var(--transition-fast), transform var(--transition-fast);
+  transition: color var(--transition-fast, 0.2s), transform var(--transition-fast, 0.2s);
 }
 
 .footer-submit-arrow:hover {
@@ -209,7 +214,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 
 .footer-social-btn {
@@ -222,7 +227,7 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast, 0.2s);
 }
 
 .footer-social-btn:hover {
@@ -234,12 +239,12 @@
 /* Bottom Bar */
 .footer-editorial-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 2rem;
+  padding-top: 1.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .footer-copyright-text {
@@ -259,7 +264,7 @@
   font-size: 0.78rem;
   color: #666666;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast, 0.2s);
 }
 
 .footer-sub-link:hover {
@@ -271,4 +276,144 @@
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+/* ==========================================================================
+   Mobile Responsive Concise Footer (< 768px)
+   Dramatic height reduction, 3-col inline links, no screen-covering clutter
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .footer-editorial {
+    padding-top: 1.75rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .footer-editorial-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .footer-brand-col {
+    gap: 0.4rem;
+  }
+
+  .footer-brand-wordmark {
+    margin-bottom: 0;
+    gap: 0.6rem;
+  }
+
+  .footer-brand-emblem {
+    height: 22px;
+  }
+
+  .footer-brand-title {
+    font-size: 1.15rem;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+  }
+
+  .footer-brand-sub {
+    font-size: 0.58rem;
+  }
+
+  .footer-editorial-desc {
+    font-size: 0.76rem;
+    line-height: 1.45;
+    max-width: 100%;
+    color: #777777;
+    margin-bottom: 0.2rem;
+  }
+
+  .footer-atelier-location {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.1rem;
+  }
+
+  .footer-loc-item {
+    font-size: 0.72rem;
+  }
+
+  /* Concise 3-Column Parallel Links on Mobile */
+  .footer-links-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-links-col {
+    gap: 0.35rem;
+  }
+
+  .footer-col-heading {
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: #888888;
+  }
+
+  .footer-nav-list {
+    gap: 0.3rem;
+  }
+
+  .footer-nav-link {
+    font-size: 0.74rem;
+    color: #999999;
+  }
+
+  /* Concise Newsletter on Mobile */
+  .footer-newsletter-col {
+    gap: 0.45rem;
+  }
+
+  .footer-newsletter-sub {
+    display: none; /* Keep mobile newsletter ultra-concise */
+  }
+
+  .footer-minimal-form {
+    padding-bottom: 0.35rem;
+  }
+
+  .footer-minimal-input {
+    font-size: 0.78rem;
+  }
+
+  .footer-social-icons {
+    margin-top: 0.2rem;
+    gap: 0.5rem;
+  }
+
+  .footer-social-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Concise Bottom Bar on Mobile */
+  .footer-editorial-bottom {
+    padding-top: 0.85rem;
+    gap: 0.6rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-copyright-text {
+    font-size: 0.68rem;
+    color: #555555;
+  }
+
+  .footer-bottom-links {
+    gap: 1rem;
+    font-size: 0.68rem;
+  }
+
+  .footer-sub-link {
+    font-size: 0.68rem;
+  }
 }

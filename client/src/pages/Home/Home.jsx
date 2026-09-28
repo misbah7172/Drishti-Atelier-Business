@@ -3,7 +3,6 @@ import TopCategories from '../../components/TopCategories/TopCategories';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import BestSellingProducts from '../../components/BestSellingProducts/BestSellingProducts';
-import BrandStory from '../../components/BrandStory/BrandStory';
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
 import FinalCTA from '../../components/FinalCTA/FinalCTA';
 import OurBrands from '../../components/OurBrands/OurBrands';
@@ -26,9 +25,6 @@ export default function Home() {
 
       {/* 05. Best Selling Products Section */}
       <BestSellingProducts />
-
-      {/* 07. Editorial Benefit Statements & Brand Manifesto */}
-      <BrandStory />
 
       {/* 08. High-Fashion Social Proof */}
       <EditorialTestimonials />
