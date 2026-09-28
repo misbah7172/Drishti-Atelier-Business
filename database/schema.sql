@@ -16,6 +16,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ============================================
 DROP TABLE IF EXISTS order_status_history CASCADE;
 DROP TABLE IF EXISTS coupon_usages CASCADE;
+DROP TABLE IF EXISTS coupons CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS payments CASCADE;

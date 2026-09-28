@@ -2,57 +2,32 @@ const jwt = require('jsonwebtoken');
 const { query } = require('../db/pool');
 
 /**
- * Authentication middleware
- * Verifies JWT token from Authorization header and attaches user to req
+ * Middleware to authenticate requests using JWT
  */
-async function auth(req, res, next) {
+async function authenticateToken(req, res, next) {
   try {
-    // Extract token from Authorization header
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        status: 'error',
-        message: 'Access denied. No token provided.',
-      });
-    }
-
-    const token = authHeader.split(' ')[1];
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
 
     if (!token) {
       return res.status(401).json({
-        status: 'error',
-        message: 'Access denied. No token provided.',
+        status: 'fail',
+        message: 'Access denied. No authentication token provided.',
       });
     }
 
-    // Verify token
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      if (err.name === 'TokenExpiredError') {
-        return res.status(401).json({
-          status: 'error',
-          message: 'Token has expired. Please login again.',
-        });
-      }
-      return res.status(401).json({
-        status: 'error',
-        message: 'Invalid token.',
-      });
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'vision-eye-care-dev-secret-key-2026');
 
-    // Fetch user from database to ensure they still exist and are active
+    // Fetch latest user info from DB
     const result = await query(
-      'SELECT id, name, email, phone, role, is_active, created_at, updated_at FROM users WHERE id = $1',
+      'SELECT id, name AS full_name, name, email, phone, role, is_active, created_at FROM users WHERE id = $1',
       [decoded.id]
     );
 
     if (result.rows.length === 0) {
       return res.status(401).json({
-        status: 'error',
-        message: 'User no longer exists.',
+        status: 'fail',
+        message: 'The user belonging to this token no longer exists.',
       });
     }
 
@@ -60,21 +35,65 @@ async function auth(req, res, next) {
 
     if (!user.is_active) {
       return res.status(403).json({
-        status: 'error',
-        message: 'Your account has been disabled. Contact support.',
+        status: 'fail',
+        message: 'Your account has been deactivated. Please contact support.',
       });
     }
 
-    // Attach user to request
     req.user = user;
     next();
   } catch (error) {
-    console.error('Auth middleware error:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Invalid token signature.',
+      });
+    }
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Your session has expired. Please log in again.',
+      });
+    }
     return res.status(500).json({
       status: 'error',
-      message: 'Authentication error.',
+      message: 'Failed to authenticate token.',
     });
   }
 }
 
-module.exports = auth;
+/**
+ * Optional authentication: attaches req.user if token present, but doesn't block unauthenticated requests
+ */
+async function optionalAuth(req, res, next) {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+
+    if (!token) {
+      req.user = null;
+      return next();
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'vision-eye-care-dev-secret-key-2026');
+    const result = await query(
+      'SELECT id, name AS full_name, name, email, phone, role, is_active, created_at FROM users WHERE id = $1',
+      [decoded.id]
+    );
+
+    if (result.rows.length > 0 && result.rows[0].is_active) {
+      req.user = result.rows[0];
+    } else {
+      req.user = null;
+    }
+    next();
+  } catch (error) {
+    req.user = null;
+    next();
+  }
+}
+
+module.exports = {
+  authenticateToken,
+  optionalAuth,
+};

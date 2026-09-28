@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, getMe, logout } = require('../controllers/authController');
-const auth = require('../middleware/auth');
+const authController = require('../controllers/authController');
+const { authenticateToken } = require('../middleware/auth');
 
-// Public routes
-router.post('/register', register);
-router.post('/login', login);
+// Public auth routes
+router.post('/register', authController.register);
+router.post('/login', authController.login);
+router.post('/logout', authController.logout);
 
-// Protected routes (require JWT)
-router.get('/me', auth, getMe);
-router.post('/logout', auth, logout);
+// Protected route
+router.get('/me', authenticateToken, authController.getMe);
 
 module.exports = router;

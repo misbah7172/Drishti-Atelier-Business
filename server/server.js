@@ -10,7 +10,7 @@ async function startServer() {
     await testConnection();
 
     app.listen(PORT, () => {
-      console.log(`\n🚀 Drishti API Server`);
+      console.log(`\n🚀 Vision Eye Care API Server`);
       console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`   Port: ${PORT}`);
       console.log(`   URL: http://localhost:${PORT}\n`);

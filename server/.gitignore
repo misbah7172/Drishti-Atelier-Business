@@ -1,0 +1,11 @@
+# ============================================
+# Drishti Server — Git Ignore Rules
+# ============================================
+.env
+.env.*
+*.env
+node_modules/
+uploads/*
+!uploads/.gitkeep
+logs/
+*.log

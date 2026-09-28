@@ -1,17 +1,13 @@
 {
-  "name": "Drishti-Atelier-server",
+  "name": "vision-eye-care-server",
   "version": "1.0.0",
-  "description": "Drishti — E-commerce Backend API",
+  "description": "Vision Eye Care — E-commerce Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": [
-    "eyewear",
-    "ecommerce",
-    "api"
-  ],
+  "keywords": ["eyewear", "ecommerce", "api"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",

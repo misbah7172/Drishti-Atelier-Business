@@ -1,223 +1,171 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { query } = require('../db/pool');
-const generateToken = require('../utils/generateToken');
 
 /**
- * @desc    Register a new customer account
- * @route   POST /api/auth/register
- * @access  Public
+ * Generate JWT Token helper
  */
-async function register(req, res) {
+function generateToken(user) {
+  const secret = process.env.JWT_SECRET || 'vision-eye-care-dev-secret-key-2026';
+  const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  return jwt.sign(
+    { id: user.id, email: user.email, role: user.role },
+    secret,
+    { expiresIn }
+  );
+}
+
+/**
+ * Register a new user
+ * POST /api/auth/register
+ */
+async function register(req, res, next) {
   try {
-    const { name, email, phone, password } = req.body;
+    const { full_name, email, password, phone } = req.body;
 
-    // ── Validate required fields ──
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Name, email, and password are required.',
-      });
+    // Validation
+    if (!full_name || !full_name.trim()) {
+      return res.status(400).json({ status: 'fail', message: 'Full name is required.' });
     }
-
-    // Validate name length
-    if (name.trim().length < 2 || name.trim().length > 100) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Name must be between 2 and 100 characters.',
-      });
+    if (!email || !email.trim()) {
+      return res.status(400).json({ status: 'fail', message: 'Email address is required.' });
     }
-
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Please provide a valid email address.',
-      });
+    if (!emailRegex.test(email.trim())) {
+      return res.status(400).json({ status: 'fail', message: 'Please provide a valid email address.' });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ status: 'fail', message: 'Password must be at least 6 characters long.' });
     }
 
-    // Validate password strength
-    if (password.length < 6) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Password must be at least 6 characters long.',
-      });
-    }
+    const cleanEmail = email.trim().toLowerCase();
 
-    // ── Check for duplicate email ──
+    // Check existing email
     const existingUser = await query(
-      'SELECT id FROM users WHERE email = $1',
-      [email.toLowerCase().trim()]
+      'SELECT id FROM users WHERE LOWER(email) = $1',
+      [cleanEmail]
     );
 
     if (existingUser.rows.length > 0) {
-      return res.status(409).json({
-        status: 'error',
-        message: 'An account with this email already exists.',
+      return res.status(400).json({
+        status: 'fail',
+        message: 'An account with this email address already exists.',
       });
     }
 
-    // ── Hash password ──
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    // Hash password
+    const saltRounds = 10;
+    const password_hash = await bcrypt.hash(password, saltRounds);
 
-    // ── Insert user ──
-    const result = await query(
-      `INSERT INTO users (name, email, phone, password_hash, role)
-       VALUES ($1, $2, $3, $4, 'customer')
-       RETURNING id, name, email, phone, role, is_active, created_at`,
-      [name.trim(), email.toLowerCase().trim(), phone?.trim() || null, passwordHash]
+    // Insert user into database
+    const newUserResult = await query(
+      `INSERT INTO users (name, email, password_hash, phone, role, is_active)
+       VALUES ($1, $2, $3, $4, 'customer', true)
+       RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at`,
+      [full_name.trim(), cleanEmail, password_hash, phone ? phone.trim() : null]
     );
 
-    const user = result.rows[0];
-
-    // ── Generate JWT ──
-    const token = generateToken(user);
+    const newUser = newUserResult.rows[0];
+    const token = generateToken(newUser);
 
     res.status(201).json({
       status: 'success',
-      data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          is_active: user.is_active,
-          created_at: user.created_at,
-        },
-        token,
-      },
+      message: 'Account created successfully!',
+      token,
+      user: newUser,
     });
   } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Registration failed. Please try again.',
-    });
+    next(error);
   }
 }
 
 /**
- * @desc    Login user and return JWT
- * @route   POST /api/auth/login
- * @access  Public
+ * User login
+ * POST /api/auth/login
  */
-async function login(req, res) {
+async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
-    // ── Validate required fields ──
     if (!email || !password) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Email and password are required.',
+        status: 'fail',
+        message: 'Please provide email and password.',
       });
     }
 
-    // ── Find user by email ──
-    const result = await query(
-      'SELECT id, name, email, phone, password_hash, role, is_active, created_at FROM users WHERE email = $1',
-      [email.toLowerCase().trim()]
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Find user in database
+    const userResult = await query(
+      `SELECT id, name AS full_name, name, email, password_hash, phone, role, is_active, created_at 
+       FROM users WHERE LOWER(email) = $1`,
+      [cleanEmail]
     );
 
-    if (result.rows.length === 0) {
+    if (userResult.rows.length === 0) {
       return res.status(401).json({
-        status: 'error',
+        status: 'fail',
         message: 'Invalid email or password.',
       });
     }
 
-    const user = result.rows[0];
+    const user = userResult.rows[0];
 
-    // ── Check if account is active ──
     if (!user.is_active) {
       return res.status(403).json({
-        status: 'error',
-        message: 'Your account has been disabled. Contact support.',
+        status: 'fail',
+        message: 'Your account has been deactivated. Please contact support.',
       });
     }
 
-    // ── Compare password ──
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-
-    if (!isMatch) {
+    // Compare password
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    if (!isPasswordValid) {
       return res.status(401).json({
-        status: 'error',
+        status: 'fail',
         message: 'Invalid email or password.',
       });
     }
 
-    // ── Generate JWT ──
+    // Update last login timestamp
+    await query(
+      'UPDATE users SET updated_at = NOW() WHERE id = $1',
+      [user.id]
+    );
+
+    // Remove password_hash from response object
+    delete user.password_hash;
+
     const token = generateToken(user);
 
     res.status(200).json({
       status: 'success',
-      data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          is_active: user.is_active,
-          created_at: user.created_at,
-        },
-        token,
-      },
+      message: 'Logged in successfully!',
+      token,
+      user,
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Login failed. Please try again.',
-    });
+    next(error);
   }
 }
 
 /**
- * @desc    Get current authenticated user profile
- * @route   GET /api/auth/me
- * @access  Protected (token required)
+ * Get current authenticated user profile
+ * GET /api/auth/me
  */
 async function getMe(req, res) {
-  try {
-    // req.user is set by auth middleware
-    const result = await query(
-      'SELECT id, name, email, phone, role, is_active, created_at, updated_at FROM users WHERE id = $1',
-      [req.user.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'User not found.',
-      });
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user: result.rows[0],
-      },
-    });
-  } catch (error) {
-    console.error('GetMe error:', error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Failed to fetch user profile.',
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    user: req.user,
+  });
 }
 
 /**
- * @desc    Logout user (client-side token removal)
- * @route   POST /api/auth/logout
- * @access  Protected (token required)
+ * User logout
+ * POST /api/auth/logout
  */
 async function logout(req, res) {
-  // JWT is stateless — logout is handled client-side by removing the token.
-  // This endpoint exists for consistency and can be extended with token blacklisting later.
   res.status(200).json({
     status: 'success',
     message: 'Logged out successfully.',
