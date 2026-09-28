@@ -26,6 +26,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const navigate = useNavigate();
   const { toggleTheme, isDark } = useTheme();
 
@@ -55,14 +56,21 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-
-
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
       setSearchOpen(false);
+    }
+  };
+
+  const handleMobileSearch = (e) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(mobileSearchQuery.trim())}`);
+      setMobileSearchQuery('');
+      setMobileOpen(false);
     }
   };
 
@@ -104,10 +112,10 @@ export default function Navbar() {
 
         {/* Right: Actions */}
         <div className="navbar-actions">
-          {/* Search Toggle */}
+          {/* Search Toggle (Desktop Only) */}
           <button
             type="button"
-            className="navbar-action-btn"
+            className="navbar-action-btn desktop-only"
             id="search-toggle"
             onClick={() => setSearchOpen(!searchOpen)}
             aria-label="Toggle search bar"
@@ -116,10 +124,10 @@ export default function Navbar() {
             <HiOutlineMagnifyingGlass size={19} />
           </button>
 
-          {/* Wishlist */}
+          {/* Wishlist (Desktop Only) */}
           <Link
             to="/wishlist"
-            className="navbar-action-btn"
+            className="navbar-action-btn desktop-only"
             id="wishlist-link"
             aria-label="Wishlist"
           >
@@ -129,10 +137,10 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* Cart */}
+          {/* Cart (Desktop Only) */}
           <Link
             to="/cart"
-            className="navbar-action-btn"
+            className="navbar-action-btn desktop-only"
             id="cart-link"
             aria-label="Shopping Cart"
           >
@@ -144,7 +152,7 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* Account */}
+          {/* Account (Desktop Only) */}
           <Link
             to="/login"
             className="navbar-action-btn desktop-only"
@@ -154,10 +162,10 @@ export default function Navbar() {
             <HiOutlineUser size={19} />
           </Link>
 
-          {/* Theme Toggle Button */}
+          {/* Theme Toggle Button (Desktop Only) */}
           <button
             type="button"
-            className="navbar-action-btn theme-toggle-btn"
+            className="navbar-action-btn theme-toggle-btn desktop-only"
             id="theme-toggle"
             onClick={toggleTheme}
             aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
@@ -170,7 +178,7 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Mobile Hamburger Toggle (Mobile/Tablet Only) */}
           <button
             type="button"
             className="navbar-action-btn mobile-menu-btn"
@@ -221,14 +229,40 @@ export default function Navbar() {
         aria-hidden={!mobileOpen}
       >
         <div className="mobile-drawer-content container-editorial">
-          <span className="mobile-drawer-eyebrow">Drishti Atelier — Collection 2026</span>
+          {/* Top Search & Eyebrow Block */}
+          <div className="mobile-drawer-top">
+            <span className="mobile-drawer-eyebrow">Drishti Atelier — Collection 2026</span>
+            <form onSubmit={handleMobileSearch} className="mobile-search-bar">
+              <HiOutlineMagnifyingGlass size={18} className="mobile-search-icon" />
+              <input
+                type="text"
+                placeholder="Search titanium, acetate, optical..."
+                value={mobileSearchQuery}
+                onChange={(e) => setMobileSearchQuery(e.target.value)}
+                className="mobile-search-input"
+                aria-label="Search catalog"
+              />
+              {mobileSearchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setMobileSearchQuery('')}
+                  className="mobile-search-clear"
+                  aria-label="Clear search query"
+                >
+                  <HiOutlineXMark size={16} />
+                </button>
+              )}
+            </form>
+          </div>
+
+          {/* Navigation Links */}
           <nav className="mobile-nav-links">
             {navLinks.map((link, idx) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className="mobile-editorial-link"
-                style={{ '--delay': `${idx * 0.06 + 0.1}s` }}
+                style={{ '--delay': `${idx * 0.05 + 0.06}s` }}
                 end={link.end}
                 onClick={closeMobile}
               >
@@ -239,16 +273,16 @@ export default function Navbar() {
             <NavLink
               to="/about"
               className="mobile-editorial-link"
-              style={{ '--delay': '0.4s' }}
+              style={{ '--delay': '0.32s' }}
               onClick={closeMobile}
             >
               <span className="mobile-link-num">05</span>
-              <span className="mobile-link-title">About the House</span>
+              <span className="mobile-link-title">The Craft</span>
             </NavLink>
             <NavLink
               to="/contact"
               className="mobile-editorial-link"
-              style={{ '--delay': '0.46s' }}
+              style={{ '--delay': '0.38s' }}
               onClick={closeMobile}
             >
               <span className="mobile-link-num">06</span>
@@ -256,6 +290,65 @@ export default function Navbar() {
             </NavLink>
           </nav>
 
+          {/* Quick Commerce Action Tiles: Cart, Wishlist, Account */}
+          <div className="mobile-quick-actions-grid">
+            <Link
+              to="/cart"
+              className="mobile-action-card"
+              onClick={closeMobile}
+              id="mobile-cart-link"
+            >
+              <div className="mobile-action-card-icon-wrap">
+                <HiOutlineShoppingBag size={20} />
+                {cartCount > 0 && (
+                  <span className="mobile-badge-pill">{cartCount}</span>
+                )}
+              </div>
+              <div className="mobile-action-card-text">
+                <span className="mobile-action-card-title">Bag</span>
+                <span className="mobile-action-card-sub">
+                  {cartCount > 0 ? `${cartCount} items` : '0 items'}
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              to="/wishlist"
+              className="mobile-action-card"
+              onClick={closeMobile}
+              id="mobile-wishlist-link"
+            >
+              <div className="mobile-action-card-icon-wrap">
+                <HiOutlineHeart size={20} />
+                {wishlistCount > 0 && (
+                  <span className="mobile-badge-pill">{wishlistCount}</span>
+                )}
+              </div>
+              <div className="mobile-action-card-text">
+                <span className="mobile-action-card-title">Saved</span>
+                <span className="mobile-action-card-sub">
+                  {wishlistCount > 0 ? `${wishlistCount} saved` : 'Wishlist'}
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              to="/login"
+              className="mobile-action-card"
+              onClick={closeMobile}
+              id="mobile-account-link"
+            >
+              <div className="mobile-action-card-icon-wrap">
+                <HiOutlineUser size={20} />
+              </div>
+              <div className="mobile-action-card-text">
+                <span className="mobile-action-card-title">Account</span>
+                <span className="mobile-action-card-sub">Sign In</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Drawer Footer: Atmosphere / Theme & Copyright */}
           <div className="mobile-drawer-footer">
             <div className="mobile-theme-row">
               <span className="mobile-theme-label">Atmosphere</span>
@@ -279,15 +372,6 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="mobile-footer-actions">
-              <Link to="/login" className="mobile-footer-link" onClick={closeMobile}>
-                Account Login
-              </Link>
-              <span className="mobile-footer-dot">•</span>
-              <Link to="/wishlist" className="mobile-footer-link" onClick={closeMobile}>
-                Saved Items
-              </Link>
-            </div>
             <p className="mobile-footer-copyright">
               Crafted with titanium, sapphire crystal & architectural intent.
             </p>
