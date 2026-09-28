@@ -203,6 +203,7 @@ export default function HeroSlidingBanner() {
 
                   <h1 className="editorial-hero-title hero-slide-title">
                     <span className="slide-title-main">{slide.title}</span>
+                    <span className="slide-title-sep">—</span>
                     <span className="slide-title-accent">{slide.titleHighlight}</span>
                   </h1>
 
@@ -261,31 +262,29 @@ export default function HeroSlidingBanner() {
         })}
       </div>
 
-      {/* Slider Controls Bar */}
-      <div className="container-editorial hero-slider-controls-wrapper">
-        {/* Navigation Arrows */}
-        <div className="hero-slider-arrows">
-          <button
-            type="button"
-            onClick={prevSlide}
-            className="hero-slider-arrow-btn prev"
-            aria-label="Previous slide"
-            id="hero-slider-prev"
-          >
-            <HiOutlineChevronLeft size={18} />
-          </button>
-          <button
-            type="button"
-            onClick={nextSlide}
-            className="hero-slider-arrow-btn next"
-            aria-label="Next slide"
-            id="hero-slider-next"
-          >
-            <HiOutlineChevronRight size={18} />
-          </button>
-        </div>
+      {/* Floating Side Arrow Buttons */}
+      <button
+        type="button"
+        onClick={prevSlide}
+        className="hero-slider-arrow-btn prev"
+        aria-label="Previous slide"
+        id="hero-slider-prev"
+      >
+        <HiOutlineChevronLeft size={20} />
+      </button>
 
-        {/* Dynamic Pagination Bars */}
+      <button
+        type="button"
+        onClick={nextSlide}
+        className="hero-slider-arrow-btn next"
+        aria-label="Next slide"
+        id="hero-slider-next"
+      >
+        <HiOutlineChevronRight size={20} />
+      </button>
+
+      {/* Bottom Floating Pagination & Counter Bar */}
+      <div className="hero-slider-controls-wrapper">
         <div className="hero-slider-pagination" role="tablist">
           {SLIDES.map((slide, idx) => (
             <button
@@ -311,25 +310,10 @@ export default function HeroSlidingBanner() {
           ))}
         </div>
 
-        {/* Counter */}
         <div className="hero-slider-counter">
           <span className="counter-current">{`0${currentSlide + 1}`}</span>
           <span className="counter-sep">/</span>
           <span className="counter-total">{`0${SLIDES.length}`}</span>
-        </div>
-      </div>
-
-      {/* Minimalist Bottom Scroll Cue */}
-      <div
-        className="hero-slider-scroll-cue"
-        onClick={() => scrollToTarget('#top-categories')}
-        role="button"
-        tabIndex={0}
-        aria-label="Scroll to top categories"
-      >
-        <span className="scroll-cue-label">Explore Taxonomy</span>
-        <div className="scroll-cue-line">
-          <div className="scroll-cue-pulse" />
         </div>
       </div>
     </section>
