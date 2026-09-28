@@ -193,8 +193,9 @@ export default function EyeglassesShapeGuide() {
                     className="shape-card-cta"
                     id={`btn-shape-${item.id}`}
                   >
-                    <span>Browse {item.name} Frames</span>
-                    <HiArrowRight size={14} className="cta-arrow" />
+                    <span className="shape-cta-full">Browse {item.name}</span>
+                    <span className="shape-cta-short">Browse</span>
+                    <HiArrowRight size={13} className="cta-arrow" />
                   </Link>
                 </div>
               </article>
