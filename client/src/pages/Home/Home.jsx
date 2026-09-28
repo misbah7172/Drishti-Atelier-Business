@@ -2,7 +2,6 @@ import HeroSlidingBanner from '../../components/HeroSlidingBanner/HeroSlidingBan
 import TopCategories from '../../components/TopCategories/TopCategories';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
-import FrameExplorer from '../../components/FrameExplorer/FrameExplorer';
 import EditorialCollections from '../../components/EditorialCollections/EditorialCollections';
 import BrandStory from '../../components/BrandStory/BrandStory';
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
@@ -25,10 +24,7 @@ export default function Home() {
       {/* 04. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
 
-      {/* 05. Studio White Interactive Angle Explorer */}
-      <FrameExplorer />
-
-      {/* 06. Curated Architectural Collections & Cards */}
+      {/* 05. Curated Architectural Collections & Cards */}
       <EditorialCollections />
 
       {/* 07. Editorial Benefit Statements & Brand Manifesto */}

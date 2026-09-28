@@ -18,8 +18,7 @@ export default function FullscreenMoments() {
         <div className="moment-text-block">
           <span className="editorial-eyebrow">Visual Manifesto</span>
           <h2 className="editorial-section-title moment-title">
-            BUILT FOR <br />
-            EVERY ANGLE. <br />
+            <span className="moment-title-main">BUILT FOR EVERY ANGLE.</span>{' '}
             <span className="moment-accent-text">LIGHT. FORM. IDENTITY.</span>
           </h2>
           <p className="editorial-body moment-body">

@@ -573,87 +573,13 @@ div.card,
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Hero Sliding Banner in Light Mode */
-[data-theme="light"] .hero-slider-section {
+/* Hero Banner in Light Mode */
+[data-theme="light"] .hero-banner-section {
   background-color: #FFFFFF;
-  color: #0A0A0A;
 }
 
-[data-theme="light"] .hero-slider-backdrop {
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(249, 125, 1, 0.02) 0%,
-    rgba(255, 255, 255, 0.96) 65%,
-    #FFFFFF 100%
-  );
-}
-
-[data-theme="light"] .slide-title-main {
-  color: #0A0A0A;
-}
-
-[data-theme="light"] .slide-title-accent {
-  color: #666666;
-}
-
-[data-theme="light"] .hero-slide-desc {
-  color: #4A4A4A;
-}
-
-[data-theme="light"] .hero-slide-spec-pill {
-  background: #F5F5F5;
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #333333;
-}
-
-[data-theme="light"] .hero-slide-image-card {
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08),
-              0 0 1px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .hero-slider-controls-wrapper {
-  border-top-color: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .hero-slider-arrow-btn {
-  background: #F5F5F5;
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #222222;
-}
-
-[data-theme="light"] .hero-slider-arrow-btn:hover {
-  background: rgba(249, 125, 1, 0.12);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-[data-theme="light"] .hero-slider-dot {
-  color: #888888;
-}
-
-[data-theme="light"] .hero-slider-dot.active {
-  color: #0A0A0A;
-}
-
-[data-theme="light"] .hero-slider-dot .dot-track {
-  background: rgba(0, 0, 0, 0.12);
-}
-
-[data-theme="light"] .counter-current {
-  color: #0A0A0A;
-}
-
-[data-theme="light"] .counter-total {
-  color: #777777;
-}
-
-[data-theme="light"] .hero-slider-scroll-cue .scroll-cue-label {
-  color: #777777;
-}
-
-[data-theme="light"] .hero-slider-scroll-cue .scroll-cue-line {
-  background: rgba(0, 0, 0, 0.12);
+[data-theme="light"] .hero-banner-frame {
+  background-color: #F8F8F8;
 }
 
 /* Top Categories in Light Mode */
