@@ -560,66 +560,6 @@
   line-height: 1.4;
 }
 
-/* ==========================================================================
-   Theme Switcher & Light Theme Navbar Adaptations
-   ========================================================================== */
-
-/* Theme Toggle Button */
-.theme-toggle-btn {
-  color: var(--color-accent);
-}
-
-.theme-toggle-btn:hover {
-  color: var(--color-accent);
-  background-color: var(--color-accent-light);
-  transform: rotate(18deg) scale(1.08);
-}
-
-.theme-toggle-icon {
-  transition: transform var(--transition-base);
-}
-
-/* Mobile Theme Switcher Row */
-.mobile-theme-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 1rem;
-}
-
-.mobile-theme-label {
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #888888;
-}
-
-.mobile-theme-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 1rem;
-  background: rgba(249, 125, 1, 0.1);
-  border: 1px solid rgba(249, 125, 1, 0.35);
-  border-radius: var(--radius-full);
-  color: var(--color-accent);
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.mobile-theme-toggle-btn:hover {
-  background: var(--color-accent);
-  color: #000000;
-}
-
 /* Light Theme Navbar */
 [data-theme="light"] .navbar-editorial {
   color: #050505;
@@ -653,14 +593,6 @@
   background-color: rgba(0, 0, 0, 0.06);
 }
 
-[data-theme="light"] .theme-toggle-btn {
-  color: var(--color-accent);
-}
-
-[data-theme="light"] .theme-toggle-btn:hover {
-  background-color: rgba(249, 125, 1, 0.12);
-  color: var(--color-accent);
-}
 
 [data-theme="light"] .navbar-search-overlay {
   background-color: rgba(255, 255, 255, 0.96);
@@ -748,13 +680,6 @@
   border-top-color: rgba(0, 0, 0, 0.08);
 }
 
-[data-theme="light"] .mobile-theme-row {
-  border-bottom-color: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .mobile-theme-label {
-  color: #666666;
-}
 
 [data-theme="light"] .mobile-footer-copyright {
   color: #777777;
