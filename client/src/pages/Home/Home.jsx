@@ -2,7 +2,7 @@ import HeroSlidingBanner from '../../components/HeroSlidingBanner/HeroSlidingBan
 import TopCategories from '../../components/TopCategories/TopCategories';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
-import EditorialCollections from '../../components/EditorialCollections/EditorialCollections';
+import BestSellingProducts from '../../components/BestSellingProducts/BestSellingProducts';
 import BrandStory from '../../components/BrandStory/BrandStory';
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
 import FinalCTA from '../../components/FinalCTA/FinalCTA';
@@ -24,8 +24,8 @@ export default function Home() {
       {/* 04. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
 
-      {/* 05. Curated Architectural Collections & Cards */}
-      <EditorialCollections />
+      {/* 05. Best Selling Products Section */}
+      <BestSellingProducts />
 
       {/* 07. Editorial Benefit Statements & Brand Manifesto */}
       <BrandStory />
