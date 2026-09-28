@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Drishti Atelier — Pure 16:9 Hero Banner
-   Strict 16:9 aspect ratio, seamless on all screen sizes (mobile, tablet, desktop)
+   Drishti Atelier — Hero Banner (1500x500px / 3:1 Ratio)
+   Strict 3:1 aspect ratio (1500x500px max), fully responsive across all screens
    ========================================================================== */
 
 .hero-banner-section {
   position: relative;
   width: 100%;
-  background-color: #000000;
+  background-color: #FFFFFF;
   padding-top: 80px; /* Accounts for fixed desktop navbar */
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@
 
 .hero-banner-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 1500px;
   position: relative;
   margin-inline: auto;
 }
@@ -24,8 +24,8 @@
 .hero-banner-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: #050505;
+  aspect-ratio: 3 / 1;
+  background-color: #F8F8F8;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@
 .hero-banner-img {
   width: 100%;
   height: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 1;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -50,9 +50,9 @@
 
 /* Light Theme */
 [data-theme="light"] .hero-banner-section {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
 }
 
 [data-theme="light"] .hero-banner-frame {
-  background-color: #f8f8f8;
+  background-color: #F8F8F8;
 }

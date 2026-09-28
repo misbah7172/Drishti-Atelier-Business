@@ -9,6 +9,8 @@ export default function HeroSlidingBanner() {
             src="/images/hero-banner.png"
             alt="Drishti Atelier Eyewear Collection 2026 Banner"
             className="hero-banner-img"
+            width="1500"
+            height="500"
             loading="eager"
             fetchPriority="high"
           />
