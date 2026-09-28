@@ -46,9 +46,9 @@
   --font-heading: 'Oswald', 'Google Sans', sans-serif;
   --font-brand: 'Oswald', 'Google Sans', sans-serif;
 
-  /* Spacing Scale */
-  --spacing-section: 6.5rem;
-  --spacing-section-lg: 9rem;
+  /* Spacing Scale (Halved for refined editorial density) */
+  --spacing-section: 3.25rem;
+  --spacing-section-lg: 4.5rem;
 
   /* Border Radius */
   --radius-sm: 0.25rem;
