@@ -29,6 +29,12 @@ import Account from './pages/Account/Account';
 import Cart from './pages/Cart/Cart';
 import Wishlist from './pages/Wishlist/Wishlist';
 
+// Checkout & Order Pages (Phase 6)
+import Checkout from './pages/Checkout/Checkout';
+import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
+import OrderHistory from './pages/Orders/OrderHistory';
+import OrderDetail from './pages/Orders/OrderDetail';
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -82,13 +88,13 @@ export default function App() {
               <Route path="cart" element={<Cart />} />
               <Route path="wishlist" element={<Wishlist />} />
 
-              {/* Protected Customer Routes (Phase 3 / 6 / 7) */}
+              {/* Protected Customer Routes (Phase 6 / 7) */}
               <Route element={<ProtectedRoute />}>
-                <Route path="checkout" element={<PlaceholderPage title="Checkout" phase={6} />} />
-                <Route path="order-success/:id" element={<PlaceholderPage title="Order Confirmation" phase={6} />} />
+                <Route path="checkout" element={<Checkout />} />
+                <Route path="order-success/:id" element={<OrderSuccess />} />
                 <Route path="account" element={<Account />} />
-                <Route path="account/orders" element={<PlaceholderPage title="Order History" phase={7} />} />
-                <Route path="account/orders/:id" element={<PlaceholderPage title="Order Details" phase={7} />} />
+                <Route path="account/orders" element={<OrderHistory />} />
+                <Route path="account/orders/:id" element={<OrderDetail />} />
               </Route>
 
               {/* Protected Admin Routes (Phase 3 / 8 / 9) */}
