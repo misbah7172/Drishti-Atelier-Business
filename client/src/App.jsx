@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 
 // Components
 import CinematicGlassesIntro from './components/CinematicGlassesIntro';
@@ -23,10 +25,16 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Account from './pages/Account/Account';
 
+// Cart & Wishlist Pages (Phase 5)
+import Cart from './pages/Cart/Cart';
+import Wishlist from './pages/Wishlist/Wishlist';
+
 export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <CartProvider>
+        <WishlistProvider>
         <BrowserRouter>
           <CinematicGlassesIntro />
           <Toaster
@@ -70,9 +78,9 @@ export default function App() {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
 
-              {/* Public / Semi-Public Customer Routes */}
-              <Route path="cart" element={<PlaceholderPage title="Shopping Cart" phase={5} />} />
-              <Route path="wishlist" element={<PlaceholderPage title="Wishlist" phase={5} />} />
+              {/* Cart & Wishlist (Phase 5) */}
+              <Route path="cart" element={<Cart />} />
+              <Route path="wishlist" element={<Wishlist />} />
 
               {/* Protected Customer Routes (Phase 3 / 6 / 7) */}
               <Route element={<ProtectedRoute />}>
@@ -102,6 +110,8 @@ export default function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        </WishlistProvider>
+        </CartProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -10,6 +10,8 @@ import {
   HiOutlineArrowRightOnRectangle,
 } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import './Navbar.css';
 
 const navLinks = [
@@ -29,8 +31,8 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { user, isAuthenticated, logout, isAdmin } = useAuth();
-  const cartCount = 0; // Connected to CartContext
-  const wishlistCount = 0; // Connected to WishlistContext
+  const { itemCount: cartCount } = useCart();
+  const { count: wishlistCount } = useWishlist();
 
   // Track window scroll for glassmorphism transition
   useEffect(() => {

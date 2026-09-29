@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiOutlineHeart, HiOutlineShoppingBag, HiCheck } from 'react-icons/hi2';
+import { HiOutlineHeart, HiHeart, HiOutlineShoppingBag, HiCheck } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import './ProductCard.css';
 
 export default function ProductCard({
@@ -18,8 +20,10 @@ export default function ProductCard({
   stock,
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const isLiked = isWishlisted(id);
 
   // Build link — prefer slug, fallback to ID
   const productLink = `/product/${slug || id}`;
@@ -33,28 +37,35 @@ export default function ProductCard({
   // Out of stock check
   const outOfStock = stock !== undefined && stock <= 0;
 
-  const handleQuickAdd = (e) => {
+  const handleQuickAdd = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (outOfStock) return;
-    setIsAdded(true);
-    toast.success(`Added ${name} to your cart`, {
-      style: {
-        background: '#070707',
-        color: '#ffffff',
-        border: '1px solid #222222',
-        fontFamily: 'var(--font-heading)',
-        letterSpacing: '0.08em',
-      },
-    });
-    setTimeout(() => setIsAdded(false), 2000);
+    const result = await addToCart({ id, name, slug, price, stock, image, brand: '', frame_color: '' });
+    if (result.success) {
+      setIsAdded(true);
+      toast.success(`Added ${name} to your cart`, {
+        style: {
+          background: '#070707',
+          color: '#ffffff',
+          border: '1px solid #222222',
+          fontFamily: 'var(--font-heading)',
+          letterSpacing: '0.08em',
+        },
+      });
+      setTimeout(() => setIsAdded(false), 2000);
+    } else {
+      toast.error(result.message || 'Could not add to cart', {
+        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
+      });
+    }
   };
 
-  const handleWishlist = (e) => {
+  const handleWishlist = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsLiked(!isLiked);
-    if (!isLiked) {
+    const result = await toggleWishlist(id);
+    if (result.success && result.added) {
       toast('Saved to wishlist', {
         icon: '🖤',
         style: {
