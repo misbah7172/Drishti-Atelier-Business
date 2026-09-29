@@ -127,16 +127,6 @@ f:\Drishti_Eye_Care\
 | 1.9 | Setup routing shell | Frontend | React Router with placeholder routes |
 | 1.10 | Vite proxy config | Frontend | Proxy `/api` to backend `localhost:5000` |
 
-### Design System Tokens (Tailwind)
-
-```text
-Colors:
-  black:       #050505    dark-black:  #0B0B0B
-  neon-yellow: #DFFF00    white:       #FFFFFF
-  light-gray:  #F4F4F4    dark-gray:   #171717
-  muted-gray:  #A1A1A1    border-gray: #292929
-```
-
 ### Deliverables Checklist
 
 - [ ] `npm run dev` runs the frontend on `:5173`
@@ -186,10 +176,10 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Schema executes without errors
-- [ ] Seed script populates data
-- [ ] Product ↔ Category joins work
-- [ ] Admin seed account exists
+- [x] Schema executes without errors
+- [x] Seed script populates data
+- [x] Product ↔ Category joins work
+- [x] Admin seed account exists
 
 ---
 
@@ -218,11 +208,11 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Register → Login → Logout flow works
-- [ ] Invalid credentials show error
-- [ ] Duplicate email prevented
-- [ ] Customer cannot access admin APIs
-- [ ] Admin can access admin APIs
+- [x] Register → Login → Logout flow works
+- [x] Invalid credentials show error
+- [x] Duplicate email prevented
+- [x] Customer cannot access admin APIs
+- [x] Admin can access admin APIs
 
 ---
 
