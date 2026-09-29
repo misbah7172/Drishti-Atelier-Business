@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Drishti Atelier — Wishlist Page
+   Strict Color Palette: Black, White, Gray, and #F97D01
+   ========================================================================== */
+
+.wishlist-page {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 8rem;
+}
+
+/* Header */
+.wishlist-header {
+  padding-block: 3rem 2.5rem;
+}
+
+.wishlist-title {
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.wishlist-desc {
+  color: #888;
+  max-width: 560px;
+}
+
+/* Grid */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem 2rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem 2.5rem;
+  }
+}
+
+/* Card */
+.wishlist-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlist-card-image-link {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  background: #111;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.wishlist-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.wishlist-card:hover .wishlist-card-image {
+  transform: scale(1.04);
+}
+
+.card-oos .wishlist-card-image {
+  opacity: 0.4;
+}
+
+.wishlist-oos-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.75);
+  color: #999;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+}
+
+.wishlist-card-info {
+  padding-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.wishlist-card-name {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.wishlist-card-name:hover {
+  color: #F97D01;
+}
+
+.wishlist-card-brand {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.wishlist-card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.wishlist-card-price {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.wishlist-card-compare {
+  font-size: 0.78rem;
+  color: #666;
+  text-decoration: line-through;
+}
+
+/* Actions */
+.wishlist-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.wishlist-move-btn {
+  flex: 1;
+}
+
+.wishlist-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #777;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wishlist-remove-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Footer */
+.wishlist-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+}
+
+/* Empty State */
+.wishlist-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 8rem;
+  max-width: 550px;
+  margin-inline: auto;
+  gap: 1.25rem;
+}
+
+.wishlist-empty-state .empty-icon {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Loading */
+.wishlist-loading {
+  padding-top: 5rem;
+}
+
+.wishlist-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.wishlist-skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
