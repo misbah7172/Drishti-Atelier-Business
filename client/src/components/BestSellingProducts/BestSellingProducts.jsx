@@ -1,12 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HiArrowRight } from 'react-icons/hi2';
 import ProductCard from '../ProductCard/ProductCard';
-import { PRODUCTS } from '../../services/productData';
+import { fetchFeaturedProducts } from '../../services/productService';
 import './BestSellingProducts.css';
 
 export default function BestSellingProducts() {
-  // Curated best-selling silhouettes (top 4 or 8 products)
-  const bestSellers = PRODUCTS.slice(0, 8);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchFeaturedProducts()
+      .then((data) => {
+        if (!cancelled) setProducts(data.slice(0, 8));
+      })
+      .catch((err) => console.error('Featured products error:', err))
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Don't render section if no products loaded and not loading
+  if (!isLoading && products.length === 0) return null;
 
   return (
     <section className="best-sellers-section" id="best-sellers">
@@ -32,12 +53,27 @@ export default function BestSellingProducts() {
           </div>
         </div>
 
-        {/* Best Sellers Grid: Minimum 2 Columns on Mobile, 4 Columns on Desktop */}
-        <div className="best-sellers-grid">
-          {bestSellers.map((prod) => (
-            <ProductCard key={prod.id} {...prod} />
-          ))}
-        </div>
+        {/* Best Sellers Grid */}
+        {isLoading ? (
+          <div className="best-sellers-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="product-skeleton">
+                <div className="skeleton-image shimmer" style={{ aspectRatio: '3/4', background: 'linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.8s ease-in-out infinite', borderRadius: '4px' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingTop: '0.75rem' }}>
+                  <div style={{ height: '10px', width: '40%', background: '#1a1a1a', borderRadius: '3px' }} />
+                  <div style={{ height: '14px', width: '70%', background: '#1a1a1a', borderRadius: '3px' }} />
+                  <div style={{ height: '10px', width: '50%', background: '#1a1a1a', borderRadius: '3px' }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="best-sellers-grid">
+            {products.map((prod) => (
+              <ProductCard key={prod.id} {...prod} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

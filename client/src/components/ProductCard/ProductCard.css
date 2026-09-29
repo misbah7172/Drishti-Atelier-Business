@@ -209,3 +209,23 @@
   font-size: 0.7rem;
   color: #707070;
 }
+
+/* Compare Price Strikethrough */
+.card-compare-price {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: #666666;
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+}
+
+/* Out of Stock */
+.card-out-of-stock .card-image-container {
+  opacity: 0.5;
+}
+
+.card-badge-oos {
+  background: #333333 !important;
+  color: #999999 !important;
+}
+
