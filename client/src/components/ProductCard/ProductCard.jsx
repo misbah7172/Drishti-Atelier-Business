@@ -6,21 +6,37 @@ import './ProductCard.css';
 
 export default function ProductCard({
   id = 1,
-  name = 'Vapour Titanium Aviator',
-  code = 'FRAME 01 — SUN',
-  price = 240,
+  slug,
+  name = 'Drishti Atelier Frame',
+  code = '',
+  price = 0,
+  comparePrice,
   image = '/images/blue-aviator.png',
   hoverImage = '/images/amber-aviator.png',
-  colors = ['#C0C0C0', '#D4AF37', '#1A1A1A'],
-  badge = 'New Arrival',
+  colors = [],
+  badge = null,
+  stock,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
+  // Build link — prefer slug, fallback to ID
+  const productLink = `/product/${slug || id}`;
+
+  // Normalize colors to array of hex strings for swatches
+  const colorHexes = colors
+    .map((c) => (typeof c === 'string' ? c : c?.hex))
+    .filter(Boolean)
+    .slice(0, 4);
+
+  // Out of stock check
+  const outOfStock = stock !== undefined && stock <= 0;
+
   const handleQuickAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (outOfStock) return;
     setIsAdded(true);
     toast.success(`Added ${name} to your cart`, {
       style: {
@@ -52,12 +68,13 @@ export default function ProductCard({
 
   return (
     <div
-      className="editorial-product-card"
+      className={`editorial-product-card ${outOfStock ? 'card-out-of-stock' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={`/product/${id}`} className="card-image-wrapper">
+      <Link to={productLink} className="card-image-wrapper">
         {badge && <span className="card-badge">{badge}</span>}
+        {outOfStock && <span className="card-badge card-badge-oos">Sold Out</span>}
 
         <button
           type="button"
@@ -78,47 +95,56 @@ export default function ProductCard({
         </div>
 
         {/* Slide-Up Quick Add Action */}
-        <button
-          type="button"
-          onClick={handleQuickAdd}
-          className="card-quick-add-btn"
-          aria-label={`Quick add ${name} to cart`}
-        >
-          {isAdded ? (
-            <>
-              <HiCheck size={16} />
-              <span>Added to Cart</span>
-            </>
-          ) : (
-            <>
-              <HiOutlineShoppingBag size={16} />
-              <span>Quick Add — ${price}</span>
-            </>
-          )}
-        </button>
+        {!outOfStock && (
+          <button
+            type="button"
+            onClick={handleQuickAdd}
+            className="card-quick-add-btn"
+            aria-label={`Quick add ${name} to cart`}
+          >
+            {isAdded ? (
+              <>
+                <HiCheck size={16} />
+                <span>Added to Cart</span>
+              </>
+            ) : (
+              <>
+                <HiOutlineShoppingBag size={16} />
+                <span>Quick Add — ${price}</span>
+              </>
+            )}
+          </button>
+        )}
       </Link>
 
       {/* Editorial Meta */}
       <div className="card-meta">
-        <div className="card-code-row">
-          <span className="card-code">{code}</span>
-          <div className="card-color-swatches" aria-label="Available colors">
-            {colors.map((c, i) => (
-              <span
-                key={i}
-                className="color-dot"
-                style={{ backgroundColor: c }}
-              />
-            ))}
+        {code && (
+          <div className="card-code-row">
+            <span className="card-code">{code}</span>
+            {colorHexes.length > 0 && (
+              <div className="card-color-swatches" aria-label="Available colors">
+                {colorHexes.map((c, i) => (
+                  <span
+                    key={i}
+                    className="color-dot"
+                    style={{ backgroundColor: c }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
-        <Link to={`/product/${id}`} className="card-title-link">
+        <Link to={productLink} className="card-title-link">
           <h4 className="card-title">{name}</h4>
         </Link>
 
         <div className="card-price-row">
           <span className="card-price">${price} USD</span>
+          {comparePrice && comparePrice > price && (
+            <span className="card-compare-price">${comparePrice}</span>
+          )}
           <span className="card-shipping-tag">Complimentary Shipping</span>
         </div>
       </div>
