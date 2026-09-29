@@ -314,12 +314,12 @@ f:\Drishti_Eye_Care\
 
 ### Deliverables Checklist
 
-- [ ] Successful checkout creates order
-- [ ] Empty cart checkout blocked
-- [ ] Insufficient stock blocked
-- [ ] Invalid/expired coupon blocked
-- [ ] Stock decreases on order
-- [ ] Order appears in customer history
+- [x] Successful checkout creates order
+- [x] Empty cart checkout blocked
+- [x] Insufficient stock blocked
+- [x] Invalid/expired coupon blocked
+- [x] Stock decreases on order
+- [x] Order appears in customer history
 
 ---
 
