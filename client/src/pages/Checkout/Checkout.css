@@ -1,0 +1,337 @@
+/* ==========================================================================
+   Drishti Atelier — Checkout Page
+   ========================================================================== */
+
+.checkout-page {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 8rem;
+}
+
+.checkout-header {
+  padding-block: 3rem 2rem;
+}
+
+.checkout-title { margin-top: 0.75rem; }
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 900px) {
+  .checkout-layout {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 4rem;
+  }
+}
+
+/* Sections */
+.checkout-section {
+  margin-bottom: 2.5rem;
+}
+
+.checkout-section-title {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 1.5rem;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-full { grid-column: 1 / -1; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.form-input {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #fff;
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 0.7rem 0.85rem;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #F97D01;
+}
+
+.form-input::placeholder { color: #444; }
+
+.input-error { border-color: #ef4444 !important; }
+
+.form-error {
+  font-size: 0.72rem;
+  color: #ef4444;
+  margin-top: 0.15rem;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Payment Option */
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.payment-selected {
+  border-color: #F97D01;
+  background: rgba(249, 125, 1, 0.04);
+}
+
+.payment-radio-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #F97D01;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #F97D01;
+}
+
+.payment-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.payment-desc {
+  display: block;
+  font-size: 0.78rem;
+  color: #777;
+  margin-top: 0.15rem;
+}
+
+/* Summary Sidebar */
+.checkout-summary-sticky {
+  position: sticky;
+  top: 120px;
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.checkout-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.checkout-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.checkout-item-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #111;
+}
+
+.checkout-item-info {
+  flex: 1;
+}
+
+.checkout-item-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ddd;
+}
+
+.checkout-item-qty {
+  display: block;
+  font-size: 0.7rem;
+  color: #777;
+}
+
+.checkout-item-price {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+/* Coupon */
+.coupon-section {
+  padding-top: 0.5rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.coupon-input { flex: 1; }
+
+.coupon-apply-btn {
+  white-space: nowrap;
+}
+
+.coupon-applied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(249, 125, 1, 0.06);
+  border: 1px solid rgba(249, 125, 1, 0.2);
+  border-radius: 4px;
+}
+
+.coupon-applied-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.coupon-icon { color: #F97D01; flex-shrink: 0; }
+
+.coupon-code-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #F97D01;
+}
+
+.coupon-desc {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.coupon-remove-btn {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.coupon-remove-btn:hover { color: #ef4444; }
+
+/* Summary Rows (reuse from Cart) */
+.summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: #a0a0a0;
+}
+
+.summary-discount { color: #F97D01; }
+.summary-divider { height: 1px; background: #222; margin-block: 0.25rem; }
+.summary-total {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #fff;
+}
+
+.checkout-submit-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.checkout-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout-guarantees {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+.checkout-guarantees .guarantee-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  color: #666;
+}
+
+.checkout-guarantees .guarantee-icon { color: #555; flex-shrink: 0; }
+
+/* Empty State */
+.checkout-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 8rem;
+  max-width: 550px;
+  margin-inline: auto;
+  gap: 1.25rem;
+}
