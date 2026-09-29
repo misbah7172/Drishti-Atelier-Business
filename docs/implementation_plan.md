@@ -281,11 +281,11 @@ f:\Drishti_Eye_Care\
 
 ### Deliverables Checklist
 
-- [ ] Cart survives page refresh
-- [ ] Quantity updates correctly
-- [ ] Cannot exceed stock
-- [ ] Wishlist add/remove works
-- [ ] Guest cart merges after login
+- [x] Cart survives page refresh
+- [x] Quantity updates correctly
+- [x] Cannot exceed stock
+- [x] Wishlist add/remove works
+- [x] Guest cart merges after login
 
 ---
 
