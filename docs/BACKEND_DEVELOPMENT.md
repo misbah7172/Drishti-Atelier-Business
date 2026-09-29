@@ -29,21 +29,6 @@ Before building anything, understand what the frontend already uses:
 The frontend currently imports products from `client/src/services/productData.js` — a static JS file.
 Your backend must serve data in a compatible shape so migrating from static to API requires minimal frontend changes.
 
-### Product Shape the Frontend Expects
-
-The `ProductCard` component receives these props:
-
-```text
-id            → integer
-name          → string        (e.g. "Vapour Titanium Aviator")
-code          → string        (e.g. "ATELIER 01 — SUN")
-price         → number        (e.g. 240)
-image         → string URL    (primary product image)
-hoverImage    → string URL    (secondary product image)
-colors        → array         (e.g. ["#C0C0C0", "#D4AF37", "#1A1A1A"])
-badge         → string        (e.g. "Iconic", "New Arrival", "Best Seller")
-```
-
 The `ProductDetail` page uses the full product object:
 
 ```text

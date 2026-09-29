@@ -7,7 +7,9 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlineBars3,
   HiOutlineXMark,
+  HiOutlineArrowRightOnRectangle,
 } from 'react-icons/hi2';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 const navLinks = [
@@ -26,6 +28,7 @@ export default function Navbar() {
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const navigate = useNavigate();
 
+  const { user, isAuthenticated, logout, isAdmin } = useAuth();
   const cartCount = 0; // Connected to CartContext
   const wishlistCount = 0; // Connected to WishlistContext
 
@@ -150,12 +153,16 @@ export default function Navbar() {
 
           {/* Account (Desktop Only) */}
           <Link
-            to="/login"
+            to={isAuthenticated ? (isAdmin ? '/admin' : '/account') : '/login'}
             className="navbar-action-btn desktop-only"
             id="account-link"
-            aria-label="Account Login"
+            aria-label={isAuthenticated ? `${user?.name} Account` : 'Account Login'}
+            title={isAuthenticated ? `${user?.name} (${user?.role})` : 'Account Login'}
           >
-            <HiOutlineUser size={19} />
+            <HiOutlineUser size={19} className={isAuthenticated ? 'text-[#F97D01]' : ''} />
+            {isAuthenticated && (
+              <span className="navbar-badge-dot" style={{ backgroundColor: '#F97D01' }} aria-hidden="true" />
+            )}
           </Link>
 
           {/* Mobile Hamburger Toggle (Mobile/Tablet Only) */}
@@ -313,17 +320,21 @@ export default function Navbar() {
             </Link>
 
             <Link
-              to="/login"
+              to={isAuthenticated ? (isAdmin ? '/admin' : '/account') : '/login'}
               className="mobile-action-card"
               onClick={closeMobile}
               id="mobile-account-link"
             >
-              <div className="mobile-action-card-icon-wrap">
+              <div className={`mobile-action-card-icon-wrap ${isAuthenticated ? 'text-[#F97D01]' : ''}`}>
                 <HiOutlineUser size={20} />
               </div>
               <div className="mobile-action-card-text">
-                <span className="mobile-action-card-title">Account</span>
-                <span className="mobile-action-card-sub">Sign In</span>
+                <span className="mobile-action-card-title">
+                  {isAuthenticated ? (user?.name?.split(' ')[0] || 'Account') : 'Account'}
+                </span>
+                <span className="mobile-action-card-sub">
+                  {isAuthenticated ? (isAdmin ? 'Admin Console' : 'My Dossier') : 'Sign In'}
+                </span>
               </div>
             </Link>
           </div>
