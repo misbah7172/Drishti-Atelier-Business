@@ -342,10 +342,10 @@ f:\Drishti_Eye_Care\
 
 ### Deliverables Checklist
 
-- [ ] Customer sees only their own data
-- [ ] Orders display correctly
-- [ ] Reviews require purchase
-- [ ] Profile updates work
+- [x] Customer sees only their own data
+- [x] Orders display correctly
+- [x] Reviews require purchase
+- [x] Profile updates work
 
 ---
 
