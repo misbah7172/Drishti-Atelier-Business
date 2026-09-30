@@ -35,6 +35,10 @@ import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
 import OrderHistory from './pages/Orders/OrderHistory';
 import OrderDetail from './pages/Orders/OrderDetail';
 
+// Customer Account Pages (Phase 7)
+import Profile from './pages/Account/Profile/Profile';
+import Addresses from './pages/Account/Addresses/Addresses';
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -93,6 +97,8 @@ export default function App() {
                 <Route path="checkout" element={<Checkout />} />
                 <Route path="order-success/:id" element={<OrderSuccess />} />
                 <Route path="account" element={<Account />} />
+                <Route path="account/profile" element={<Profile />} />
+                <Route path="account/addresses" element={<Addresses />} />
                 <Route path="account/orders" element={<OrderHistory />} />
                 <Route path="account/orders/:id" element={<OrderDetail />} />
               </Route>

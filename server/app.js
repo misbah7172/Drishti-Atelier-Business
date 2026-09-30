@@ -35,7 +35,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    message: 'Vision Eye Care API is running',
+    message: 'Drishti API is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
   });
@@ -48,6 +48,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/cart', require('./routes/cart'));
 app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api/orders', require('./routes/orders'));
+app.use('/api/addresses', require('./routes/addresses'));
 // Phase 9: app.use('/api/admin', require('./routes/admin'));
 
 // ------------------------------------

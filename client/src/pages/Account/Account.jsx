@@ -155,6 +155,32 @@ export default function Account() {
                   Your personal curated shortlist
                 </p>
               </Link>
+
+              <Link
+                to="/account/profile"
+                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+              >
+                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
+                  <HiOutlineUser size={17} />
+                </div>
+                <h3 className="text-sm font-medium text-white">Profile Settings</h3>
+                <p className="text-xs text-stone-400 mt-1">
+                  Edit name, email, phone & password
+                </p>
+              </Link>
+
+              <Link
+                to="/account/addresses"
+                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+              >
+                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
+                  <HiOutlineEnvelope size={17} />
+                </div>
+                <h3 className="text-sm font-medium text-white">Saved Addresses</h3>
+                <p className="text-xs text-stone-400 mt-1">
+                  Manage your delivery addresses
+                </p>
+              </Link>
             </div>
 
             <div className="bg-[#0E0E0E] border border-[#222] rounded-lg p-5">
