@@ -172,9 +172,107 @@ async function logout(req, res) {
   });
 }
 
+/**
+ * Update user profile
+ * PUT /api/auth/profile
+ * Body: { name, email, phone }
+ */
+async function updateProfile(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const { name, email, phone } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ status: 'fail', message: 'Name is required.' });
+    }
+
+    // If email changed, check uniqueness
+    if (email && email.trim().toLowerCase() !== req.user.email.toLowerCase()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        return res.status(400).json({ status: 'fail', message: 'Invalid email address.' });
+      }
+      const existing = await query(
+        'SELECT id FROM users WHERE LOWER(email) = $1 AND id != $2',
+        [email.trim().toLowerCase(), userId]
+      );
+      if (existing.rows.length > 0) {
+        return res.status(400).json({ status: 'fail', message: 'Email already in use.' });
+      }
+    }
+
+    const result = await query(
+      `UPDATE users SET name = $1, email = $2, phone = $3, updated_at = NOW()
+       WHERE id = $4
+       RETURNING id, name, name AS full_name, email, phone, role, is_active, created_at`,
+      [name.trim(), (email || req.user.email).trim().toLowerCase(), phone || null, userId]
+    );
+
+    const updatedUser = result.rows[0];
+    const token = generateToken(updatedUser);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Profile updated successfully.',
+      token,
+      user: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Change password
+ * PUT /api/auth/password
+ * Body: { current_password, new_password }
+ */
+async function changePassword(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const { current_password, new_password } = req.body;
+
+    if (!current_password || !new_password) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Current password and new password are required.',
+      });
+    }
+
+    if (new_password.length < 6) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'New password must be at least 6 characters.',
+      });
+    }
+
+    // Get current hash
+    const userResult = await query('SELECT password_hash FROM users WHERE id = $1', [userId]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ status: 'fail', message: 'User not found.' });
+    }
+
+    const isValid = await bcrypt.compare(current_password, userResult.rows[0].password_hash);
+    if (!isValid) {
+      return res.status(401).json({ status: 'fail', message: 'Current password is incorrect.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const newHash = await bcrypt.hash(new_password, salt);
+
+    await query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [newHash, userId]);
+
+    res.status(200).json({ status: 'success', message: 'Password changed successfully.' });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   register,
   login,
   getMe,
   logout,
+  updateProfile,
+  changePassword,
 };

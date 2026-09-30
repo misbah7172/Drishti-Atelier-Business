@@ -19,4 +19,10 @@ router.delete('/:id', authenticateToken, requireAdmin, productController.deleteP
 router.post('/:id/images', authenticateToken, requireAdmin, upload.array('images', 6), productController.uploadProductImages);
 router.delete('/:id/images/:imageId', authenticateToken, requireAdmin, productController.deleteProductImage);
 
+// Review routes (Phase 7)
+const reviewController = require('../controllers/reviewController');
+router.get('/:id/reviews', reviewController.getProductReviews);
+router.post('/:id/reviews', authenticateToken, reviewController.createReview);
+
 module.exports = router;
+
