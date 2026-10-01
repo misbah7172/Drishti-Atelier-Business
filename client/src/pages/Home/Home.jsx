@@ -1,6 +1,7 @@
 import HeroSlidingBanner from '../../components/HeroSlidingBanner/HeroSlidingBanner';
 import TopCategories from '../../components/TopCategories/TopCategories';
 import SlideBanner from '../../components/SlideBanner/SlideBanner';
+import ShowcaseSubItemsBanner from '../../components/ShowcaseSubItemsBanner/ShowcaseSubItemsBanner';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import BestSellingProducts from '../../components/BestSellingProducts/BestSellingProducts';
@@ -28,11 +29,11 @@ export default function Home() {
       {/* 03. Get the perfect shape - Eyeglasses Guide (FRAME ANATOMY & FACIAL PROPORTIONS) */}
       <EyeglassesShapeGuide />
 
-      {/* Slide Banner (1500x500px): After FRAME ANATOMY & FACIAL PROPORTIONS Section */}
-      <SlideBanner
+      {/* Showcase Banner with 4 Sub-Items (Firmoo-Style Layout): After FRAME ANATOMY Section */}
+      <ShowcaseSubItemsBanner
         id="banner-after-anatomy"
-        ariaLabel="Frame Anatomy & Facial Proportions Slide Banner"
-        preset="anatomy"
+        ariaLabel="Tortoiseshell Frames Collection Showcase"
+        preset="tortoise"
       />
 
       {/* 04. Dark Full-Screen Advertising Spread */}
@@ -47,11 +48,11 @@ export default function Home() {
       {/* 09. High-Impact Conversion Finale (The Finale) */}
       <FinalCTA />
 
-      {/* Slide Banner (1500x500px): After The Finale Section */}
-      <SlideBanner
+      {/* Showcase Banner with 4 Sub-Items: After The Finale Section */}
+      <ShowcaseSubItemsBanner
         id="banner-after-finale"
-        ariaLabel="The Finale & Atelier Privilege Slide Banner"
-        preset="finale"
+        ariaLabel="Titanium Architecture Showcase"
+        preset="titanium"
       />
 
       {/* 10. Our House Brands (Over Footer) */}

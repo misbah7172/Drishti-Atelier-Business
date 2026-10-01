@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Drishti Atelier — Showcase Banner with 4 Sub-Items Grid
+   Inspired by luxury catalog feature displays with attached product matrix
+   ========================================================================== */
+
+.showcase-subitems-section {
+  position: relative;
+  width: 100%;
+  padding: 40px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.showcase-subitems-container {
+  width: 100%;
+  max-width: 1500px;
+  position: relative;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 1532px) {
+  .showcase-subitems-container {
+    padding-inline: 0;
+  }
+}
+
+.showcase-subitems-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.45);
+}
+
+/* ==========================================================================
+   Top Showcase Hero Banner (1500x500px / 3:1 Ratio)
+   ========================================================================== */
+.showcase-hero-banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  min-height: 280px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.showcase-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.showcase-hero-bg-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.showcase-hero-banner:hover .showcase-hero-bg-img {
+  transform: scale(1.015);
+}
+
+/* Hero overlay (neutral/transparent to keep photo crisp) */
+.showcase-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hero Content (Only CTA Button) */
+.showcase-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-left: clamp(28px, 6vw, 80px);
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.showcase-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(0.82rem, 1vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 12px 28px;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+}
+
+.showcase-hero-cta:hover {
+  background-color: #DFFF00;
+  color: #050505;
+  border-color: #DFFF00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(223, 255, 0, 0.25);
+}
+
+/* ==========================================================================
+   Bottom Sub-Items Panel (Directly attached underneath banner)
+   ========================================================================== */
+.showcase-subitems-panel {
+  position: relative;
+  width: 100%;
+  padding: clamp(16px, 2.5vw, 28px);
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Tortoise theme: Warm caramel/sand banner accent */
+.showcase-subitems-wrapper.theme-tortoise .showcase-subitems-panel {
+  background-color: #B59675;
+}
+
+/* Titanium theme: Sleek architectural dark slate accent */
+.showcase-subitems-wrapper.theme-titanium .showcase-subitems-panel {
+  background-color: #1A1A1A;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.showcase-subitems-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(12px, 1.8vw, 24px);
+  width: 100%;
+}
+
+/* Individual Sub-Item Card */
+.sub-item-card {
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  padding: clamp(16px, 2vw, 24px) 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.sub-item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.sub-item-image-box {
+  width: 100%;
+  height: clamp(90px, 10vw, 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.sub-item-img {
+  max-width: 90%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sub-item-card:hover .sub-item-img {
+  transform: scale(1.05);
+}
+
+/* Style label and color */
+.sub-item-info {
+  text-align: center;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.sub-item-style-title {
+  display: block;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: 0.02em;
+  margin-bottom: 3px;
+}
+
+.sub-item-subtitle {
+  display: block;
+  font-size: 0.72rem;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Card CTA Button */
+.sub-item-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 82%;
+  max-width: 140px;
+  background-color: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-heading, inherit);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 16px;
+  border-radius: 3px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.sub-item-card:hover .sub-item-btn {
+  background-color: #DFFF00;
+  color: #050505;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 991px) {
+  .showcase-subitems-section {
+    padding: 24px 0 16px;
+  }
+
+  .showcase-hero-banner {
+    min-height: 240px;
+  }
+
+  .showcase-subitems-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 580px) {
+  .showcase-hero-banner {
+    aspect-ratio: auto;
+    min-height: 220px;
+    padding: 28px 0;
+  }
+
+  .showcase-hero-content {
+    padding-inline: 20px;
+  }
+
+  .showcase-hero-cta {
+    padding: 9px 20px;
+    font-size: 0.78rem;
+  }
+
+  .showcase-subitems-panel {
+    padding: 12px;
+  }
+
+  .sub-item-card {
+    padding: 14px 8px 12px;
+  }
+
+  .sub-item-image-box {
+    height: 75px;
+  }
+
+  .sub-item-style-title {
+    font-size: 0.72rem;
+  }
+
+  .sub-item-btn {
+    width: 90%;
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+}
