@@ -1,0 +1,246 @@
+/* ==========================================================================
+   Drishti Atelier — Editorial Slide Banner (1500x500px / 3:1 Ratio)
+   Strict 3:1 aspect ratio (1500x500px max), fully responsive across all screens
+   ========================================================================== */
+
+.editorial-slide-banner-section {
+  position: relative;
+  width: 100%;
+  padding: 36px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.editorial-slide-banner-container {
+  width: 100%;
+  max-width: 1500px;
+  position: relative;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 1532px) {
+  .editorial-slide-banner-container {
+    padding-inline: 0;
+  }
+}
+
+.editorial-slide-banner-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  background-color: #0B0B0B;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+/* Slide track */
+.editorial-slide-banner-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.editorial-slide-banner-item {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 1;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.editorial-slide-banner-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-slide-banner-item:hover .editorial-slide-banner-img {
+  transform: scale(1.02);
+}
+
+/* Subtle luxury sheen on slide */
+.editorial-slide-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  pointer-events: none;
+}
+
+/* Navigation Arrow Buttons */
+.editorial-slide-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(5, 5, 5, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.25s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.editorial-slide-arrow-btn:hover {
+  background-color: #DFFF00;
+  border-color: #DFFF00;
+  color: #050505;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.editorial-slide-banner-frame:hover .editorial-slide-arrow-btn,
+.editorial-slide-arrow-btn:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.editorial-slide-arrow-btn.prev {
+  left: 20px;
+}
+
+.editorial-slide-arrow-btn.next {
+  right: 20px;
+}
+
+/* Bottom Pagination Indicator */
+.editorial-slide-pagination {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+  background-color: rgba(5, 5, 5, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.editorial-slide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-slide-dot:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.editorial-slide-dot.active {
+  width: 26px;
+  background-color: #DFFF00;
+}
+
+/* Light Theme */
+[data-theme="light"] .editorial-slide-banner-frame {
+  background-color: #F8F8F8;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .editorial-slide-arrow-btn {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #050505;
+}
+
+[data-theme="light"] .editorial-slide-arrow-btn:hover {
+  background-color: #050505;
+  border-color: #050505;
+  color: #FFFFFF;
+}
+
+[data-theme="light"] .editorial-slide-pagination {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .editorial-slide-dot {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .editorial-slide-dot.active {
+  background-color: #050505;
+}
+
+/* Tablet & Mobile Viewports */
+@media (max-width: 991px) {
+  .editorial-slide-banner-section {
+    padding: 20px 0;
+  }
+
+  .editorial-slide-banner-container {
+    padding-inline: 12px;
+  }
+
+  .editorial-slide-arrow-btn {
+    opacity: 0.85;
+    pointer-events: auto;
+    width: 32px;
+    height: 32px;
+  }
+
+  .editorial-slide-arrow-btn.prev {
+    left: 8px;
+  }
+
+  .editorial-slide-arrow-btn.next {
+    right: 8px;
+  }
+
+  .editorial-slide-pagination {
+    bottom: 10px;
+    padding: 4px 10px;
+    gap: 6px;
+  }
+
+  .editorial-slide-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .editorial-slide-dot.active {
+    width: 18px;
+  }
+}
