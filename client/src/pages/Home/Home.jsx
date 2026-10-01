@@ -1,5 +1,6 @@
 import HeroSlidingBanner from '../../components/HeroSlidingBanner/HeroSlidingBanner';
 import TopCategories from '../../components/TopCategories/TopCategories';
+import SlideBanner from '../../components/SlideBanner/SlideBanner';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
 import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
 import BestSellingProducts from '../../components/BestSellingProducts/BestSellingProducts';
@@ -17,8 +18,22 @@ export default function Home() {
       {/* 02. Curated Taxonomy & Top Categories */}
       <TopCategories />
 
-      {/* 03. Get the perfect shape - Eyeglasses Guide */}
+      {/* Slide Banner (1500x500px): After Top Categories Section */}
+      <SlideBanner
+        id="banner-after-categories"
+        ariaLabel="Top Categories Featured Slide Banner"
+        preset="categories"
+      />
+
+      {/* 03. Get the perfect shape - Eyeglasses Guide (FRAME ANATOMY & FACIAL PROPORTIONS) */}
       <EyeglassesShapeGuide />
+
+      {/* Slide Banner (1500x500px): After FRAME ANATOMY & FACIAL PROPORTIONS Section */}
+      <SlideBanner
+        id="banner-after-anatomy"
+        ariaLabel="Frame Anatomy & Facial Proportions Slide Banner"
+        preset="anatomy"
+      />
 
       {/* 04. Dark Full-Screen Advertising Spread */}
       <FullscreenMoments />
@@ -29,8 +44,15 @@ export default function Home() {
       {/* 08. High-Fashion Social Proof */}
       <EditorialTestimonials />
 
-      {/* 09. High-Impact Conversion Finale */}
+      {/* 09. High-Impact Conversion Finale (The Finale) */}
       <FinalCTA />
+
+      {/* Slide Banner (1500x500px): After The Finale Section */}
+      <SlideBanner
+        id="banner-after-finale"
+        ariaLabel="The Finale & Atelier Privilege Slide Banner"
+        preset="finale"
+      />
 
       {/* 10. Our House Brands (Over Footer) */}
       <OurBrands />
