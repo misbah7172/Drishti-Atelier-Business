@@ -8,9 +8,9 @@ import {
   HiOutlineEye,
   HiOutlineEyeSlash,
   HiOutlineArrowRight,
-  HiOutlineCheck,
 } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
+import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -96,6 +96,19 @@ export default function Register() {
       phone: formData.phone,
       password: formData.password,
     });
+    setSubmitting(false);
+
+    if (result.success) {
+      navigate('/account', { replace: true });
+    } else {
+      setErrorMessage(result.error);
+    }
+  };
+
+  const handleGoogleSuccess = async (googleData) => {
+    setErrorMessage('');
+    setSubmitting(true);
+    const result = await googleLogin(googleData);
     setSubmitting(false);
 
     if (result.success) {
@@ -352,6 +365,25 @@ export default function Register() {
               )}
             </button>
           </form>
+
+          {/* Luxury Divider */}
+          <div className="relative my-6 text-center">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#222]" />
+            </div>
+            <span className="relative bg-[#0E0E0E] px-3 text-[10px] text-stone-500 uppercase tracking-widest font-mono">
+              or enroll with
+            </span>
+          </div>
+
+          {/* Google Sign-In Button */}
+          <GoogleAuthButton
+            id="register-google-btn"
+            onSuccess={handleGoogleSuccess}
+            onError={(err) => setErrorMessage(err)}
+            disabled={submitting}
+            text="Continue with Google"
+          />
         </div>
 
         {/* Login Footer Link */}

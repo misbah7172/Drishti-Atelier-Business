@@ -21,9 +21,13 @@ import NotFound from './pages/NotFound/NotFound';
 import PlaceholderPage from './pages/PlaceholderPage/PlaceholderPage';
 
 // Auth Pages (Phase 3)
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import AuthCallback from './pages/Auth/AuthCallback';
 import Account from './pages/Account/Account';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
 // Cart & Wishlist Pages (Phase 5)
 import Cart from './pages/Cart/Cart';
@@ -45,52 +49,54 @@ import AdminDashboard from './pages/Admin/Dashboard/Dashboard';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <CartProvider>
-        <WishlistProvider>
-        <BrowserRouter>
-          <CinematicGlassesIntro />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: '#171717',
-                color: '#FFFFFF',
-                border: '1px solid #292929',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-              },
-              success: {
-                iconTheme: {
-                  primary: '#F97D01',
-                  secondary: '#050505',
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+          <WishlistProvider>
+          <BrowserRouter>
+            <CinematicGlassesIntro />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: '#171717',
+                  color: '#FFFFFF',
+                  border: '1px solid #292929',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#FFFFFF',
+                success: {
+                  iconTheme: {
+                    primary: '#F97D01',
+                    secondary: '#050505',
+                  },
                 },
-              },
-            }}
-          />
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              {/* Public Routes */}
-              <Route index element={<Home />} />
-              <Route path="shop" element={<Shop />} />
-              <Route path="product/:id" element={<ProductDetail />} />
-              <Route path="about" element={<PlaceholderPage title="About Us" phase={10} />} />
-              <Route path="contact" element={<PlaceholderPage title="Contact Us" phase={10} />} />
-              <Route path="faq" element={<PlaceholderPage title="FAQ" phase={10} />} />
-              <Route path="privacy" element={<PlaceholderPage title="Privacy Policy" phase={10} />} />
-              <Route path="terms" element={<PlaceholderPage title="Terms & Conditions" phase={10} />} />
+                error: {
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: '#FFFFFF',
+                  },
+                },
+              }}
+            />
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                {/* Public Routes */}
+                <Route index element={<Home />} />
+                <Route path="shop" element={<Shop />} />
+                <Route path="product/:id" element={<ProductDetail />} />
+                <Route path="about" element={<PlaceholderPage title="About Us" phase={10} />} />
+                <Route path="contact" element={<PlaceholderPage title="Contact Us" phase={10} />} />
+                <Route path="faq" element={<PlaceholderPage title="FAQ" phase={10} />} />
+                <Route path="privacy" element={<PlaceholderPage title="Privacy Policy" phase={10} />} />
+                <Route path="terms" element={<PlaceholderPage title="Terms & Conditions" phase={10} />} />
 
-              {/* Auth Routes (Phase 3) */}
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
+                {/* Auth Routes (Phase 3) */}
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="auth/callback" element={<AuthCallback />} />
 
               {/* Cart & Wishlist (Phase 5) */}
               <Route path="cart" element={<Cart />} />
@@ -132,5 +138,6 @@ export default function App() {
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 }

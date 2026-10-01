@@ -103,6 +103,49 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Google OAuth Login handler (Backend-driven)
+  const googleLogin = async ({ credential, code, access_token }) => {
+    try {
+      const response = await api.post('/auth/google', {
+        credential,
+        code,
+        access_token,
+      });
+
+      if (response.data?.status === 'success') {
+        const receivedUser = response.data.data?.user || response.data.user;
+        const receivedToken = response.data.data?.token || response.data.token;
+
+        localStorage.setItem('token', receivedToken);
+        setToken(receivedToken);
+        setUser(receivedUser);
+        toast.success(`Welcome to Drishti Atelier, ${receivedUser.name.split(' ')[0]}!`);
+        return { success: true, user: receivedUser };
+      }
+
+      throw new Error(response.data?.message || 'Google authentication failed');
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Google authentication failed.';
+      toast.error(msg);
+      return { success: false, error: msg };
+    }
+  };
+
+  // Login with token handler (used for callback from OAuth redirect)
+  const loginWithToken = async (receivedToken) => {
+    try {
+      localStorage.setItem('token', receivedToken);
+      setToken(receivedToken);
+      await fetchCurrentUser(receivedToken);
+      toast.success('Signed in successfully via Google!');
+      return { success: true };
+    } catch (error) {
+      const msg = error.message || 'Failed to authenticate with token.';
+      toast.error(msg);
+      return { success: false, error: msg };
+    }
+  };
+
   // Logout handler
   const logout = async () => {
     try {
@@ -132,6 +175,8 @@ export function AuthProvider({ children }) {
     isAdmin: user?.role === 'admin',
     login,
     register,
+    googleLogin,
+    loginWithToken,
     logout,
     updateUser,
     refreshUser: () => fetchCurrentUser(token),

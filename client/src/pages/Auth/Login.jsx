@@ -9,6 +9,7 @@ import {
   HiOutlineShieldCheck,
 } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
+import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function Login() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,6 +37,25 @@ export default function Login() {
 
     setSubmitting(true);
     const result = await login(email, password);
+    setSubmitting(false);
+
+    if (result.success) {
+      if (from) {
+        navigate(from, { replace: true });
+      } else if (result.user.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/account', { replace: true });
+      }
+    } else {
+      setErrorMessage(result.error);
+    }
+  };
+
+  const handleGoogleSuccess = async (googleData) => {
+    setErrorMessage('');
+    setSubmitting(true);
+    const result = await googleLogin(googleData);
     setSubmitting(false);
 
     if (result.success) {
@@ -193,6 +213,25 @@ export default function Login() {
               )}
             </button>
           </form>
+
+          {/* Luxury Divider */}
+          <div className="relative my-6 text-center">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#222]" />
+            </div>
+            <span className="relative bg-[#0E0E0E] px-3 text-[10px] text-stone-500 uppercase tracking-widest font-mono">
+              or authenticate with
+            </span>
+          </div>
+
+          {/* Google Sign-In Button */}
+          <GoogleAuthButton
+            id="login-google-btn"
+            onSuccess={handleGoogleSuccess}
+            onError={(err) => setErrorMessage(err)}
+            disabled={submitting}
+            text="Continue with Google"
+          />
 
           {/* Fast Evaluation Demo Accounts */}
           <div className="mt-8 pt-6 border-t border-[#1f1f1f]">
