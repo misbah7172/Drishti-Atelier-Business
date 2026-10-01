@@ -49,7 +49,7 @@ app.use('/api/cart', require('./routes/cart'));
 app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/addresses', require('./routes/addresses'));
-// Phase 9: app.use('/api/admin', require('./routes/admin'));
+app.use('/api/admin', require('./routes/admin'));
 
 // ------------------------------------
 // 404 Handler

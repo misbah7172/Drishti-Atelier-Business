@@ -39,6 +39,10 @@ import OrderDetail from './pages/Orders/OrderDetail';
 import Profile from './pages/Account/Profile/Profile';
 import Addresses from './pages/Account/Addresses/Addresses';
 
+// Admin (Phase 8)
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/Admin/Dashboard/Dashboard';
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -103,18 +107,20 @@ export default function App() {
                 <Route path="account/orders/:id" element={<OrderDetail />} />
               </Route>
 
-              {/* Protected Admin Routes (Phase 3 / 8 / 9) */}
+              {/* Protected Admin Routes (Phase 8 / 9) */}
               <Route element={<AdminRoute />}>
-                <Route path="admin" element={<PlaceholderPage title="Admin Dashboard" phase={8} />} />
-                <Route path="admin/products" element={<PlaceholderPage title="Manage Products" phase={9} />} />
-                <Route path="admin/products/new" element={<PlaceholderPage title="Add Product" phase={9} />} />
-                <Route path="admin/products/:id" element={<PlaceholderPage title="Edit Product" phase={9} />} />
-                <Route path="admin/users" element={<PlaceholderPage title="Manage Users" phase={9} />} />
-                <Route path="admin/orders" element={<PlaceholderPage title="Manage Orders" phase={9} />} />
-                <Route path="admin/orders/:id" element={<PlaceholderPage title="Order Details" phase={9} />} />
-                <Route path="admin/categories" element={<PlaceholderPage title="Manage Categories" phase={9} />} />
-                <Route path="admin/coupons" element={<PlaceholderPage title="Manage Coupons" phase={9} />} />
-                <Route path="admin/reviews" element={<PlaceholderPage title="Manage Reviews" phase={9} />} />
+                <Route path="admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="products" element={<PlaceholderPage title="Manage Products" phase={9} />} />
+                  <Route path="products/new" element={<PlaceholderPage title="Add Product" phase={9} />} />
+                  <Route path="products/:id" element={<PlaceholderPage title="Edit Product" phase={9} />} />
+                  <Route path="users" element={<PlaceholderPage title="Manage Users" phase={9} />} />
+                  <Route path="orders" element={<PlaceholderPage title="Manage Orders" phase={9} />} />
+                  <Route path="orders/:id" element={<PlaceholderPage title="Order Details" phase={9} />} />
+                  <Route path="categories" element={<PlaceholderPage title="Manage Categories" phase={9} />} />
+                  <Route path="coupons" element={<PlaceholderPage title="Manage Coupons" phase={9} />} />
+                  <Route path="reviews" element={<PlaceholderPage title="Manage Reviews" phase={9} />} />
+                </Route>
               </Route>
 
               {/* 404 */}

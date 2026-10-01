@@ -1,0 +1,15 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #050505;
+  color: #fff;
+}
+
+.admin-main {
+  flex: 1;
+  margin-left: 240px;
+  min-height: 100vh;
+  transition: margin-left 0.25s ease;
+}
+
+/* When sidebar is collapsed, the admin-main adjusts — handled via CSS sibling selector isn't possible with fixed sidebar, so we use a class-based approach or just keep the margin consistent */

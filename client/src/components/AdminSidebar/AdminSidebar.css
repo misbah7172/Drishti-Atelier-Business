@@ -1,0 +1,126 @@
+.admin-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #080808;
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: width 0.25s ease;
+}
+
+.sidebar-collapsed {
+  width: 64px;
+}
+
+/* Brand */
+.sidebar-brand {
+  padding: 1.25rem;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  position: relative;
+  min-height: 72px;
+  justify-content: center;
+}
+
+.sidebar-brand-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #F97D01;
+}
+
+.sidebar-brand-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.sidebar-collapse-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111;
+  border: 1px solid #222;
+  color: #777;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sidebar-collapse-btn:hover {
+  color: #fff;
+  border-color: #444;
+}
+
+.sidebar-collapsed .sidebar-collapse-btn {
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+/* Nav */
+.sidebar-nav {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 6px;
+  color: #888;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  transition: all 0.15s ease;
+}
+
+.sidebar-link:hover {
+  color: #ddd;
+  background: #111;
+}
+
+.sidebar-active {
+  color: #F97D01 !important;
+  background: rgba(249, 125, 1, 0.08) !important;
+}
+
+.sidebar-icon { flex-shrink: 0; }
+
+.sidebar-collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0.65rem;
+}
+
+/* Footer */
+.sidebar-footer {
+  padding: 0.75rem 0.5rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+.sidebar-back {
+  color: #555 !important;
+}
+
+.sidebar-back:hover {
+  color: #999 !important;
+}
