@@ -371,9 +371,9 @@ f:\Drishti_Eye_Care\
 
 ### Deliverables Checklist
 
-- [ ] Stats reflect real database data
-- [ ] Admin navigation works
-- [ ] Only admins can access
+- [x] Stats reflect real database data
+- [x] Admin navigation works
+- [x] Only admins can access
 
 ---
 
