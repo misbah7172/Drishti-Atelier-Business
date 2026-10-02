@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   HiOutlineEnvelope,
+  HiOutlinePhone,
   HiOutlineLockClosed,
   HiOutlineEye,
   HiOutlineEyeSlash,
@@ -12,7 +13,7 @@ import { useAuth } from '../../context/AuthContext';
 import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -30,13 +31,13 @@ export default function Login() {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!email.trim() || !password) {
-      setErrorMessage('Please enter both email and password.');
+    if (!identifier.trim() || !password) {
+      setErrorMessage('Please enter your email address or phone number, and passcode.');
       return;
     }
 
     setSubmitting(true);
-    const result = await login(email, password);
+    const result = await login(identifier, password);
     setSubmitting(false);
 
     if (result.success) {
@@ -71,8 +72,8 @@ export default function Login() {
     }
   };
 
-  const handleDemoFill = (demoEmail, demoPass) => {
-    setEmail(demoEmail);
+  const handleDemoFill = (demoId, demoPass) => {
+    setIdentifier(demoId);
     setPassword(demoPass);
     setErrorMessage('');
   };
@@ -110,26 +111,30 @@ export default function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-            {/* Email Field */}
+            {/* Email or Phone Field */}
             <div>
               <label
-                htmlFor="login-email"
+                htmlFor="login-identifier"
                 className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
               >
-                Email Address
+                Email Address or Phone Number
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
-                  <HiOutlineEnvelope size={17} />
+                  {identifier && !identifier.includes('@') && /\d/.test(identifier) ? (
+                    <HiOutlinePhone size={17} className="text-[#F97D01]" />
+                  ) : (
+                    <HiOutlineEnvelope size={17} />
+                  )}
                 </div>
                 <input
-                  id="login-email"
-                  type="email"
-                  autoComplete="email"
+                  id="login-identifier"
+                  type="text"
+                  autoComplete="username"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="client@drishtiatelier.com"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="name@domain.com or +1 234 567 8900"
                   className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-4 text-sm text-white placeholder-stone-600 transition-colors outline-none"
                 />
               </div>

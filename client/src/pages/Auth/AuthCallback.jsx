@@ -7,7 +7,6 @@ export default function AuthCallback() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { loginWithToken } = useAuth();
-  const [processing, setProcessing] = useState(true);
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -22,7 +21,6 @@ export default function AuthCallback() {
 
     if (token) {
       loginWithToken(token).then((res) => {
-        setProcessing(false);
         if (res.success) {
           navigate('/account', { replace: true });
         } else {
@@ -31,7 +29,6 @@ export default function AuthCallback() {
         }
       });
     } else {
-      setProcessing(false);
       navigate('/login', { replace: true });
     }
   }, [searchParams, loginWithToken, navigate]);

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { HiOutlineMagnifyingGlass, HiXMark, HiAdjustmentsHorizontal, HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import SlideBanner from '../../components/SlideBanner/SlideBanner';
 import { fetchProducts, fetchCategories } from '../../services/productService';
 import './Shop.css';
 
@@ -176,45 +177,15 @@ export default function Shop() {
 
   return (
     <div className="shop-page" id="shop-catalog">
-      {/* Editorial Header */}
-      <header className="shop-header container-editorial">
-        <div className="shop-header-intro">
-          <span className="editorial-eyebrow">Collection 2026 — Atelier Archive</span>
-          <h1 className="editorial-section-title shop-title">
-            THE ARCHIVE <br />
-            <span className="text-muted-editorial">ARCHITECTURAL EYEWEAR.</span>
-          </h1>
-          <p className="editorial-body shop-desc">
-            Sculpted in Japanese aerospace titanium and hand-buffed acetate. Every
-            silhouette engineered to balance weight distribution and crystalline optics.
-          </p>
-        </div>
+      {/* 1500x500 (3:1) Sliding Banner Section */}
+      <SlideBanner
+        id="shop-catalog-banner"
+        ariaLabel="Shop Eyewear Collection Banner"
+        preset="shop"
+        className="shop-slider-section"
+      />
 
-        {/* Search Bar */}
-        <div className="shop-search-bar">
-          <HiOutlineMagnifyingGlass size={18} className="shop-search-icon" />
-          <input
-            type="text"
-            placeholder="Search by model, material, titanium, acetate..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="shop-search-input"
-            aria-label="Search catalog"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery('')}
-              className="shop-search-clear"
-              aria-label="Clear search"
-            >
-              <HiXMark size={16} />
-            </button>
-          )}
-        </div>
-      </header>
-
-      {/* Primary Category Nav — Now driven by API */}
+      {/* Primary Category Nav & Controls Bar — Driven by API */}
       <nav className="shop-category-nav container-editorial" aria-label="Product categories">
         <div className="category-pills">
           {categoryPills.map((cat) => (
@@ -233,8 +204,31 @@ export default function Shop() {
           ))}
         </div>
 
-        {/* Secondary Filter Trigger & Sorter */}
+        {/* Search Bar & Filter Controls Cluster */}
         <div className="shop-controls-cluster">
+          {/* Search Bar */}
+          <div className="shop-search-bar">
+            <HiOutlineMagnifyingGlass size={18} className="shop-search-icon" />
+            <input
+              type="text"
+              placeholder="Search model, material, titanium..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="shop-search-input"
+              aria-label="Search catalog"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="shop-search-clear"
+                aria-label="Clear search"
+              >
+                <HiXMark size={16} />
+              </button>
+            )}
+          </div>
+
           <button
             type="button"
             className={`shop-filter-toggle ${filtersDrawerOpen ? 'filter-active' : ''}`}

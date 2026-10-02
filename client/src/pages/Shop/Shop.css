@@ -7,48 +7,28 @@
   background-color: var(--color-black);
   color: var(--color-white);
   min-height: 100vh;
-  padding-top: 100px;
+  padding-top: 80px;
   padding-bottom: 8rem;
 }
 
-/* Header */
-.shop-header {
-  padding-block: 3.5rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-@media (min-width: 900px) {
-  .shop-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+@media (max-width: 991px) {
+  .shop-page {
+    padding-top: 66px;
   }
 }
 
-.shop-header-intro {
-  max-width: 720px;
-}
-
-.shop-title {
-  margin-block: 1rem 1.25rem;
-}
-
-.text-muted-editorial {
-  color: #777777;
-}
-
-.shop-desc {
-  color: #a0a0a0;
-  max-width: 580px;
+/* Sliding Banner Section */
+.shop-slider-section {
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 /* Search Bar */
 .shop-search-bar {
   position: relative;
   width: 100%;
-  max-width: 360px;
+  min-width: 240px;
+  max-width: 320px;
   display: flex;
   align-items: center;
 }

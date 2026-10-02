@@ -53,15 +53,33 @@ async function register(req, res, next) {
       });
     }
 
+    // If phone is provided, check existing phone
+    if (phone && phone.trim()) {
+      const cleanPhone = phone.trim();
+      const phoneDigits = cleanPhone.replace(/\D/g, '');
+      const existingPhone = await query(
+        `SELECT id FROM users 
+         WHERE phone = $1 
+            OR (phone IS NOT NULL AND length($2) >= 7 AND regexp_replace(phone, '\\D', '', 'g') = $2)`,
+        [cleanPhone, phoneDigits]
+      );
+      if (existingPhone.rows.length > 0) {
+        return res.status(400).json({
+          status: 'fail',
+          message: 'An account with this phone number already exists.',
+        });
+      }
+    }
+
     // Hash password
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(password, saltRounds);
 
     // Insert user into database
     const newUserResult = await query(
-      `INSERT INTO users (name, email, password_hash, phone, role, is_active)
-       VALUES ($1, $2, $3, $4, 'customer', true)
-       RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at`,
+      `INSERT INTO users (name, email, password_hash, phone, role, is_active, auth_provider)
+       VALUES ($1, $2, $3, $4, 'customer', true, 'local')
+       RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, auth_provider`,
       [full_name.trim(), cleanEmail, password_hash, phone ? phone.trim() : null]
     );
 
@@ -80,33 +98,40 @@ async function register(req, res, next) {
 }
 
 /**
- * User login
+ * User login (supports Email OR Phone number)
  * POST /api/auth/login
+ * Body: { identifier, email, phone, password }
  */
 async function login(req, res, next) {
   try {
-    const { email, password } = req.body;
+    const { email, phone, identifier, password } = req.body;
+    const loginIdentifier = (identifier || email || phone || '').trim();
 
-    if (!email || !password) {
+    if (!loginIdentifier || !password) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Please provide email and password.',
+        message: 'Please provide email or phone number, and password.',
       });
     }
 
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanIdentifier = loginIdentifier.toLowerCase();
+    const digitsOnly = loginIdentifier.replace(/\D/g, '');
 
-    // Find user in database
+    // Find user in database by email, exact phone, or stripped digits phone
     const userResult = await query(
-      `SELECT id, name AS full_name, name, email, password_hash, phone, role, is_active, created_at 
-       FROM users WHERE LOWER(email) = $1`,
-      [cleanEmail]
+      `SELECT id, name AS full_name, name, email, password_hash, phone, role, is_active, created_at, avatar_url, google_id, auth_provider 
+       FROM users 
+       WHERE LOWER(email) = $1 
+          OR phone = $2 
+          OR (phone IS NOT NULL AND length($3) >= 7 AND regexp_replace(phone, '\\D', '', 'g') = $3)
+       LIMIT 1`,
+      [cleanIdentifier, loginIdentifier, digitsOnly]
     );
 
     if (userResult.rows.length === 0) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Invalid email or password.',
+        message: 'Invalid email/phone number or password.',
       });
     }
 
@@ -119,12 +144,20 @@ async function login(req, res, next) {
       });
     }
 
+    // Check if user registered via Google OAuth without setting a password
+    if (!user.password_hash) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'This account was registered using Google Sign-In. Please click Continue with Google.',
+      });
+    }
+
     // Compare password
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Invalid email or password.',
+        message: 'Invalid email/phone number or password.',
       });
     }
 
@@ -385,11 +418,12 @@ async function googleAuth(req, res, next) {
 
     const cleanEmail = googleUser.email.trim().toLowerCase();
 
-    // Look for existing user by email
+    // Look for existing user by google_id OR email
     const userResult = await query(
-      `SELECT id, name AS full_name, name, email, phone, role, is_active, created_at
-       FROM users WHERE LOWER(email) = $1`,
-      [cleanEmail]
+      `SELECT id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider
+       FROM users 
+       WHERE (google_id IS NOT NULL AND google_id = $1) OR LOWER(email) = $2`,
+      [googleUser.googleId, cleanEmail]
     );
 
     let user;
@@ -404,19 +438,25 @@ async function googleAuth(req, res, next) {
         });
       }
 
-      // Update timestamp
-      await query('UPDATE users SET updated_at = NOW() WHERE id = $1', [user.id]);
+      // Update google_id and avatar if missing
+      const updatedResult = await query(
+        `UPDATE users 
+         SET google_id = COALESCE(google_id, $1),
+             avatar_url = COALESCE($2, avatar_url),
+             auth_provider = COALESCE(auth_provider, 'google'),
+             updated_at = NOW() 
+         WHERE id = $3
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [googleUser.googleId, googleUser.picture, user.id]
+      );
+      user = updatedResult.rows[0];
     } else {
-      // Create new customer account with random secure password hash satisfying NOT NULL constraint
-      const randomPassword = crypto.randomBytes(32).toString('hex');
-      const saltRounds = 10;
-      const password_hash = await bcrypt.hash(randomPassword, saltRounds);
-
+      // Auto-register new customer account via Google
       const newUserResult = await query(
-        `INSERT INTO users (name, email, password_hash, role, is_active)
-         VALUES ($1, $2, $3, 'customer', true)
-         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at`,
-        [googleUser.name.trim(), cleanEmail, password_hash]
+        `INSERT INTO users (name, email, google_id, avatar_url, auth_provider, role, is_active)
+         VALUES ($1, $2, $3, $4, 'google', 'customer', true)
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [googleUser.name.trim(), cleanEmail, googleUser.googleId, googleUser.picture]
       );
 
       user = newUserResult.rows[0];
@@ -493,9 +533,10 @@ async function handleGoogleRedirect(req, res, next) {
 
     const cleanEmail = googleUser.email.trim().toLowerCase();
     const userResult = await query(
-      `SELECT id, name AS full_name, name, email, phone, role, is_active, created_at
-       FROM users WHERE LOWER(email) = $1`,
-      [cleanEmail]
+      `SELECT id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider
+       FROM users 
+       WHERE (google_id IS NOT NULL AND google_id = $1) OR LOWER(email) = $2`,
+      [googleUser.googleId, cleanEmail]
     );
 
     let user;
@@ -504,16 +545,23 @@ async function handleGoogleRedirect(req, res, next) {
       if (!user.is_active) {
         return res.redirect(`${clientUrl}/auth/callback?error=account_deactivated`);
       }
-      await query('UPDATE users SET updated_at = NOW() WHERE id = $1', [user.id]);
+      const updatedResult = await query(
+        `UPDATE users 
+         SET google_id = COALESCE(google_id, $1),
+             avatar_url = COALESCE($2, avatar_url),
+             auth_provider = COALESCE(auth_provider, 'google'),
+             updated_at = NOW() 
+         WHERE id = $3
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [googleUser.googleId, googleUser.picture, user.id]
+      );
+      user = updatedResult.rows[0];
     } else {
-      const randomPassword = crypto.randomBytes(32).toString('hex');
-      const password_hash = await bcrypt.hash(randomPassword, 10);
-
       const newUserResult = await query(
-        `INSERT INTO users (name, email, password_hash, role, is_active)
-         VALUES ($1, $2, $3, 'customer', true)
-         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at`,
-        [googleUser.name.trim(), cleanEmail, password_hash]
+        `INSERT INTO users (name, email, google_id, avatar_url, auth_provider, role, is_active)
+         VALUES ($1, $2, $3, $4, 'google', 'customer', true)
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [googleUser.name.trim(), cleanEmail, googleUser.googleId, googleUser.picture]
       );
       user = newUserResult.rows[0];
     }

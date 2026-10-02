@@ -51,16 +51,19 @@ export function AuthProvider({ children }) {
     }
   }, [fetchCurrentUser]);
 
-  // Login handler
-  const login = async (email, password) => {
+  // Login handler (supports Email OR Phone number)
+  const login = async (identifier, password) => {
     try {
       const response = await api.post('/auth/login', {
-        email: email.trim().toLowerCase(),
+        identifier: identifier?.trim(),
+        email: identifier?.trim(),
+        phone: identifier?.trim(),
         password,
       });
 
       if (response.data?.status === 'success') {
-        const { user: loggedInUser, token: receivedToken } = response.data.data;
+        const loggedInUser = response.data.data?.user || response.data.user;
+        const receivedToken = response.data.data?.token || response.data.token;
         localStorage.setItem('token', receivedToken);
         setToken(receivedToken);
         setUser(loggedInUser);
@@ -70,24 +73,26 @@ export function AuthProvider({ children }) {
 
       throw new Error(response.data?.message || 'Login failed');
     } catch (error) {
-      const msg = error.response?.data?.message || error.message || 'Invalid email or password.';
+      const msg = error.response?.data?.message || error.message || 'Invalid email/phone or password.';
       toast.error(msg);
       return { success: false, error: msg };
     }
   };
 
   // Register handler
-  const register = async ({ name, email, phone, password }) => {
+  const register = async ({ name, full_name, email, phone, password }) => {
     try {
       const response = await api.post('/auth/register', {
-        name: name.trim(),
+        full_name: (name || full_name || '').trim(),
+        name: (name || full_name || '').trim(),
         email: email.trim().toLowerCase(),
         phone: phone ? phone.trim() : undefined,
         password,
       });
 
       if (response.data?.status === 'success') {
-        const { user: newUser, token: receivedToken } = response.data.data;
+        const newUser = response.data.data?.user || response.data.user;
+        const receivedToken = response.data.data?.token || response.data.token;
         localStorage.setItem('token', receivedToken);
         setToken(receivedToken);
         setUser(newUser);

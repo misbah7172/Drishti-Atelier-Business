@@ -42,13 +42,18 @@ CREATE TABLE users (
   name          VARCHAR(100) NOT NULL,
   email         VARCHAR(255) NOT NULL UNIQUE,
   phone         VARCHAR(20),
-  password_hash VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255), -- Nullable for OAuth users
   role          VARCHAR(20) NOT NULL DEFAULT 'customer'
                 CHECK (role IN ('customer', 'admin')),
+  google_id     VARCHAR(255) UNIQUE,
+  avatar_url    VARCHAR(500),
+  auth_provider VARCHAR(50) DEFAULT 'local',
   is_active     BOOLEAN NOT NULL DEFAULT true,
   created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
 
 -- ============================================
 -- 2. CATEGORIES

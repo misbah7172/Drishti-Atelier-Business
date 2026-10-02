@@ -73,6 +73,36 @@ const BANNER_PRESETS = {
       title: 'Handcrafted Atelier Series',
     },
   ],
+  shop: [
+    {
+      id: 'shop-slide-1',
+      image: '/images/banner-acetate.jpg',
+      alt: 'Drishti Atelier — Sculpted Acetate Collection',
+      link: '/shop?material=Acetate',
+      title: 'Sculpted Acetate Eyewear Archive',
+    },
+    {
+      id: 'shop-slide-2',
+      image: '/images/banner-titanium.jpg',
+      alt: 'Drishti Atelier — Minimalist Japanese Beta Titanium Eyewear',
+      link: '/shop?material=Titanium',
+      title: 'Japanese Beta Titanium Architecture',
+    },
+    {
+      id: 'shop-slide-3',
+      image: '/images/banner-sunglasses.jpg',
+      alt: 'Drishti Atelier — Polarized Sunwear Collection',
+      link: '/shop?category=sunglasses',
+      title: 'Polarized Sunwear Collection',
+    },
+    {
+      id: 'shop-slide-4',
+      image: '/images/banner-screen.jpg',
+      alt: 'Drishti Atelier — Blue Light Eye-Shield',
+      link: '/shop?category=blue-light-glasses',
+      title: 'Digital Eye-Shield Collection',
+    },
+  ],
 };
 
 export default function SlideBanner({
