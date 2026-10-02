@@ -73,14 +73,15 @@ If you prefer to configure each service individually in the Render dashboard:
 
 ### Step 2: Deploy the Client (Static Site)
 
-1. In Render Dashboard, click **New +** > **Static Site**.
+1. In Render Dashboard, click **New +** > **Static Site** *(Recommended: Static Sites are 100% free forever, do not count against Web Service hours, and never sleep!)*.
+   > **Note**: If you created it as a **Web Service** instead of a **Static Site**, set **Start Command** to `npm start` (or `node serve.js`). It will automatically serve `dist/` on `0.0.0.0:$PORT` without timing out!
 2. Connect your repository: `Drishti-Atelier-Business`.
-3. Configure the static site settings:
+3. Configure the settings:
    - **Name**: `drishti-web`
    - **Branch**: `develop`
    - **Root Directory**: `client`
    - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
+   - **Publish Directory**: `dist` (if using Static Site)
 4. Under **Redirects/Rewrites**:
    - The repository includes [`client/public/_redirects`](../client/public/_redirects) which Vite automatically bundles into `dist/`.
    - You can also add a rewrite rule in the dashboard:
