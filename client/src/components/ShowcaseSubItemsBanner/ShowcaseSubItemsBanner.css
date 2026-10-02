@@ -6,7 +6,7 @@
 .showcase-subitems-section {
   position: relative;
   width: 100%;
-  padding: 40px 0 20px;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,21 +20,16 @@
   max-width: 1500px;
   position: relative;
   margin-inline: auto;
-  padding-inline: 16px;
-}
-
-@media (min-width: 1532px) {
-  .showcase-subitems-container {
-    padding-inline: 0;
-  }
+  padding: 0;
 }
 
 .showcase-subitems-wrapper {
   position: relative;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
+  border: none;
 }
 
 /* ==========================================================================
@@ -244,7 +239,11 @@
    ========================================================================== */
 @media (max-width: 991px) {
   .showcase-subitems-section {
-    padding: 24px 0 16px;
+    padding: 0;
+  }
+
+  .showcase-subitems-container {
+    padding: 0;
   }
 
   .showcase-hero-banner {
