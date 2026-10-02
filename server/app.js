@@ -30,6 +30,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ------------------------------------
+// Root & OAuth Redirect Handler
+// ------------------------------------
+app.get('/', (req, res, next) => {
+  if (req.query.code || req.query.error) {
+    const authController = require('./controllers/authController');
+    return authController.handleGoogleRedirect(req, res, next);
+  }
+  res.json({
+    status: 'ok',
+    message: 'Drishti API is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
+// ------------------------------------
 // Health Check
 // ------------------------------------
 app.get('/api/health', (req, res) => {
