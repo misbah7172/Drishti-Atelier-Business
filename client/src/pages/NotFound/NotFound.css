@@ -3,6 +3,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient glow behind 404 */
+.not-found-page::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(249,125,1,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .not-found-content {
@@ -11,24 +24,42 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .not-found-code {
+  font-family: var(--font-heading);
   font-size: 8rem;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.08em;
+  color: #F97D01;
+  text-shadow: 0 0 80px rgba(249,125,1,0.15);
 }
 
 .not-found-title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.not-found-tagline {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #444;
 }
 
 .not-found-desc {
-  color: var(--color-muted-gray);
-  font-size: 1rem;
+  color: #777;
+  font-size: 0.88rem;
   max-width: 400px;
+  line-height: 1.6;
 }
 
 .not-found-actions {

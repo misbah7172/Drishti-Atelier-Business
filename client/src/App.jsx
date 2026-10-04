@@ -55,6 +55,13 @@ import ManageCategories from './pages/Admin/Categories/ManageCategories';
 import ManageCoupons from './pages/Admin/Coupons/ManageCoupons';
 import ManageReviews from './pages/Admin/Reviews/ManageReviews';
 
+// Public Pages (Phase 10)
+import About from './pages/About/About';
+import Contact from './pages/Contact/Contact';
+import FAQ from './pages/FAQ/FAQ';
+import Privacy from './pages/Privacy/Privacy';
+import Terms from './pages/Terms/Terms';
+
 export default function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -95,11 +102,11 @@ export default function App() {
                 <Route index element={<Home />} />
                 <Route path="shop" element={<Shop />} />
                 <Route path="product/:id" element={<ProductDetail />} />
-                <Route path="about" element={<PlaceholderPage title="About Us" phase={10} />} />
-                <Route path="contact" element={<PlaceholderPage title="Contact Us" phase={10} />} />
-                <Route path="faq" element={<PlaceholderPage title="FAQ" phase={10} />} />
-                <Route path="privacy" element={<PlaceholderPage title="Privacy Policy" phase={10} />} />
-                <Route path="terms" element={<PlaceholderPage title="Terms & Conditions" phase={10} />} />
+                <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="faq" element={<FAQ />} />
+                <Route path="privacy" element={<Privacy />} />
+                <Route path="terms" element={<Terms />} />
 
                 {/* Auth Routes (Phase 3) */}
                 <Route path="login" element={<Login />} />

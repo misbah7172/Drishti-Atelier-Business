@@ -87,6 +87,7 @@ app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/addresses', require('./routes/addresses'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api', require('./routes/public'));
 
 // ------------------------------------
 // 404 Handler

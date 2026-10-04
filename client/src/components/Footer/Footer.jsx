@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   HiOutlineEnvelope,
   HiOutlineMapPin,
   HiArrowRight,
 } from 'react-icons/hi2';
 import { FaInstagram, FaXTwitter } from 'react-icons/fa6';
+import api from '../../services/api';
 import './Footer.css';
 
 const shopLinks = [
@@ -34,6 +37,20 @@ const legalLinks = [
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [nlEmail, setNlEmail] = useState('');
+  const [nlSending, setNlSending] = useState(false);
+
+  const handleNewsletter = async (e) => {
+    e.preventDefault();
+    if (!nlEmail) return;
+    setNlSending(true);
+    try {
+      await api.post('/newsletter', { email: nlEmail });
+      toast.success('Subscribed!', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } });
+      setNlEmail('');
+    } catch (err) { toast.error(err.response?.data?.message || 'Failed'); }
+    finally { setNlSending(false); }
+  };
 
   return (
     <footer className="footer-editorial" id="main-footer">
@@ -115,19 +132,22 @@ export default function Footer() {
             <p className="footer-newsletter-sub">
               Receive private invitations to limited archive releases.
             </p>
-            <form className="footer-minimal-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="footer-minimal-form" onSubmit={handleNewsletter}>
               <input
                 type="email"
                 placeholder="Email address..."
                 className="footer-minimal-input"
                 id="footer-email-input"
                 required
+                value={nlEmail}
+                onChange={(e) => setNlEmail(e.target.value)}
               />
               <button
                 type="submit"
                 className="footer-submit-arrow"
                 id="footer-email-submit"
                 aria-label="Subscribe to dispatches"
+                disabled={nlSending}
               >
                 <HiArrowRight size={16} />
               </button>
