@@ -11,6 +11,7 @@ import {
 } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
 import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
+import './Auth.css';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -31,51 +32,35 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errorMessage) setErrorMessage('');
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrorMessage('');
   };
 
-  // Password strength calculation
-  const calculateStrength = (pwd) => {
-    if (!pwd) return { score: 0, label: '', color: 'bg-stone-700' };
+  // Password strength calculator
+  const getPasswordStrength = (pwd) => {
+    if (!pwd) return { score: 0, label: '', color: '' };
     let score = 0;
-    if (pwd.length >= 6) score += 1;
-    if (pwd.length >= 8) score += 1;
-    if (/[A-Z]/.test(pwd)) score += 1;
-    if (/[0-9]/.test(pwd)) score += 1;
-    if (/[^A-Za-z0-9]/.test(pwd)) score += 1;
-
-    if (score <= 2) return { score: 1, label: 'Standard', color: 'bg-orange-500' };
-    if (score <= 4) return { score: 2, label: 'Secure', color: 'bg-yellow-400' };
-    return { score: 3, label: 'Atelier Vault Grade', color: 'bg-[#F97D01]' };
+    if (pwd.length >= 6) score++;
+    if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
+    if (/\d/.test(pwd) && /[^A-Za-z0-9]/.test(pwd)) score++;
+    const labels = ['', 'Weak', 'Good', 'Strong'];
+    const colors = ['', '#ef4444', '#F97D01', '#22c55e'];
+    return { score, label: labels[score], color: colors[score] };
   };
 
-  const strength = calculateStrength(formData.password);
+  const strength = getPasswordStrength(formData.password);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
 
-    // Validation
-    if (!formData.name.trim()) {
-      setErrorMessage('Full name is required.');
-      return;
-    }
-
-    if (formData.name.trim().length < 2) {
-      setErrorMessage('Name must be at least 2 characters.');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
-      setErrorMessage('Please provide a valid email address.');
+    if (!formData.name.trim() || !formData.email.trim() || !formData.password) {
+      setErrorMessage('Name, email, and passcode are required.');
       return;
     }
 
     if (formData.password.length < 6) {
-      setErrorMessage('Passcode must be at least 6 characters long.');
+      setErrorMessage('Passcode must be at least 6 characters.');
       return;
     }
 
@@ -119,49 +104,42 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-16 sm:py-24 bg-[#070707] text-white">
-      <div className="w-full max-w-md">
+    <div className="auth-page" id="register-view">
+      <div className="auth-container">
         {/* Header */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
-            <img src="/logo.svg" alt="Drishti" className="w-8 h-8 opacity-90 group-hover:opacity-100 transition-opacity" />
-            <span className="font-heading tracking-[0.25em] text-lg font-bold text-white">
-              DRISHTI <span className="text-[#F97D01] text-xs font-normal">ATELIER</span>
+        <div className="auth-header">
+          <Link to="/" className="auth-brand-link">
+            <img src="/logo.svg" alt="Drishti" className="auth-brand-emblem" />
+            <span className="auth-brand-name">
+              DRISHTI <span className="auth-brand-tag">ATELIER</span>
             </span>
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-light tracking-wide text-white">
-            Client Registration
-          </h1>
-          <p className="text-xs text-stone-400 uppercase tracking-widest mt-2">
-            Establish your personal patron profile & bespoke records
-          </p>
+          <h1 className="auth-title">Client Registration</h1>
+          <p className="auth-subtitle">Establish your personal patron profile & bespoke records</p>
         </div>
 
         {/* Card */}
-        <div className="bg-[#0E0E0E] border border-[#222] p-6 sm:p-8 rounded-lg shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#F97D01] to-transparent opacity-80" />
+        <div className="auth-card">
+          <div className="auth-card-accent" />
 
           {/* Error Banner */}
           {errorMessage && (
-            <div className="mb-6 p-3 bg-red-950/40 border border-red-800/60 rounded text-red-200 text-xs flex items-start gap-2">
-              <span className="text-red-400 font-bold">!</span>
+            <div className="auth-error-banner">
+              <span className="auth-error-icon">!</span>
               <span>{errorMessage}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          <form onSubmit={handleSubmit} className="auth-form" noValidate>
             {/* Full Name */}
             <div>
-              <label
-                htmlFor="register-name"
-                className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
-              >
+              <label htmlFor="register-name" className="auth-field-label">
                 Full Name *
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
+              <div className="auth-input-wrap">
+                <span className="auth-input-icon">
                   <HiOutlineUser size={17} />
-                </div>
+                </span>
                 <input
                   id="register-name"
                   name="name"
@@ -171,23 +149,20 @@ export default function Register() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="e.g. Liam Sterling"
-                  className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-4 text-sm text-white placeholder-stone-600 transition-colors outline-none"
+                  className="auth-input"
                 />
               </div>
             </div>
 
             {/* Email Address */}
             <div>
-              <label
-                htmlFor="register-email"
-                className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
-              >
+              <label htmlFor="register-email" className="auth-field-label">
                 Email Address *
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
+              <div className="auth-input-wrap">
+                <span className="auth-input-icon">
                   <HiOutlineEnvelope size={17} />
-                </div>
+                </span>
                 <input
                   id="register-email"
                   name="email"
@@ -197,23 +172,20 @@ export default function Register() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="client@drishtiatelier.com"
-                  className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-4 text-sm text-white placeholder-stone-600 transition-colors outline-none"
+                  className="auth-input"
                 />
               </div>
             </div>
 
             {/* Phone Number */}
             <div>
-              <label
-                htmlFor="register-phone"
-                className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
-              >
-                Phone Number <span className="text-stone-500 text-[10px] lowercase">(optional)</span>
+              <label htmlFor="register-phone" className="auth-field-label">
+                Phone Number <span style={{ color: '#555', fontSize: '0.62rem' }}>(optional)</span>
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
+              <div className="auth-input-wrap">
+                <span className="auth-input-icon">
                   <HiOutlinePhone size={17} />
-                </div>
+                </span>
                 <input
                   id="register-phone"
                   name="phone"
@@ -222,23 +194,20 @@ export default function Register() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+880 1700 000000"
-                  className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-4 text-sm text-white placeholder-stone-600 transition-colors outline-none"
+                  className="auth-input"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="register-password"
-                className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
-              >
-                Passcode * <span className="text-stone-500 text-[10px] lowercase">(min 6 characters)</span>
+              <label htmlFor="register-password" className="auth-field-label">
+                Passcode * <span style={{ color: '#555', fontSize: '0.62rem' }}>(min 6 characters)</span>
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
+              <div className="auth-input-wrap">
+                <span className="auth-input-icon">
                   <HiOutlineLockClosed size={17} />
-                </div>
+                </span>
                 <input
                   id="register-password"
                   name="password"
@@ -248,12 +217,13 @@ export default function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••••••"
-                  className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-11 text-sm text-white placeholder-stone-600 transition-colors outline-none"
+                  className="auth-input"
+                  style={{ paddingRight: '2.75rem' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-500 hover:text-stone-300 transition-colors"
+                  className="auth-input-right-btn"
                   aria-label={showPassword ? 'Hide passcode' : 'Show passcode'}
                 >
                   {showPassword ? <HiOutlineEyeSlash size={17} /> : <HiOutlineEye size={17} />}
@@ -262,25 +232,22 @@ export default function Register() {
 
               {/* Password Strength Indicator */}
               {formData.password && (
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="flex-1 h-1 bg-[#222] rounded-full overflow-hidden flex gap-1">
-                    <div
-                      className={`h-full transition-all duration-300 ${
-                        strength.score >= 1 ? strength.color : 'bg-transparent'
-                      } ${strength.score >= 1 ? 'w-1/3' : 'w-0'}`}
-                    />
-                    <div
-                      className={`h-full transition-all duration-300 ${
-                        strength.score >= 2 ? strength.color : 'bg-transparent'
-                      } ${strength.score >= 2 ? 'w-1/3' : 'w-0'}`}
-                    />
-                    <div
-                      className={`h-full transition-all duration-300 ${
-                        strength.score >= 3 ? strength.color : 'bg-transparent'
-                      } ${strength.score >= 3 ? 'w-1/3' : 'w-0'}`}
-                    />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+                  <div style={{ flex: 1, height: '3px', background: '#222', borderRadius: '3px', display: 'flex', gap: '2px', overflow: 'hidden' }}>
+                    {[1, 2, 3].map((level) => (
+                      <div
+                        key={level}
+                        style={{
+                          flex: 1,
+                          height: '100%',
+                          borderRadius: '3px',
+                          background: strength.score >= level ? strength.color : 'transparent',
+                          transition: 'background 0.3s',
+                        }}
+                      />
+                    ))}
                   </div>
-                  <span className="text-[10px] text-stone-400 font-mono tracking-wider uppercase">
+                  <span style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: '#888', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                     {strength.label}
                   </span>
                 </div>
@@ -289,16 +256,13 @@ export default function Register() {
 
             {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="register-confirm-password"
-                className="block text-[11px] uppercase tracking-wider text-stone-300 font-medium mb-1.5"
-              >
+              <label htmlFor="register-confirm-password" className="auth-field-label">
                 Confirm Passcode *
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
+              <div className="auth-input-wrap">
+                <span className="auth-input-icon">
                   <HiOutlineLockClosed size={17} />
-                </div>
+                </span>
                 <input
                   id="register-confirm-password"
                   name="confirmPassword"
@@ -308,12 +272,13 @@ export default function Register() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="••••••••••••"
-                  className="w-full bg-[#151515] border border-[#2a2a2a] focus:border-[#F97D01] focus:ring-1 focus:ring-[#F97D01] rounded py-2.5 pl-10 pr-11 text-sm text-white placeholder-stone-600 transition-colors outline-none"
+                  className="auth-input"
+                  style={{ paddingRight: '2.75rem' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-500 hover:text-stone-300 transition-colors"
+                  className="auth-input-right-btn"
                   aria-label={showConfirmPassword ? 'Hide passcode' : 'Show passcode'}
                 >
                   {showConfirmPassword ? <HiOutlineEyeSlash size={17} /> : <HiOutlineEye size={17} />}
@@ -322,39 +287,32 @@ export default function Register() {
             </div>
 
             {/* Terms checkbox */}
-            <div className="flex items-start pt-1">
+            <div className="auth-remember-row" style={{ alignItems: 'flex-start' }}>
               <input
                 id="agree-terms"
                 type="checkbox"
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
-                className="w-4 h-4 mt-0.5 rounded bg-[#151515] border-[#2a2a2a] text-[#F97D01] focus:ring-[#F97D01] focus:ring-offset-0 cursor-pointer"
+                className="auth-checkbox"
+                style={{ marginTop: '2px' }}
               />
-              <label
-                htmlFor="agree-terms"
-                className="ml-2.5 text-[11px] text-stone-400 cursor-pointer select-none leading-relaxed"
-              >
+              <label htmlFor="agree-terms" className="auth-remember-label" style={{ fontSize: '0.7rem', lineHeight: 1.5 }}>
                 I agree to the{' '}
-                <Link to="/terms" className="text-white hover:text-[#F97D01] underline underline-offset-2">
+                <Link to="/terms" style={{ color: '#fff', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
                   Atelier Terms
                 </Link>{' '}
                 and{' '}
-                <Link to="/privacy" className="text-white hover:text-[#F97D01] underline underline-offset-2">
+                <Link to="/privacy" style={{ color: '#fff', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
                   Privacy Policy
-                </Link>
-                .
+                </Link>.
               </label>
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-[#F97D01] hover:bg-[#E06F00] active:scale-[0.99] text-black font-semibold text-xs uppercase tracking-widest py-3.5 px-4 rounded transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#F97D01]/10 mt-3"
-            >
+            <button type="submit" disabled={submitting} className="auth-submit-btn">
               {submitting ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <div className="auth-spinner" />
                   <span>Enrolling...</span>
                 </>
               ) : (
@@ -366,14 +324,10 @@ export default function Register() {
             </button>
           </form>
 
-          {/* Luxury Divider */}
-          <div className="relative my-6 text-center">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#222]" />
-            </div>
-            <span className="relative bg-[#0E0E0E] px-3 text-[10px] text-stone-500 uppercase tracking-widest font-mono">
-              or enroll with
-            </span>
+          {/* Divider */}
+          <div className="auth-divider">
+            <div className="auth-divider-line" />
+            <span className="auth-divider-text">or enroll with</span>
           </div>
 
           {/* Google Sign-In Button */}
@@ -387,12 +341,9 @@ export default function Register() {
         </div>
 
         {/* Login Footer Link */}
-        <p className="text-center text-xs text-stone-400 mt-6">
+        <p className="auth-footer">
           Already have an Atelier dossier?{' '}
-          <Link
-            to="/login"
-            className="text-white hover:text-[#F97D01] font-medium underline underline-offset-4 decoration-[#F97D01]/50 hover:decoration-[#F97D01] transition-colors"
-          >
+          <Link to="/login" className="auth-footer-link">
             Sign in to your account
           </Link>
         </p>

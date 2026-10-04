@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   HiOutlineShoppingBag,
   HiOutlineHeart,
@@ -29,6 +29,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { user, isAuthenticated, logout, isAdmin } = useAuth();
   const { itemCount: cartCount } = useCart();
@@ -96,19 +97,25 @@ export default function Navbar() {
 
         {/* Center: Editorial Categories */}
         <nav className="navbar-links" id="desktop-nav" aria-label="Main Navigation">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `navbar-nav-link ${isActive ? 'nav-link-active' : ''}`
-              }
-              end={link.end}
-            >
-              <span className="nav-link-text">{link.label}</span>
-              <span className="nav-link-indicator" aria-hidden="true" />
-            </NavLink>
-          ))}
+          {navLinks.map((link) => {
+            // Custom active detection: compare both pathname and search params
+            const linkUrl = new URL(link.to, window.location.origin);
+            const isActive = link.end
+              ? location.pathname === linkUrl.pathname && !linkUrl.search
+              : location.pathname === linkUrl.pathname &&
+                (!linkUrl.search || location.search === linkUrl.search);
+
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`navbar-nav-link ${isActive ? 'nav-link-active' : ''}`}
+              >
+                <span className="nav-link-text">{link.label}</span>
+                <span className="nav-link-indicator" aria-hidden="true" />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right: Actions */}
@@ -246,37 +253,35 @@ export default function Navbar() {
 
           {/* Navigation Links */}
           <nav className="mobile-nav-links">
-            {navLinks.map((link, idx) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className="mobile-editorial-link"
-                style={{ '--delay': `${idx * 0.05 + 0.06}s` }}
-                end={link.end}
-                onClick={closeMobile}
-              >
-                <span className="mobile-link-num">0{idx + 1}</span>
-                <span className="mobile-link-title">{link.label}</span>
-              </NavLink>
-            ))}
-            <NavLink
-              to="/about"
-              className="mobile-editorial-link"
-              style={{ '--delay': '0.32s' }}
-              onClick={closeMobile}
-            >
-              <span className="mobile-link-num">05</span>
-              <span className="mobile-link-title">The Craft</span>
-            </NavLink>
-            <NavLink
+            {navLinks.map((link, idx) => {
+              const linkUrl = new URL(link.to, window.location.origin);
+              const isActive = link.end
+                ? location.pathname === linkUrl.pathname && !linkUrl.search
+                : location.pathname === linkUrl.pathname &&
+                  (!linkUrl.search || location.search === linkUrl.search);
+
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`mobile-editorial-link ${isActive ? 'active' : ''}`}
+                  style={{ '--delay': `${idx * 0.05 + 0.06}s` }}
+                  onClick={closeMobile}
+                >
+                  <span className="mobile-link-num">0{idx + 1}</span>
+                  <span className="mobile-link-title">{link.label}</span>
+                </Link>
+              );
+            })}
+            <Link
               to="/contact"
-              className="mobile-editorial-link"
+              className={`mobile-editorial-link ${location.pathname === '/contact' ? 'active' : ''}`}
               style={{ '--delay': '0.38s' }}
               onClick={closeMobile}
             >
               <span className="mobile-link-num">06</span>
               <span className="mobile-link-title">Bespoke Inquiries</span>
-            </NavLink>
+            </Link>
           </nav>
 
           {/* Quick Commerce Action Tiles: Cart, Wishlist, Account */}
