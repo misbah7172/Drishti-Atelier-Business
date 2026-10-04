@@ -3,6 +3,7 @@ import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineClock } fr
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 import '../PublicPages.css';
+import SEO from '../../components/SEO/SEO';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -23,6 +24,7 @@ export default function Contact() {
 
   return (
     <div className="public-page" id="contact-page">
+      <SEO title="Contact Us" description="Get in touch with Drishti Atelier. Visit our showroom or reach us by phone, email." />
       <div className="public-hero">
         <h1 className="public-hero-title">Contact <span className="public-hero-accent">Us</span></h1>
         <p className="public-hero-sub">Have a question or need assistance? Our team is here to help.</p>
@@ -53,3 +55,4 @@ export default function Contact() {
     </div>
   );
 }
+

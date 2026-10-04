@@ -271,10 +271,47 @@ async function toggleReviewVisibility(req, res, next) {
   } catch (e) { next(e); }
 }
 
+// ============ SITE SETTINGS ============
+
+async function getSettings(req, res, next) {
+  try {
+    const r = await query('SELECT key, value, category, label FROM site_settings ORDER BY category, key');
+    // Group by category
+    const grouped = {};
+    r.rows.forEach(s => {
+      if (!grouped[s.category]) grouped[s.category] = [];
+      grouped[s.category].push(s);
+    });
+    res.json({ status: 'success', data: grouped });
+  } catch (e) { next(e); }
+}
+
+async function updateSettings(req, res, next) {
+  try {
+    const { settings } = req.body; // { key: value, key: value, ... }
+    if (!settings || typeof settings !== 'object') return res.status(400).json({ status: 'fail', message: 'Settings object required.' });
+    const keys = Object.keys(settings);
+    for (const key of keys) {
+      await query('UPDATE site_settings SET value = $1, updated_at = NOW() WHERE key = $2', [String(settings[key]), key]);
+    }
+    res.json({ status: 'success', message: `${keys.length} settings updated.` });
+  } catch (e) { next(e); }
+}
+
+async function getPublicSettings(req, res, next) {
+  try {
+    const r = await query("SELECT key, value FROM site_settings WHERE category IN ('general', 'seo', 'social', 'contact')");
+    const obj = {};
+    r.rows.forEach(s => { obj[s.key] = s.value; });
+    res.json({ status: 'success', data: obj });
+  } catch (e) { next(e); }
+}
+
 module.exports = {
   getDashboardStats,
   getUsers, toggleUserStatus,
   getOrders, updateOrderStatus,
   getCoupons, createCoupon, updateCoupon, deleteCoupon,
   getReviews, deleteReview, toggleReviewVisibility,
+  getSettings, updateSettings, getPublicSettings,
 };

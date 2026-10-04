@@ -1,4 +1,5 @@
 import '../PublicPages.css';
+import SEO from '../../components/SEO/SEO';
 
 const VALUES = [
   { icon: '🔍', title: 'Curated Selection', desc: 'Every frame is hand-picked by our style experts for quality, design, and craftsmanship.' },
@@ -12,6 +13,7 @@ const VALUES = [
 export default function About() {
   return (
     <div className="public-page" id="about-page">
+      <SEO title="About Us" description="Learn about Drishti Atelier — Bangladesh's premier destination for luxury eyewear." />
       <div className="public-hero">
         <h1 className="public-hero-title">About <span className="public-hero-accent">Drishti</span></h1>
         <p className="public-hero-sub">
@@ -53,3 +55,4 @@ export default function About() {
     </div>
   );
 }
+

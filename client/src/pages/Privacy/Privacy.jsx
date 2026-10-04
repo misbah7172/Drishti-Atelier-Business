@@ -1,8 +1,10 @@
 import '../PublicPages.css';
+import SEO from '../../components/SEO/SEO';
 
 export default function Privacy() {
   return (
     <div className="public-page" id="privacy-page">
+      <SEO title="Privacy Policy" description="Read the Drishti Atelier privacy policy — how we collect, use, and protect your data." />
       <div className="public-hero">
         <h1 className="public-hero-title">Privacy <span className="public-hero-accent">Policy</span></h1>
         <p className="public-hero-sub">Your privacy matters to us. Here's how we handle your data.</p>
@@ -48,3 +50,4 @@ export default function Privacy() {
     </div>
   );
 }
+

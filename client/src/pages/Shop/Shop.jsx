@@ -4,6 +4,7 @@ import { HiOutlineMagnifyingGlass, HiXMark, HiAdjustmentsHorizontal, HiChevronLe
 import ProductCard from '../../components/ProductCard/ProductCard';
 import SlideBanner from '../../components/SlideBanner/SlideBanner';
 import { fetchProducts, fetchCategories } from '../../services/productService';
+import SEO from '../../components/SEO/SEO';
 import './Shop.css';
 
 const SHAPES = ['all', 'Aviator', 'Rectangle', 'Round', 'Cat Eye', 'Wayfarer', 'Oval', 'Square', 'Browline'];
@@ -177,6 +178,7 @@ export default function Shop() {
 
   return (
     <div className="shop-page" id="shop-catalog">
+      <SEO title="Shop Eyewear" description="Browse our curated collection of luxury sunglasses, optical frames, and blue light glasses." />
       {/* 1500x500 (3:1) Sliding Banner Section */}
       <SlideBanner
         id="shop-catalog-banner"
