@@ -14,7 +14,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174')
   .split(',')
   .map((url) => url.trim().replace(/\/$/, ''));
 
@@ -24,6 +24,10 @@ app.use(
       // Allow requests with no origin (mobile apps, curl, uptime/health checks)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      // Allow any localhost or 127.0.0.1 port (for local development)
+      if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
       }
       // Allow any onrender.com or vercel.app deployment
@@ -80,8 +84,14 @@ app.get('/health', healthCheckHandler);
 app.get('/api/health', healthCheckHandler);
 
 // Rate limiters
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 15, message: { status: 'fail', message: 'Too many attempts. Please try again in 15 minutes.' }, standardHeaders: true, legacyHeaders: false });
-const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'development' ? 500 : 30,
+  message: { status: 'fail', message: 'Too many attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500, standardHeaders: true, legacyHeaders: false });
 
 // API Routes
 app.use('/api/auth', authLimiter, require('./routes/auth'));

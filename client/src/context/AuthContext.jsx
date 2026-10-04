@@ -67,7 +67,8 @@ export function AuthProvider({ children }) {
         localStorage.setItem('token', receivedToken);
         setToken(receivedToken);
         setUser(loggedInUser);
-        toast.success(`Welcome back, ${loggedInUser.name.split(' ')[0]}!`);
+        const displayName = (loggedInUser?.name || loggedInUser?.full_name || 'Client').split(' ')[0];
+        toast.success(`Welcome back, ${displayName}!`);
         return { success: true, user: loggedInUser };
       }
 
