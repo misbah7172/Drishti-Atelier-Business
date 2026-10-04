@@ -406,9 +406,9 @@ GET/DELETE           /api/admin/reviews
 
 ### Deliverables Checklist
 
-- [ ] Every CRUD operation works against the database
-- [ ] Confirmation dialogs for destructive actions
-- [ ] Cannot delete categories with products
+- [x] Every CRUD operation works against the database
+- [x] Confirmation dialogs for destructive actions
+- [x] Cannot delete categories with products
 
 ---
 
