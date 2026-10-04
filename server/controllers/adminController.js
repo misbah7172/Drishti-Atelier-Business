@@ -138,4 +138,143 @@ async function getDashboardStats(req, res, next) {
   }
 }
 
-module.exports = { getDashboardStats };
+// ============ USERS ============
+
+async function getUsers(req, res, next) {
+  try {
+    const { search, role, status, page = 1 } = req.query;
+    const limit = 20; const offset = (page - 1) * limit;
+    let where = [], params = [], idx = 1;
+    if (search) { where.push(`(u.name ILIKE $${idx} OR u.email ILIKE $${idx})`); params.push(`%${search}%`); idx++; }
+    if (role) { where.push(`u.role = $${idx}`); params.push(role); idx++; }
+    if (status === 'active') where.push('u.is_active = true');
+    if (status === 'inactive') where.push('u.is_active = false');
+    const wc = where.length ? 'WHERE ' + where.join(' AND ') : '';
+    const [usersR, countR] = await Promise.all([
+      query(`SELECT u.id, u.name, u.email, u.phone, u.role, u.is_active, u.created_at, (SELECT COUNT(*) FROM orders WHERE user_id = u.id) AS order_count FROM users u ${wc} ORDER BY u.created_at DESC LIMIT $${idx} OFFSET $${idx+1}`, [...params, limit, offset]),
+      query(`SELECT COUNT(*) FROM users u ${wc}`, params),
+    ]);
+    res.json({ status: 'success', data: { users: usersR.rows, total: parseInt(countR.rows[0].count, 10), page: +page, limit } });
+  } catch (e) { next(e); }
+}
+
+async function toggleUserStatus(req, res, next) {
+  try {
+    const r = await query('UPDATE users SET is_active = $1, updated_at = NOW() WHERE id = $2 RETURNING id, name, email, is_active', [req.body.is_active, req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'User not found.' });
+    res.json({ status: 'success', data: r.rows[0] });
+  } catch (e) { next(e); }
+}
+
+// ============ ORDERS ============
+
+async function getOrders(req, res, next) {
+  try {
+    const { search, order_status, payment_status, page = 1 } = req.query;
+    const limit = 20; const offset = (page - 1) * limit;
+    let where = [], params = [], idx = 1;
+    if (search) { where.push(`(o.order_number ILIKE $${idx} OR u.name ILIKE $${idx})`); params.push(`%${search}%`); idx++; }
+    if (order_status) { where.push(`o.order_status = $${idx}`); params.push(order_status); idx++; }
+    if (payment_status) { where.push(`o.payment_status = $${idx}`); params.push(payment_status); idx++; }
+    const wc = where.length ? 'WHERE ' + where.join(' AND ') : '';
+    const [ordersR, countR] = await Promise.all([
+      query(`SELECT o.*, u.name AS customer_name, u.email AS customer_email, (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS items_count FROM orders o JOIN users u ON o.user_id = u.id ${wc} ORDER BY o.created_at DESC LIMIT $${idx} OFFSET $${idx+1}`, [...params, limit, offset]),
+      query(`SELECT COUNT(*) FROM orders o JOIN users u ON o.user_id = u.id ${wc}`, params),
+    ]);
+    res.json({ status: 'success', data: { orders: ordersR.rows, total: parseInt(countR.rows[0].count, 10), page: +page, limit } });
+  } catch (e) { next(e); }
+}
+
+async function updateOrderStatus(req, res, next) {
+  try {
+    const { order_status, payment_status, note } = req.body;
+    if (!order_status && !payment_status) return res.status(400).json({ status: 'fail', message: 'Provide order_status or payment_status.' });
+    let updates = [], params = [], idx = 1;
+    if (order_status) { updates.push(`order_status = $${idx}`); params.push(order_status); idx++; }
+    if (payment_status) { updates.push(`payment_status = $${idx}`); params.push(payment_status); idx++; }
+    updates.push('updated_at = NOW()');
+    const r = await query(`UPDATE orders SET ${updates.join(', ')} WHERE id = $${idx} RETURNING *`, [...params, req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'Order not found.' });
+    if (order_status) await query('INSERT INTO order_status_history (order_id, status, note, changed_by) VALUES ($1, $2, $3, $4)', [req.params.id, order_status, note || `Status updated to ${order_status}`, req.user.id]);
+    res.json({ status: 'success', data: r.rows[0] });
+  } catch (e) { next(e); }
+}
+
+// ============ COUPONS ============
+
+async function getCoupons(req, res, next) {
+  try {
+    const r = await query('SELECT c.*, (SELECT COUNT(*) FROM coupon_usages WHERE coupon_id = c.id) AS usage_count FROM coupons c ORDER BY c.created_at DESC');
+    res.json({ status: 'success', data: r.rows });
+  } catch (e) { next(e); }
+}
+
+async function createCoupon(req, res, next) {
+  try {
+    const { code, description, discount_type, discount_value, max_discount, min_order_amount, usage_limit, expires_at, is_active } = req.body;
+    if (!code || !discount_type || !discount_value) return res.status(400).json({ status: 'fail', message: 'Code, discount_type, and discount_value required.' });
+    const r = await query('INSERT INTO coupons (code, description, discount_type, discount_value, max_discount, min_order_amount, usage_limit, expires_at, is_active) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',
+      [code.toUpperCase(), description||null, discount_type, discount_value, max_discount||null, min_order_amount||0, usage_limit||null, expires_at||null, is_active!==false]);
+    res.status(201).json({ status: 'success', data: r.rows[0] });
+  } catch (e) { if (e.code === '23505') return res.status(400).json({ status: 'fail', message: 'Coupon code exists.' }); next(e); }
+}
+
+async function updateCoupon(req, res, next) {
+  try {
+    const { code, description, discount_type, discount_value, max_discount, min_order_amount, usage_limit, expires_at, is_active } = req.body;
+    const r = await query('UPDATE coupons SET code=$1, description=$2, discount_type=$3, discount_value=$4, max_discount=$5, min_order_amount=$6, usage_limit=$7, expires_at=$8, is_active=$9, updated_at=NOW() WHERE id=$10 RETURNING *',
+      [code?.toUpperCase(), description, discount_type, discount_value, max_discount||null, min_order_amount||0, usage_limit||null, expires_at||null, is_active, req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'Coupon not found.' });
+    res.json({ status: 'success', data: r.rows[0] });
+  } catch (e) { if (e.code === '23505') return res.status(400).json({ status: 'fail', message: 'Coupon code exists.' }); next(e); }
+}
+
+async function deleteCoupon(req, res, next) {
+  try {
+    const r = await query('DELETE FROM coupons WHERE id = $1 RETURNING id', [req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'Coupon not found.' });
+    res.json({ status: 'success', message: 'Coupon deleted.' });
+  } catch (e) { next(e); }
+}
+
+// ============ REVIEWS ============
+
+async function getReviews(req, res, next) {
+  try {
+    const { product_id, rating, page = 1 } = req.query;
+    const limit = 20; const offset = (page - 1) * limit;
+    let where = [], params = [], idx = 1;
+    if (product_id) { where.push(`r.product_id = $${idx}`); params.push(product_id); idx++; }
+    if (rating) { where.push(`r.rating = $${idx}`); params.push(rating); idx++; }
+    const wc = where.length ? 'WHERE ' + where.join(' AND ') : '';
+    const [revR, countR] = await Promise.all([
+      query(`SELECT r.*, u.name AS user_name, p.name AS product_name FROM reviews r JOIN users u ON r.user_id = u.id JOIN products p ON r.product_id = p.id ${wc} ORDER BY r.created_at DESC LIMIT $${idx} OFFSET $${idx+1}`, [...params, limit, offset]),
+      query(`SELECT COUNT(*) FROM reviews r ${wc}`, params),
+    ]);
+    res.json({ status: 'success', data: { reviews: revR.rows, total: parseInt(countR.rows[0].count, 10), page: +page, limit } });
+  } catch (e) { next(e); }
+}
+
+async function deleteReview(req, res, next) {
+  try {
+    const r = await query('DELETE FROM reviews WHERE id = $1 RETURNING id', [req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'Review not found.' });
+    res.json({ status: 'success', message: 'Review deleted.' });
+  } catch (e) { next(e); }
+}
+
+async function toggleReviewVisibility(req, res, next) {
+  try {
+    const r = await query('UPDATE reviews SET is_visible = $1, updated_at = NOW() WHERE id = $2 RETURNING *', [req.body.is_visible, req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ status: 'fail', message: 'Review not found.' });
+    res.json({ status: 'success', data: r.rows[0] });
+  } catch (e) { next(e); }
+}
+
+module.exports = {
+  getDashboardStats,
+  getUsers, toggleUserStatus,
+  getOrders, updateOrderStatus,
+  getCoupons, createCoupon, updateCoupon, deleteCoupon,
+  getReviews, deleteReview, toggleReviewVisibility,
+};

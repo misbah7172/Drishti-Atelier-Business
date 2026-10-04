@@ -45,9 +45,15 @@ import OrderDetail from './pages/Orders/OrderDetail';
 import Profile from './pages/Account/Profile/Profile';
 import Addresses from './pages/Account/Addresses/Addresses';
 
-// Admin (Phase 8)
+// Admin (Phase 8 + 9)
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/Admin/Dashboard/Dashboard';
+import ManageProducts from './pages/Admin/Products/ManageProducts';
+import ManageUsers from './pages/Admin/Users/ManageUsers';
+import ManageOrders from './pages/Admin/Orders/ManageOrders';
+import ManageCategories from './pages/Admin/Categories/ManageCategories';
+import ManageCoupons from './pages/Admin/Coupons/ManageCoupons';
+import ManageReviews from './pages/Admin/Reviews/ManageReviews';
 
 export default function App() {
   return (
@@ -119,15 +125,14 @@ export default function App() {
               <Route element={<AdminRoute />}>
                 <Route path="admin" element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
-                  <Route path="products" element={<PlaceholderPage title="Manage Products" phase={9} />} />
+                  <Route path="products" element={<ManageProducts />} />
                   <Route path="products/new" element={<PlaceholderPage title="Add Product" phase={9} />} />
                   <Route path="products/:id" element={<PlaceholderPage title="Edit Product" phase={9} />} />
-                  <Route path="users" element={<PlaceholderPage title="Manage Users" phase={9} />} />
-                  <Route path="orders" element={<PlaceholderPage title="Manage Orders" phase={9} />} />
-                  <Route path="orders/:id" element={<PlaceholderPage title="Order Details" phase={9} />} />
-                  <Route path="categories" element={<PlaceholderPage title="Manage Categories" phase={9} />} />
-                  <Route path="coupons" element={<PlaceholderPage title="Manage Coupons" phase={9} />} />
-                  <Route path="reviews" element={<PlaceholderPage title="Manage Reviews" phase={9} />} />
+                  <Route path="users" element={<ManageUsers />} />
+                  <Route path="orders" element={<ManageOrders />} />
+                  <Route path="categories" element={<ManageCategories />} />
+                  <Route path="coupons" element={<ManageCoupons />} />
+                  <Route path="reviews" element={<ManageReviews />} />
                 </Route>
               </Route>
 
