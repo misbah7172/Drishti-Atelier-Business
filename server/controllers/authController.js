@@ -316,7 +316,7 @@ const googleClient = new OAuth2Client(
 /**
  * Helper to verify Google ID token, Auth Code, or Access Token
  */
-async function verifyGoogleTokenOrCode({ credential, code, access_token }) {
+async function verifyGoogleTokenOrCode({ credential, code, access_token, redirect_uri }) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
 
   // Option 1: ID token / credential (from Google One Tap or Google Sign-In)
@@ -336,26 +336,60 @@ async function verifyGoogleTokenOrCode({ credential, code, access_token }) {
   }
 
   // Option 2: Auth Code (exchanged for tokens on backend)
+  // @react-oauth/google popup flow requires redirect_uri = 'postmessage'.
+  // Server-side redirect flow requires the actual GOOGLE_REDIRECT_URI.
+  // We try the primary URI first, then fallback to the other.
   if (code) {
-    const { tokens } = await googleClient.getToken({
-      code,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000',
-    });
+    const primaryRedirectUri = redirect_uri || 'postmessage';
+    let tokens;
+
+    try {
+      const res = await googleClient.getToken({
+        code,
+        redirect_uri: primaryRedirectUri,
+      });
+      tokens = res.tokens;
+    } catch (primaryErr) {
+      console.warn(`Google token exchange with redirect_uri "${primaryRedirectUri}" failed:`, primaryErr.message);
+
+      const fallbackUri = primaryRedirectUri === 'postmessage'
+        ? (process.env.GOOGLE_REDIRECT_URI || 'https://drishti-atelier-business.onrender.com')
+        : 'postmessage';
+
+      try {
+        const res = await googleClient.getToken({
+          code,
+          redirect_uri: fallbackUri,
+        });
+        tokens = res.tokens;
+      } catch (fallbackErr) {
+        console.error('All Google token exchange attempts failed:', {
+          primary: primaryErr.message,
+          fallback: fallbackErr.message,
+        });
+        throw new Error(`Google token exchange failed: ${primaryErr.message}`);
+      }
+    }
+
     googleClient.setCredentials(tokens);
 
     if (tokens.id_token) {
-      const ticket = await googleClient.verifyIdToken({
-        idToken: tokens.id_token,
-        audience: clientId,
-      });
-      const payload = ticket.getPayload();
-      return {
-        email: payload.email,
-        name: payload.name || payload.given_name || payload.email.split('@')[0],
-        picture: payload.picture,
-        googleId: payload.sub,
-        emailVerified: payload.email_verified,
-      };
+      try {
+        const ticket = await googleClient.verifyIdToken({
+          idToken: tokens.id_token,
+          audience: clientId,
+        });
+        const payload = ticket.getPayload();
+        return {
+          email: payload.email,
+          name: payload.name || payload.given_name || payload.email.split('@')[0],
+          picture: payload.picture,
+          googleId: payload.sub,
+          emailVerified: payload.email_verified,
+        };
+      } catch (verifyErr) {
+        console.warn('verifyIdToken failed, falling back to access_token:', verifyErr.message);
+      }
     }
 
     if (tokens.access_token) {
@@ -398,7 +432,7 @@ async function verifyGoogleTokenOrCode({ credential, code, access_token }) {
  */
 async function googleAuth(req, res, next) {
   try {
-    const { credential, code, access_token } = req.body;
+    const { credential, code, access_token, redirect_uri } = req.body;
 
     if (!credential && !code && !access_token) {
       return res.status(400).json({
@@ -407,7 +441,7 @@ async function googleAuth(req, res, next) {
       });
     }
 
-    const googleUser = await verifyGoogleTokenOrCode({ credential, code, access_token });
+    const googleUser = await verifyGoogleTokenOrCode({ credential, code, access_token, redirect_uri });
 
     if (!googleUser || !googleUser.email) {
       return res.status(401).json({
@@ -525,7 +559,10 @@ async function handleGoogleRedirect(req, res, next) {
       return res.redirect(`${clientUrl}/auth/callback?error=no_code_provided`);
     }
 
-    const googleUser = await verifyGoogleTokenOrCode({ code });
+    const googleUser = await verifyGoogleTokenOrCode({
+      code,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI || 'https://drishti-atelier-business.onrender.com',
+    });
 
     if (!googleUser || !googleUser.email) {
       return res.redirect(`${clientUrl}/auth/callback?error=google_auth_failed`);
