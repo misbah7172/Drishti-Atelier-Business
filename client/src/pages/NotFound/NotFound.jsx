@@ -6,10 +6,11 @@ export default function NotFound() {
   return (
     <div className="not-found-page">
       <div className="container not-found-content">
-        <span className="not-found-code neon-text">404</span>
+        <span className="not-found-code">404</span>
         <h1 className="not-found-title">Page Not Found</h1>
+        <p className="not-found-tagline">The frame you seek is not in our collection</p>
         <p className="not-found-desc">
-          Sorry, the page you're looking for doesn't exist or has been moved.
+          The page you're looking for doesn't exist or has been moved. Let us guide you back to our curated collection.
         </p>
         <div className="not-found-actions">
           <Link to="/" className="btn btn-primary" id="not-found-home">
