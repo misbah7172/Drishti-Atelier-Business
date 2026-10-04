@@ -22,26 +22,20 @@ export default function Cart() {
     if (newQty < 1) return;
     const result = await updateQuantity(item.id, newQty);
     if (!result.success) {
-      toast.error(result.message || 'Could not update quantity', {
-        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-      });
+      toast.error(result.message || 'Could not update quantity');
     }
   };
 
   const handleRemove = async (item) => {
     const result = await removeItem(item.id);
     if (result.success) {
-      toast.success(`Removed ${item.name}`, {
-        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-      });
+      toast.success(`Removed ${item.name}`);
     }
   };
 
   const handleClearCart = async () => {
     await clearCart();
-    toast.success('Cart cleared', {
-      style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-    });
+    toast.success('Cart cleared');
   };
 
   // Loading

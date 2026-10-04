@@ -77,9 +77,7 @@ export default function Wishlist() {
 
   const handleRemove = async (productId, name) => {
     await toggleWishlist(productId);
-    toast.success(`Removed ${name} from wishlist`, {
-      style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-    });
+    toast.success(`Removed ${name} from wishlist`);
   };
 
   const handleMoveToCart = async (item) => {
@@ -96,14 +94,9 @@ export default function Wishlist() {
 
     if (result.success) {
       await toggleWishlist(item.product_id);
-      toast.success(`Moved ${item.name} to your bag`, {
-        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-        iconTheme: { primary: '#F97D01', secondary: '#050505' },
-      });
+      toast.success(`Moved ${item.name} to your bag`);
     } else {
-      toast.error(result.message || 'Could not add to cart', {
-        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-      });
+      toast.error(result.message || 'Could not add to cart');
     }
   };
 
