@@ -1,8 +1,10 @@
 import '../PublicPages.css';
+import SEO from '../../components/SEO/SEO';
 
 export default function Terms() {
   return (
     <div className="public-page" id="terms-page">
+      <SEO title="Terms and Conditions" description="Terms and conditions for using Drishti Atelier — orders, shipping, returns, and more." />
       <div className="public-hero">
         <h1 className="public-hero-title">Terms & <span className="public-hero-accent">Conditions</span></h1>
         <p className="public-hero-sub">Please read these terms carefully before using our services.</p>
@@ -50,3 +52,4 @@ export default function Terms() {
     </div>
   );
 }
+

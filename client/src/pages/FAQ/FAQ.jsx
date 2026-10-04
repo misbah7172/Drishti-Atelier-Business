@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi2';
 import '../PublicPages.css';
+import SEO from '../../components/SEO/SEO';
 
 const FAQS = [
   { q: 'How do I know the eyewear is authentic?', a: 'Every product at Drishti Atelier is sourced directly from authorized distributors and brand partners. We guarantee 100% authenticity on all items, and each order comes with a certificate of authenticity where applicable.' },
@@ -20,6 +21,7 @@ export default function FAQ() {
 
   return (
     <div className="public-page" id="faq-page">
+      <SEO title="FAQ" description="Frequently asked questions about Drishti Atelier — returns, delivery, payments, and more." />
       <div className="public-hero">
         <h1 className="public-hero-title">Frequently Asked <span className="public-hero-accent">Questions</span></h1>
         <p className="public-hero-sub">Find answers to common questions about Drishti Atelier.</p>
@@ -40,3 +42,4 @@ export default function FAQ() {
     </div>
   );
 }
+

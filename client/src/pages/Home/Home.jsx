@@ -8,11 +8,13 @@ import BestSellingProducts from '../../components/BestSellingProducts/BestSellin
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
 import FinalCTA from '../../components/FinalCTA/FinalCTA';
 import OurBrands from '../../components/OurBrands/OurBrands';
+import SEO from '../../components/SEO/SEO';
 import './Home.css';
 
 export default function Home() {
   return (
     <div className="home-editorial-page">
+      <SEO title="Premium Eyewear" description="Shop luxury sunglasses, optical frames, and blue light glasses at Drishti Atelier. Curated collection with nationwide delivery in Bangladesh." />
       {/* 01. Hero Sliding Banner Carousel */}
       <HeroSlidingBanner />
 

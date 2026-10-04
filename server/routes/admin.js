@@ -31,5 +31,7 @@ router.delete('/coupons/:id', admin.deleteCoupon);
 router.get('/reviews', admin.getReviews);
 router.delete('/reviews/:id', admin.deleteReview);
 router.put('/reviews/:id/visibility', admin.toggleReviewVisibility);
+router.get('/settings', admin.getSettings);
+router.put('/settings', admin.updateSettings);
 
 module.exports = router;

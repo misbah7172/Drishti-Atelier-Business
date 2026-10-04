@@ -1,0 +1,149 @@
+/* Settings Page Styles */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tabs */
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .settings-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #777;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.settings-tab:hover {
+  color: #ddd;
+  background: #0d0d0d;
+}
+
+.settings-tab-active {
+  color: #F97D01 !important;
+  background: rgba(249, 125, 1, 0.06) !important;
+  border-color: rgba(249, 125, 1, 0.15);
+}
+
+.settings-tab-icon {
+  font-size: 0.9rem;
+}
+
+.settings-tab-label {
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+}
+
+/* Panel */
+.settings-panel {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.settings-panel-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #ddd;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* Fields */
+.settings-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.settings-field {
+  position: relative;
+}
+
+.settings-field-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #bbb;
+  margin-bottom: 0.15rem;
+}
+
+.settings-field-key {
+  display: block;
+  font-size: 0.65rem;
+  font-family: monospace;
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+.settings-field-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: #070707;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  color: #ddd;
+  font-size: 0.82rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.settings-field-input:focus {
+  border-color: #F97D01;
+}
+
+.settings-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.settings-changed-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.6rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #F97D01;
+  background: rgba(249, 125, 1, 0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}

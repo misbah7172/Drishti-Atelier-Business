@@ -54,6 +54,7 @@ import ManageOrders from './pages/Admin/Orders/ManageOrders';
 import ManageCategories from './pages/Admin/Categories/ManageCategories';
 import ManageCoupons from './pages/Admin/Coupons/ManageCoupons';
 import ManageReviews from './pages/Admin/Reviews/ManageReviews';
+import AdminSettings from './pages/Admin/Settings/Settings';
 
 // Public Pages (Phase 10)
 import About from './pages/About/About';
@@ -140,6 +141,7 @@ export default function App() {
                   <Route path="categories" element={<ManageCategories />} />
                   <Route path="coupons" element={<ManageCoupons />} />
                   <Route path="reviews" element={<ManageReviews />} />
+                  <Route path="settings" element={<AdminSettings />} />
                 </Route>
               </Route>
 

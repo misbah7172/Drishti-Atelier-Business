@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
@@ -78,16 +79,20 @@ const healthCheckHandler = (req, res) => {
 app.get('/health', healthCheckHandler);
 app.get('/api/health', healthCheckHandler);
 
+// Rate limiters
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 15, message: { status: 'fail', message: 'Too many attempts. Please try again in 15 minutes.' }, standardHeaders: true, legacyHeaders: false });
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
+
 // API Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/products', require('./routes/products'));
-app.use('/api/categories', require('./routes/categories'));
-app.use('/api/cart', require('./routes/cart'));
-app.use('/api/wishlist', require('./routes/wishlist'));
-app.use('/api/orders', require('./routes/orders'));
-app.use('/api/addresses', require('./routes/addresses'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api', require('./routes/public'));
+app.use('/api/auth', authLimiter, require('./routes/auth'));
+app.use('/api/products', apiLimiter, require('./routes/products'));
+app.use('/api/categories', apiLimiter, require('./routes/categories'));
+app.use('/api/cart', apiLimiter, require('./routes/cart'));
+app.use('/api/wishlist', apiLimiter, require('./routes/wishlist'));
+app.use('/api/orders', apiLimiter, require('./routes/orders'));
+app.use('/api/addresses', apiLimiter, require('./routes/addresses'));
+app.use('/api/admin', apiLimiter, require('./routes/admin'));
+app.use('/api', apiLimiter, require('./routes/public'));
 
 // ------------------------------------
 // 404 Handler
