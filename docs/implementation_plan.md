@@ -432,10 +432,10 @@ GET/DELETE           /api/admin/reviews
 
 ### Deliverables Checklist
 
-- [ ] All routes render
-- [ ] Contact form validates
-- [ ] No dead links
-- [ ] 404 catches unknown routes
+- [x] All routes render
+- [x] Contact form validates
+- [x] No dead links
+- [x] 404 catches unknown routes
 
 ---
 
