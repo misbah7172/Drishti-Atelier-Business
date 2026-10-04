@@ -1,14 +1,57 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { HiOutlineMagnifyingGlass, HiXMark, HiAdjustmentsHorizontal, HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
+import {
+  HiOutlineMagnifyingGlass,
+  HiXMark,
+  HiAdjustmentsHorizontal,
+  HiChevronLeft,
+  HiChevronRight,
+  HiArrowPath,
+} from 'react-icons/hi2';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import SlideBanner from '../../components/SlideBanner/SlideBanner';
 import { fetchProducts, fetchCategories } from '../../services/productService';
 import SEO from '../../components/SEO/SEO';
 import './Shop.css';
 
-const SHAPES = ['all', 'Aviator', 'Rectangle', 'Round', 'Cat Eye', 'Wayfarer', 'Oval', 'Square', 'Browline'];
-const MATERIALS = ['all', 'Titanium', 'Acetate', 'Metal', 'TR-90'];
+// Filter constants aligned with DB catalog
+const SHAPES = [
+  'all',
+  'Aviator',
+  'Rectangle',
+  'Round',
+  'Cat Eye',
+  'Wayfarer',
+  'Oval',
+  'Square',
+  'Geometric',
+  'Browline',
+  'Rimless',
+];
+
+const MATERIALS = [
+  'all',
+  'Titanium',
+  'Acetate',
+  'Metal',
+  'Stainless Steel',
+  'TR-90',
+];
+
+const GENDERS = [
+  { value: 'all', label: 'All Genders' },
+  { value: 'men', label: 'Men' },
+  { value: 'women', label: 'Women' },
+  { value: 'unisex', label: 'Unisex' },
+];
+
+const PRICE_RANGES = [
+  { value: 'all', label: 'All Prices' },
+  { value: 'under-1500', label: 'Under $1,500', min: null, max: 1500 },
+  { value: '1500-2500', label: '$1,500 – $2,500', min: 1500, max: 2500 },
+  { value: '2500-3500', label: '$2,500 – $3,500', min: 2500, max: 3500 },
+  { value: 'above-3500', label: '$3,500 & Above', min: 3500, max: null },
+];
 
 // Debounce hook
 function useDebounce(value, delay) {
@@ -25,23 +68,40 @@ export default function Shop() {
 
   // URL state synchronization
   const activeCategory = searchParams.get('category') || 'all';
-  const urlShape = searchParams.get('shape') || 'all';
-  const searchParam = searchParams.get('search') || '';
-  const urlPage = parseInt(searchParams.get('page')) || 1;
+  const selectedShape = searchParams.get('shape') || 'all';
+  const selectedMaterial = searchParams.get('material') || 'all';
+  const selectedGender = searchParams.get('gender') || 'all';
+  const selectedPrice = searchParams.get('price') || 'all';
+  const sortBy = searchParams.get('sort') || 'featured';
+  const urlSearch = searchParams.get('search') || '';
+  const urlPage = parseInt(searchParams.get('page'), 10) || 1;
 
-  // Local filter state
-  const [selectedShape, setSelectedShape] = useState(urlShape);
-  const [prevUrlShape, setPrevUrlShape] = useState(urlShape);
-
-  if (urlShape !== prevUrlShape) {
-    setPrevUrlShape(urlShape);
-    setSelectedShape(urlShape);
-  }
-
-  const [selectedMaterial, setSelectedMaterial] = useState('all');
-  const [sortBy, setSortBy] = useState('featured');
-  const [searchQuery, setSearchQuery] = useState(searchParam);
+  // Local state
+  const [searchQuery, setSearchQuery] = useState(urlSearch);
   const [filtersDrawerOpen, setFiltersDrawerOpen] = useState(false);
+
+  // Sync searchQuery with URL if URL changes externally
+  useEffect(() => {
+    setSearchQuery(urlSearch);
+  }, [urlSearch]);
+
+  // Debounced search
+  const debouncedSearch = useDebounce(searchQuery, 400);
+
+  // Sync debounced search to URL
+  useEffect(() => {
+    const currentParam = searchParams.get('search') || '';
+    if (debouncedSearch.trim() !== currentParam) {
+      const newParams = new URLSearchParams(searchParams);
+      if (debouncedSearch.trim()) {
+        newParams.set('search', debouncedSearch.trim());
+      } else {
+        newParams.delete('search');
+      }
+      newParams.delete('page');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [debouncedSearch, searchParams, setSearchParams]);
 
   // API state
   const [products, setProducts] = useState([]);
@@ -50,10 +110,7 @@ export default function Shop() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Debounced search
-  const debouncedSearch = useDebounce(searchQuery, 400);
-
-  // Ref to prevent double-fetch on mount
+  // Ref to prevent race conditions
   const fetchIdRef = useRef(0);
 
   // Map frontend sort to API sort values
@@ -69,9 +126,21 @@ export default function Shop() {
   // Fetch categories on mount
   useEffect(() => {
     fetchCategories()
-      .then((cats) => setCategories(cats))
+      .then((cats) => setCategories(cats || []))
       .catch((err) => console.error('Category fetch error:', err));
   }, []);
+
+  // Update a single filter in the URL params
+  const updateFilter = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (!value || value === 'all') {
+      newParams.delete(key);
+    } else {
+      newParams.set(key, value);
+    }
+    newParams.delete('page'); // Reset to page 1 on filter change
+    setSearchParams(newParams);
+  };
 
   // Main product fetch
   const loadProducts = useCallback(async () => {
@@ -101,9 +170,21 @@ export default function Shop() {
         params.frame_material = selectedMaterial;
       }
 
+      // Gender
+      if (selectedGender !== 'all') {
+        params.gender = selectedGender;
+      }
+
+      // Price Range
+      const priceConfig = PRICE_RANGES.find((p) => p.value === selectedPrice);
+      if (priceConfig) {
+        if (priceConfig.min !== null) params.min_price = priceConfig.min;
+        if (priceConfig.max !== null) params.max_price = priceConfig.max;
+      }
+
       // Search
-      if (debouncedSearch.trim()) {
-        params.search = debouncedSearch.trim();
+      if (urlSearch.trim()) {
+        params.search = urlSearch.trim();
       }
 
       const result = await fetchProducts(params);
@@ -111,36 +192,24 @@ export default function Shop() {
       // Guard against stale responses
       if (fetchId !== fetchIdRef.current) return;
 
-      setProducts(result.products);
-      setPagination(result.pagination);
+      setProducts(result.products || []);
+      setPagination(result.pagination || { total: 0, page: 1, limit: 12, totalPages: 1 });
     } catch (err) {
       if (fetchId !== fetchIdRef.current) return;
-      setError('Failed to load products. Please try again.');
+      setError('Unable to reach our optical archive. Please check your connection.');
       console.error('Product fetch error:', err);
     } finally {
       if (fetchId === fetchIdRef.current) {
         setIsLoading(false);
       }
     }
-  }, [activeCategory, selectedShape, selectedMaterial, debouncedSearch, sortBy, urlPage]);
+  }, [activeCategory, selectedShape, selectedMaterial, selectedGender, selectedPrice, sortBy, urlSearch, urlPage]);
 
   useEffect(() => {
     loadProducts();
   }, [loadProducts]);
 
-  // Category change resets page
-  const handleCategoryChange = (catSlugOrAll) => {
-    const newParams = new URLSearchParams(searchParams);
-    if (catSlugOrAll === 'all') {
-      newParams.delete('category');
-    } else {
-      newParams.set('category', catSlugOrAll);
-    }
-    newParams.delete('page');
-    setSearchParams(newParams);
-  };
-
-  // Page change
+  // Page change handler
   const handlePageChange = (newPage) => {
     const newParams = new URLSearchParams(searchParams);
     if (newPage <= 1) {
@@ -149,36 +218,50 @@ export default function Shop() {
       newParams.set('page', String(newPage));
     }
     setSearchParams(newParams);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 400, behavior: 'smooth' });
   };
 
+  // Reset all filters
   const resetFilters = () => {
-    setSelectedShape('all');
-    setSelectedMaterial('all');
-    setSortBy('featured');
     setSearchQuery('');
     setSearchParams({});
   };
 
-  const hasActiveFilters =
+  // Compute active filter count (excluding category if on main categories tab)
+  const activeFiltersCount =
+    (selectedShape !== 'all' ? 1 : 0) +
+    (selectedMaterial !== 'all' ? 1 : 0) +
+    (selectedGender !== 'all' ? 1 : 0) +
+    (selectedPrice !== 'all' ? 1 : 0) +
+    (urlSearch.trim() ? 1 : 0);
+
+  const hasAnyFilter =
     activeCategory !== 'all' ||
-    selectedShape !== 'all' ||
-    selectedMaterial !== 'all' ||
-    Boolean(searchQuery.trim());
+    activeFiltersCount > 0;
 
   // Build dynamic category pills from API
   const categoryPills = [
-    { slug: 'all', name: 'All Editions', product_count: null },
+    { slug: 'all', name: 'All Editions', count: null },
     ...categories.map((cat) => ({
       slug: cat.slug,
       name: cat.name,
-      product_count: parseInt(cat.product_count) || 0,
+      count: parseInt(cat.product_count, 10) || 0,
     })),
   ];
 
+  // Dynamic SEO Title
+  const activeCategoryObj = categories.find((c) => c.slug === activeCategory);
+  const pageTitle = activeCategoryObj
+    ? `Shop ${activeCategoryObj.name} | Drishti Atelier`
+    : 'Shop Eyewear Archive | Drishti Atelier';
+
   return (
     <div className="shop-page" id="shop-catalog">
-      <SEO title="Shop Eyewear" description="Browse our curated collection of luxury sunglasses, optical frames, and blue light glasses." />
+      <SEO
+        title={pageTitle}
+        description="Browse our curated collection of luxury sunglasses, optical frames, and blue light glasses crafted from titanium and premium acetate."
+      />
+
       {/* 1500x500 (3:1) Sliding Banner Section */}
       <SlideBanner
         id="shop-catalog-banner"
@@ -187,19 +270,20 @@ export default function Shop() {
         className="shop-slider-section"
       />
 
-      {/* Primary Category Nav & Controls Bar — Driven by API */}
+      {/* Primary Category Nav & Controls Bar */}
       <nav className="shop-category-nav container-editorial" aria-label="Product categories">
+        {/* Category Pills Strip */}
         <div className="category-pills">
           {categoryPills.map((cat) => (
             <button
               key={cat.slug}
               type="button"
               className={`shop-category-btn ${activeCategory === cat.slug ? 'cat-active' : ''}`}
-              onClick={() => handleCategoryChange(cat.slug)}
+              onClick={() => updateFilter('category', cat.slug)}
             >
-              <span>{cat.name}</span>
-              {cat.product_count !== null && (
-                <span className="cat-count">({cat.product_count})</span>
+              <span className="cat-name">{cat.name}</span>
+              {cat.count !== null && (
+                <span className="cat-count">({cat.count})</span>
               )}
               {activeCategory === cat.slug && <span className="cat-active-line" aria-hidden="true" />}
             </button>
@@ -210,10 +294,10 @@ export default function Shop() {
         <div className="shop-controls-cluster">
           {/* Search Bar */}
           <div className="shop-search-bar">
-            <HiOutlineMagnifyingGlass size={18} className="shop-search-icon" />
+            <HiOutlineMagnifyingGlass size={17} className="shop-search-icon" aria-hidden="true" />
             <input
               type="text"
-              placeholder="Search model, material, titanium..."
+              placeholder="Search by model, shape, titanium..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="shop-search-input"
@@ -224,45 +308,53 @@ export default function Shop() {
                 type="button"
                 onClick={() => setSearchQuery('')}
                 className="shop-search-clear"
-                aria-label="Clear search"
+                aria-label="Clear search query"
               >
                 <HiXMark size={16} />
               </button>
             )}
           </div>
 
+          {/* Filter Drawer Toggle */}
           <button
             type="button"
-            className={`shop-filter-toggle ${filtersDrawerOpen ? 'filter-active' : ''}`}
+            className={`shop-filter-toggle ${filtersDrawerOpen ? 'filter-open' : ''} ${
+              activeFiltersCount > 0 ? 'has-active-filters' : ''
+            }`}
             onClick={() => setFiltersDrawerOpen(!filtersDrawerOpen)}
             aria-expanded={filtersDrawerOpen}
+            aria-controls="shop-filters-drawer"
           >
             <HiAdjustmentsHorizontal size={17} />
             <span>Filters</span>
-            {hasActiveFilters && <span className="filter-badge-dot" />}
+            {activeFiltersCount > 0 && (
+              <span className="filter-badge-count">{activeFiltersCount}</span>
+            )}
           </button>
 
+          {/* Sort Dropdown */}
           <div className="shop-sort-wrapper">
-            <label htmlFor="shop-sort-select" className="sr-only">Sort by</label>
+            <label htmlFor="shop-sort-select" className="sr-only">Sort products</label>
             <select
               id="shop-sort-select"
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => updateFilter('sort', e.target.value)}
               className="shop-sort-select"
             >
               <option value="featured">Featured Order</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
               <option value="newest">Newest Arrivals</option>
-              <option value="popular">Popular</option>
+              <option value="popular">Popular Editions</option>
+              <option value="name-asc">Alphabetical (A–Z)</option>
             </select>
           </div>
         </div>
       </nav>
 
-      {/* Expandable Sub-Filter Bar */}
+      {/* Expandable Sub-Filter Drawer */}
       {filtersDrawerOpen && (
-        <div className="shop-filters-drawer container-editorial">
+        <div className="shop-filters-drawer container-editorial" id="shop-filters-drawer">
           <div className="drawer-filters-grid">
             {/* Shape Filter */}
             <div className="filter-block">
@@ -273,7 +365,7 @@ export default function Shop() {
                     key={shape}
                     type="button"
                     className={`filter-chip ${selectedShape === shape ? 'chip-active' : ''}`}
-                    onClick={() => setSelectedShape(shape)}
+                    onClick={() => updateFilter('shape', shape)}
                   >
                     {shape === 'all' ? 'All Shapes' : shape}
                   </button>
@@ -290,7 +382,7 @@ export default function Shop() {
                     key={mat}
                     type="button"
                     className={`filter-chip ${selectedMaterial === mat ? 'chip-active' : ''}`}
-                    onClick={() => setSelectedMaterial(mat)}
+                    onClick={() => updateFilter('material', mat)}
                   >
                     {mat === 'all' ? 'All Materials' : mat}
                   </button>
@@ -298,45 +390,176 @@ export default function Shop() {
               </div>
             </div>
 
-            {/* Reset Action */}
-            {hasActiveFilters && (
-              <div className="filter-reset-col">
-                <button type="button" onClick={resetFilters} className="btn-editorial-outline btn-sm">
-                  <span>Reset All</span>
-                  <HiXMark size={14} />
-                </button>
+            {/* Gender Filter */}
+            <div className="filter-block">
+              <span className="filter-block-title">Gender & Fit</span>
+              <div className="filter-chip-row">
+                {GENDERS.map((g) => (
+                  <button
+                    key={g.value}
+                    type="button"
+                    className={`filter-chip ${selectedGender === g.value ? 'chip-active' : ''}`}
+                    onClick={() => updateFilter('gender', g.value)}
+                  >
+                    {g.label}
+                  </button>
+                ))}
               </div>
+            </div>
+
+            {/* Price Filter */}
+            <div className="filter-block">
+              <span className="filter-block-title">Price Tier</span>
+              <div className="filter-chip-row">
+                {PRICE_RANGES.map((p) => (
+                  <button
+                    key={p.value}
+                    type="button"
+                    className={`filter-chip ${selectedPrice === p.value ? 'chip-active' : ''}`}
+                    onClick={() => updateFilter('price', p.value)}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Drawer Actions */}
+          <div className="drawer-footer-actions">
+            {hasAnyFilter && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="btn-editorial-reset"
+              >
+                <HiXMark size={14} />
+                <span>Reset All Filters</span>
+              </button>
             )}
+            <button
+              type="button"
+              onClick={() => setFiltersDrawerOpen(false)}
+              className="btn-editorial-apply"
+            >
+              View Results ({pagination.total})
+            </button>
           </div>
         </div>
       )}
 
-      {/* Product Grid Area */}
+      {/* Active Filter Chips Bar (Instant Visual Feedback & Quick Removal) */}
+      {hasAnyFilter && (
+        <div className="shop-active-chips-bar container-editorial">
+          <span className="active-chips-label">Active Filters:</span>
+          <div className="active-chips-wrap">
+            {activeCategory !== 'all' && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => updateFilter('category', 'all')}
+                title="Remove category filter"
+              >
+                <span>Category: {activeCategoryObj?.name || activeCategory}</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            {selectedShape !== 'all' && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => updateFilter('shape', 'all')}
+                title="Remove shape filter"
+              >
+                <span>Shape: {selectedShape}</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            {selectedMaterial !== 'all' && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => updateFilter('material', 'all')}
+                title="Remove material filter"
+              >
+                <span>Material: {selectedMaterial}</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            {selectedGender !== 'all' && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => updateFilter('gender', 'all')}
+                title="Remove gender filter"
+              >
+                <span>Gender: {selectedGender}</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            {selectedPrice !== 'all' && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => updateFilter('price', 'all')}
+                title="Remove price filter"
+              >
+                <span>Price: {PRICE_RANGES.find((p) => p.value === selectedPrice)?.label}</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            {urlSearch.trim() && (
+              <button
+                type="button"
+                className="active-filter-tag"
+                onClick={() => {
+                  setSearchQuery('');
+                  updateFilter('search', '');
+                }}
+                title="Remove search filter"
+              >
+                <span>Search: &ldquo;{urlSearch.trim()}&rdquo;</span>
+                <HiXMark size={13} />
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="clear-all-chips-btn"
+            >
+              Clear All
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Product Grid Section */}
       <main className="shop-grid-section container-editorial">
+        {/* Results Counter & Header */}
         <div className="shop-count-bar">
           <span className="shop-count-text">
             {isLoading ? (
-              'Loading editions…'
+              <span className="loading-count-text">Discovering atelier archive…</span>
             ) : (
               <>
-                Showing{' '}
-                <strong className="count-number">{products.length}</strong> of{' '}
-                {pagination.total} Editions
+                Showing <strong className="count-number">{products.length}</strong> of{' '}
+                <strong className="count-number">{pagination.total}</strong> Editions
               </>
             )}
           </span>
-          {hasActiveFilters && !isLoading && (
-            <button type="button" onClick={resetFilters} className="clear-all-link">
-              Clear All Filters
-            </button>
-          )}
         </div>
 
-        {/* Loading State */}
+        {/* Loading State: Skeleton Shimmer Grid */}
         {isLoading && (
-          <div className="shop-loading-grid">
+          <div className="shop-loading-grid" aria-label="Loading products">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="product-skeleton">
+              <div key={i} className="product-skeleton-card">
                 <div className="skeleton-image shimmer" />
                 <div className="skeleton-meta">
                   <div className="skeleton-line skeleton-short shimmer" />
@@ -351,11 +574,16 @@ export default function Shop() {
         {/* Error State */}
         {error && !isLoading && (
           <div className="shop-empty-state">
-            <span className="editorial-eyebrow">Connection Error</span>
-            <h3 className="empty-title">UNABLE TO LOAD ARCHIVE</h3>
+            <span className="editorial-eyebrow">Archive Unavailable</span>
+            <h3 className="empty-title">CONNECTION ERROR</h3>
             <p className="editorial-body empty-desc">{error}</p>
-            <button type="button" onClick={loadProducts} className="btn-editorial">
-              <span>Retry</span>
+            <button
+              type="button"
+              onClick={loadProducts}
+              className="btn-editorial"
+            >
+              <HiArrowPath size={16} />
+              <span>Retry Search</span>
             </button>
           </div>
         )}
@@ -363,15 +591,15 @@ export default function Shop() {
         {/* Products Grid */}
         {!isLoading && !error && products.length > 0 && (
           <>
-            <div className="shop-editorial-grid">
+            <div className="shop-editorial-grid" id="product-grid">
               {products.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}
             </div>
 
-            {/* Pagination */}
+            {/* Pagination Controls */}
             {pagination.totalPages > 1 && (
-              <div className="shop-pagination">
+              <nav className="shop-pagination" aria-label="Catalog pages">
                 <button
                   type="button"
                   className="pagination-btn"
@@ -385,18 +613,23 @@ export default function Shop() {
                 <div className="pagination-numbers">
                   {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
                     .filter((p) => {
-                      // Show first, last, current, and adjacent pages
-                      return p === 1 || p === pagination.totalPages || Math.abs(p - pagination.page) <= 1;
+                      return (
+                        p === 1 ||
+                        p === pagination.totalPages ||
+                        Math.abs(p - pagination.page) <= 1
+                      );
                     })
                     .map((p, idx, arr) => (
-                      <span key={p}>
+                      <span key={p} className="pagination-item-wrap">
                         {idx > 0 && arr[idx - 1] !== p - 1 && (
-                          <span className="pagination-ellipsis">…</span>
+                          <span className="pagination-ellipsis">&hellip;</span>
                         )}
                         <button
                           type="button"
                           className={`pagination-num ${pagination.page === p ? 'page-active' : ''}`}
                           onClick={() => handlePageChange(p)}
+                          aria-label={`Go to page ${p}`}
+                          aria-current={pagination.page === p ? 'page' : undefined}
                         >
                           {p}
                         </button>
@@ -413,7 +646,7 @@ export default function Shop() {
                 >
                   <HiChevronRight size={18} />
                 </button>
-              </div>
+              </nav>
             )}
           </>
         )}
@@ -424,11 +657,15 @@ export default function Shop() {
             <span className="editorial-eyebrow">Zero Matches</span>
             <h3 className="empty-title">NO FRAMES MATCH YOUR CRITERIA</h3>
             <p className="editorial-body empty-desc">
-              Try adjusting your shape, material, or keyword filters to explore other
-              architectural editions from our archive.
+              We couldn&apos;t find any eyewear editions matching your exact combination of
+              filters. Try adjusting your search query, shapes, or materials.
             </p>
-            <button type="button" onClick={resetFilters} className="btn-editorial">
-              <span>View Full Archive</span>
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="btn-editorial"
+            >
+              <span>Explore Full Archive</span>
             </button>
           </div>
         )}

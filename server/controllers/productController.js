@@ -86,14 +86,15 @@ async function getProducts(req, res, next) {
 
     // Frame Shape
     if (frame_shape) {
-      queryParams.push(frame_shape);
+      queryParams.push(`%${frame_shape.trim()}%`);
       whereConditions.push(`p.frame_shape ILIKE $${queryParams.length}`);
     }
 
     // Frame Material
     if (frame_material) {
-      queryParams.push(frame_material);
-      whereConditions.push(`p.frame_material ILIKE $${queryParams.length}`);
+      const cleanMat = frame_material.trim().replace(/-/g, '');
+      queryParams.push(`%${cleanMat}%`);
+      whereConditions.push(`REPLACE(p.frame_material, '-', '') ILIKE $${queryParams.length}`);
     }
 
     // Min Price
