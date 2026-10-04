@@ -488,37 +488,37 @@ GET/DELETE           /api/admin/reviews
 
 | Task | Status |
 |---|---|
-| Input validation (all endpoints) | ⬜ |
-| Parameterized SQL (verify all queries) | ⬜ |
-| JWT protection (verify all protected routes) | ⬜ |
-| Admin authorization (verify all admin endpoints) | ⬜ |
-| File upload validation (MIME, size, format) | ⬜ |
-| Rate limiting (login, register, API) | ⬜ |
-| CORS configuration | ⬜ |
-| No secrets in code/repo | ⬜ |
+| Input validation (all endpoints) | ✅ |
+| Parameterized SQL (verify all queries) | ✅ |
+| JWT protection (verify all protected routes) | ✅ |
+| Admin authorization (verify all admin endpoints) | ✅ |
+| File upload validation (MIME, size, format) | ✅ |
+| Rate limiting (login, register, API) | ✅ |
+| CORS configuration | ✅ |
+| No secrets in code/repo | ✅ |
 
 ### SEO
 
 | Task | Status |
 |---|---|
-| Dynamic page titles | ⬜ |
-| Meta descriptions | ⬜ |
-| Product-specific SEO (`/products/clean-slug`) | ⬜ |
-| Image alt text | ⬜ |
-| Heading hierarchy (`h1` → `h2` → `h3`) | ⬜ |
-| `robots.txt` | ⬜ |
-| Sitemap | ⬜ |
+| Dynamic page titles | ✅ |
+| Meta descriptions | ✅ |
+| Product-specific SEO (`/products/clean-slug`) | ✅ |
+| Image alt text | ✅ |
+| Heading hierarchy (`h1` → `h2` → `h3`) | ✅ |
+| `robots.txt` | ✅ |
+| Sitemap | ✅ |
 
 ### Performance
 
 | Task | Status |
 |---|---|
-| Image optimization (Cloudinary transforms) | ⬜ |
-| Lazy loading (images, routes) | ⬜ |
-| Server-side pagination (verified) | ⬜ |
-| Database indexes (verified) | ⬜ |
-| Efficient queries (no N+1) | ⬜ |
-| React rendering optimization | ⬜ |
+| Image optimization (Cloudinary transforms) | ✅ |
+| Lazy loading (images, routes) | ✅ |
+| Server-side pagination (verified) | ✅ |
+| Database indexes (verified) | ✅ |
+| Efficient queries (no N+1) | ✅ |
+| React rendering optimization | ✅ |
 
 ---
 
