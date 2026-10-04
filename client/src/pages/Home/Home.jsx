@@ -3,12 +3,13 @@ import TopCategories from '../../components/TopCategories/TopCategories';
 import SlideBanner from '../../components/SlideBanner/SlideBanner';
 import ShowcaseSubItemsBanner from '../../components/ShowcaseSubItemsBanner/ShowcaseSubItemsBanner';
 import EyeglassesShapeGuide from '../../components/EyeglassesShapeGuide/EyeglassesShapeGuide';
-import FullscreenMoments from '../../components/FullscreenMoments/FullscreenMoments';
+import ProductCarouselSection from '../../components/ProductCarouselSection/ProductCarouselSection';
 import BestSellingProducts from '../../components/BestSellingProducts/BestSellingProducts';
 import EditorialTestimonials from '../../components/EditorialTestimonials/EditorialTestimonials';
 import FinalCTA from '../../components/FinalCTA/FinalCTA';
 import OurBrands from '../../components/OurBrands/OurBrands';
 import SEO from '../../components/SEO/SEO';
+import { fetchFeaturedProducts, fetchBestsellerProducts } from '../../services/productService';
 import './Home.css';
 
 export default function Home() {
@@ -38,10 +39,26 @@ export default function Home() {
         preset="tortoise"
       />
 
-      {/* 04. Dark Full-Screen Advertising Spread */}
-      <FullscreenMoments />
+      {/* 04. Featured Products — Horizontal Carousel */}
+      <ProductCarouselSection
+        id="featured-products"
+        title="Featured Products"
+        fetchFn={fetchFeaturedProducts}
+        viewAllLink="/shop?featured=true"
+        limit={10}
+      />
 
-      {/* 05. Best Selling Products Section */}
+      {/* 05. Hot Selling Products — Horizontal Carousel */}
+      <ProductCarouselSection
+        id="hot-selling-products"
+        title="Hot Selling Products"
+        fetchFn={fetchBestsellerProducts}
+        viewAllLink="/shop?sort=bestseller"
+        limit={10}
+        lightBg
+      />
+
+      {/* 06. Best Selling Products Grid Section */}
       <BestSellingProducts />
 
       {/* 08. High-Fashion Social Proof */}

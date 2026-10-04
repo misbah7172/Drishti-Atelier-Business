@@ -188,18 +188,11 @@ export default function TopCategories() {
                       loading="lazy"
                     />
                     <div className="top-category-image-sheen" />
-                    <span className="top-category-badge">{cat.badge}</span>
                   </div>
 
                   {/* Card Meta (Desktop & Tablet) */}
                   <div className="top-category-body">
-                    <div className="top-category-top-row">
-                      <span className="top-category-index">{`0${index + 1}`}</span>
-                      <span className="top-category-count">{cat.count}</span>
-                    </div>
-
                     <h3 className="top-category-card-title">{cat.title}</h3>
-                    <p className="top-category-card-sub">{cat.subtitle}</p>
 
                     <div className="top-category-action-link">
                       <span className="action-link-text">Explore</span>

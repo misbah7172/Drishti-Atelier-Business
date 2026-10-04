@@ -239,6 +239,27 @@ export async function fetchFeaturedProducts() {
 }
 
 /**
+ * Fetch bestseller products for homepage "Hot Selling" carousel
+ */
+export async function fetchBestsellerProducts(limit = 10) {
+  try {
+    const response = await api.get('/products', {
+      params: { bestseller: 'true', limit, sort: 'bestseller' },
+    });
+    return response.data.data.products.map(normalizeProduct);
+  } catch (error) {
+    console.error('Failed to fetch bestseller products:', error);
+    // Fallback: try featured endpoint
+    try {
+      const fallback = await api.get('/products/featured');
+      return fallback.data.data.map(normalizeProduct).slice(0, limit);
+    } catch {
+      return [];
+    }
+  }
+}
+
+/**
  * Fetch a single product by ID or slug (includes images, tags, reviews)
  */
 export async function fetchProductByIdOrSlug(idOrSlug) {
