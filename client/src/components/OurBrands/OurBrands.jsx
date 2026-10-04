@@ -67,14 +67,6 @@ export default function OurBrands() {
             <h2 className="editorial-section-title our-brands-title">
               OUR BRANDS
             </h2>
-            <p className="editorial-body our-brands-desc">
-              Two distinct design philosophies united by surgical titanium engineering,
-              optical caustics, and timeless poise.
-            </p>
-          </div>
-
-          <div className="our-brands-meta">
-            <span className="our-brands-count">02 Portfolio Maisons</span>
           </div>
         </div>
 

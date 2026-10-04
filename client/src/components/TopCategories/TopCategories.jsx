@@ -143,9 +143,6 @@ export default function TopCategories() {
             <h2 className="editorial-section-title top-categories-title">
               TOP CATEGORIES
             </h2>
-            <p className="editorial-body top-categories-desc">
-              Discover handcrafted silhouettes engineered for optical clarity, ergonomic balance, and distinct personal character.
-            </p>
           </div>
 
           <div className="top-categories-view-all">

@@ -180,7 +180,7 @@ export default function Register() {
             {/* Phone Number */}
             <div>
               <label htmlFor="register-phone" className="auth-field-label">
-                Phone Number <span style={{ color: '#555', fontSize: '0.62rem' }}>(optional)</span>
+                Phone Number <span style={{ color: '#888', fontSize: '0.62rem' }}>(optional)</span>
               </label>
               <div className="auth-input-wrap">
                 <span className="auth-input-icon">
@@ -202,7 +202,7 @@ export default function Register() {
             {/* Password */}
             <div>
               <label htmlFor="register-password" className="auth-field-label">
-                Passcode * <span style={{ color: '#555', fontSize: '0.62rem' }}>(min 6 characters)</span>
+                Passcode * <span style={{ color: '#888', fontSize: '0.62rem' }}>(min 6 characters)</span>
               </label>
               <div className="auth-input-wrap">
                 <span className="auth-input-icon">
@@ -233,7 +233,7 @@ export default function Register() {
               {/* Password Strength Indicator */}
               {formData.password && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-                  <div style={{ flex: 1, height: '3px', background: '#222', borderRadius: '3px', display: 'flex', gap: '2px', overflow: 'hidden' }}>
+                  <div style={{ flex: 1, height: '3px', background: '#EAEAEA', borderRadius: '3px', display: 'flex', gap: '2px', overflow: 'hidden' }}>
                     {[1, 2, 3].map((level) => (
                       <div
                         key={level}
@@ -247,7 +247,7 @@ export default function Register() {
                       />
                     ))}
                   </div>
-                  <span style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: '#888', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                  <span style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: '#666', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                     {strength.label}
                   </span>
                 </div>
@@ -296,13 +296,13 @@ export default function Register() {
                 className="auth-checkbox"
                 style={{ marginTop: '2px' }}
               />
-              <label htmlFor="agree-terms" className="auth-remember-label" style={{ fontSize: '0.7rem', lineHeight: 1.5 }}>
+              <label htmlFor="agree-terms" className="auth-remember-label" style={{ fontSize: '0.7rem', lineHeight: 1.5, color: '#555' }}>
                 I agree to the{' '}
-                <Link to="/terms" style={{ color: '#fff', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                <Link to="/terms" style={{ color: '#0A0A0A', textDecoration: 'underline', textUnderlineOffset: '2px', fontWeight: 500 }}>
                   Atelier Terms
                 </Link>{' '}
                 and{' '}
-                <Link to="/privacy" style={{ color: '#fff', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                <Link to="/privacy" style={{ color: '#0A0A0A', textDecoration: 'underline', textUnderlineOffset: '2px', fontWeight: 500 }}>
                   Privacy Policy
                 </Link>.
               </label>

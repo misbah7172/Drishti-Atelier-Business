@@ -108,16 +108,6 @@ export default function EyeglassesShapeGuide() {
             <h2 className="editorial-section-title shape-guide-title">
               GET THE PERFECT SHAPE — EYEGLASSES
             </h2>
-            <p className="editorial-body shape-guide-desc">
-              Selecting the right frame geometry enhances natural facial symmetry.
-              Explore our signature silhouettes sculpted in pure titanium and
-              hand-polished acetate to find your ideal visual match.
-            </p>
-          </div>
-
-          <div className="shape-guide-badge-box">
-            <HiOutlineSparkles size={18} className="shape-sparkle-icon" />
-            <span className="shape-badge-text">Optical Silhouette Advisor</span>
           </div>
         </div>
 
