@@ -106,11 +106,11 @@
 }
 
 .showcase-hero-cta:hover {
-  background-color: #DFFF00;
+  background-color: #F97D01;
   color: #050505;
-  border-color: #DFFF00;
+  border-color: #F97D01;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(223, 255, 0, 0.25);
+  box-shadow: 0 6px 18px rgba(249, 125, 1, 0.25);
 }
 
 /* ==========================================================================
@@ -230,7 +230,7 @@
 }
 
 .sub-item-card:hover .sub-item-btn {
-  background-color: #DFFF00;
+  background-color: #F97D01;
   color: #050505;
 }
 
