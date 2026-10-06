@@ -78,9 +78,12 @@ export default function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
 
+  const isHome = location.pathname === '/';
+  const isScrolledOrInternal = scrolled || !isHome;
+
   return (
     <header
-      className={`navbar-editorial ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'} ${
+      className={`navbar-editorial ${isScrolledOrInternal ? 'navbar-scrolled' : 'navbar-transparent'} ${
         mobileOpen ? 'navbar-mobile-active' : ''
       }`}
       id="main-navbar"

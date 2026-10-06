@@ -1,37 +1,135 @@
+/* ==========================================================================
+   Drishti Atelier — Luxury Profile Settings
+   Theme: Clean Light Editorial (#FAFAFA / #FFFFFF, #0F172A, #F97D01)
+   ========================================================================== */
+
 .profile-page {
-  background: var(--color-black);
-  color: var(--color-white);
+  background-color: #fafafa;
+  color: #0f172a;
   min-height: 100vh;
-  padding-top: 100px;
-  padding-bottom: 8rem;
+  padding-top: 108px;
+  padding-bottom: 6rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.profile-container { max-width: 640px; }
+@media (max-width: 991px) {
+  .profile-page {
+    padding-top: 92px;
+    padding-bottom: 4rem;
+  }
+}
 
-.profile-header { padding-block: 3rem 2rem; }
+.profile-container {
+  max-width: 680px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.profile-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #64748b;
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+  transition: color 0.2s ease;
+}
+
+.profile-back-link:hover {
+  color: #f97d01;
+}
+
+.profile-header {
+  padding-block: 1rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.profile-title {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 1.85rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+  margin-top: 0.35rem;
+}
 
 .profile-section {
-  margin-bottom: 3rem;
-  padding-bottom: 2.5rem;
-  border-bottom: 1px solid #1a1a1a;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
 }
 
-.profile-section:last-child { border-bottom: none; }
-
 .profile-section-title {
-  font-family: var(--font-heading);
-  font-size: 0.78rem;
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #888;
+  color: #f97d01;
   margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.35rem;
 }
 
-.profile-save-btn { align-self: flex-start; }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.9rem;
+  color: #0f172a;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #f97d01;
+  box-shadow: 0 0 0 3px rgba(249, 125, 1, 0.15);
+}
+
+.form-input.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.2rem;
+}
+
+.profile-save-btn {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}

@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 import {
   HiOutlineUser,
   HiOutlineEnvelope,
-  HiOutlinePhone,
-  HiOutlineCalendar,
   HiOutlineShieldCheck,
   HiOutlineShoppingBag,
   HiOutlineHeart,
@@ -11,6 +9,7 @@ import {
   HiOutlineCog6Tooth,
 } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
+import './Account.css';
 
 export default function Account() {
   const { user, logout, isAdmin } = useAuth();
@@ -23,39 +22,35 @@ export default function Account() {
         month: 'short',
         day: 'numeric',
       })
-    : '2026';
+    : 'Oct 2026';
 
   const userInitial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   return (
-    <div className="min-h-[80vh] bg-[#070707] text-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="account-page" id="account-portal">
+      <div className="account-container">
         {/* Header Profile Card */}
-        <div className="bg-[#0E0E0E] border border-[#222] rounded-lg p-6 sm:p-8 mb-8 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#F97D01] to-transparent opacity-80" />
+        <div className="account-header-card">
+          <div className="account-header-accent" />
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
+          <div className="account-header-content">
+            <div className="account-user-meta">
               {/* Avatar Initial */}
-              <div className="w-16 h-16 rounded-full bg-[#181818] border border-[#333] flex items-center justify-center text-xl font-heading font-bold text-[#F97D01] shadow-inner">
+              <div className="account-avatar" aria-hidden="true">
                 {userInitial}
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-xl sm:text-2xl font-light tracking-wide text-white">
-                    {user.name}
-                  </h1>
+              <div className="account-user-details">
+                <div className="account-name-row">
+                  <h1 className="account-name">{user.name}</h1>
                   <span
-                    className={`text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded ${
-                      isAdmin
-                        ? 'bg-[#F97D01]/10 text-[#F97D01] border border-[#F97D01]/30'
-                        : 'bg-stone-800 text-stone-300 border border-stone-700'
+                    className={`account-role-badge ${
+                      isAdmin ? 'role-admin' : 'role-customer'
                     }`}
                   >
-                    {user.role}
+                    {isAdmin ? 'Administrator' : user.role || 'Patron'}
                   </span>
                 </div>
-                <p className="text-xs text-stone-400 font-mono">{user.email}</p>
+                <p className="account-email">{user.email}</p>
               </div>
             </div>
 
@@ -63,142 +58,148 @@ export default function Account() {
             <button
               type="button"
               onClick={logout}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#141414] hover:bg-[#1f1f1f] border border-[#282828] hover:border-stone-600 rounded text-xs text-stone-300 hover:text-white transition-colors cursor-pointer self-start sm:self-auto"
+              className="account-signout-btn"
+              aria-label="Sign out of account"
             >
-              <HiOutlineArrowRightOnRectangle size={15} />
+              <HiOutlineArrowRightOnRectangle size={16} />
               <span>Sign Out</span>
             </button>
           </div>
         </div>
 
-        {/* Account Details & Quick Sectors */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Dossier Information */}
-          <div className="md:col-span-1 bg-[#0E0E0E] border border-[#222] rounded-lg p-6">
-            <h2 className="text-xs uppercase tracking-widest text-[#F97D01] font-mono mb-4 flex items-center gap-1.5">
-              <HiOutlineShieldCheck size={15} />
+        {/* Administration Console Access Banner */}
+        {isAdmin && (
+          <Link to="/admin" className="account-admin-card" id="admin-console-link">
+            <div className="account-admin-inner">
+              <div className="account-admin-left">
+                <div className="account-admin-icon">
+                  <HiOutlineCog6Tooth size={22} />
+                </div>
+                <div>
+                  <h2 className="account-admin-title">
+                    Atelier Administration Console
+                  </h2>
+                  <p className="account-admin-subtitle">
+                    Manage inventory, curate catalog, update orders & review patrons
+                  </p>
+                </div>
+              </div>
+              <span className="account-admin-arrow" aria-hidden="true">→</span>
+            </div>
+          </Link>
+        )}
+
+        {/* Two-Column Grid: Dossier Specs & Sectors */}
+        <div className="account-main-grid">
+          {/* Left Column: Dossier Specs */}
+          <aside className="dossier-card" aria-label="Account Dossier">
+            <h2 className="dossier-card-title">
+              <HiOutlineShieldCheck size={17} />
               <span>Dossier Specs</span>
             </h2>
 
-            <div className="space-y-4 text-xs">
-              <div>
-                <span className="text-stone-500 block text-[10px] uppercase">Client ID</span>
-                <span className="font-mono text-stone-200">#DRS-{String(user.id).padStart(4, '0')}</span>
+            <div className="dossier-specs-list">
+              <div className="dossier-spec-item">
+                <span className="dossier-spec-label">Client ID</span>
+                <span className="spec-mono">
+                  #DRS-{String(user.id || 1).padStart(4, '0')}
+                </span>
               </div>
-              <div>
-                <span className="text-stone-500 block text-[10px] uppercase">Telephone</span>
-                <span className="text-stone-200">{user.phone || 'None on record'}</span>
+
+              <div className="dossier-spec-item">
+                <span className="dossier-spec-label">Telephone</span>
+                <span className="dossier-spec-value">
+                  {user.phone || 'None on record'}
+                </span>
               </div>
-              <div>
-                <span className="text-stone-500 block text-[10px] uppercase">Patron Since</span>
-                <span className="text-stone-200">{formattedDate}</span>
+
+              <div className="dossier-spec-item">
+                <span className="dossier-spec-label">Patron Since</span>
+                <span className="dossier-spec-value">{formattedDate}</span>
               </div>
-              <div>
-                <span className="text-stone-500 block text-[10px] uppercase">Account Status</span>
-                <span className="inline-flex items-center gap-1 text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+
+              <div className="dossier-spec-item">
+                <span className="dossier-spec-label">Account Status</span>
+                <span className="spec-status-badge">
+                  <span className="status-dot-active" aria-hidden="true" />
                   Active
                 </span>
               </div>
             </div>
-          </div>
+          </aside>
 
-          {/* Action Links */}
-          <div className="md:col-span-2 space-y-4">
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className="block bg-gradient-to-r from-[#141414] to-[#1a140f] border border-[#F97D01]/40 hover:border-[#F97D01] rounded-lg p-5 transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded bg-[#F97D01]/10 text-[#F97D01] flex items-center justify-center">
-                      <HiOutlineCog6Tooth size={18} />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-medium text-white group-hover:text-[#F97D01] transition-colors">
-                        Atelier Administration Console
-                      </h3>
-                      <p className="text-xs text-stone-400 mt-0.5">
-                        Manage inventory, curate catalog, and monitor patron orders
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-stone-500 group-hover:text-white transition-colors">→</span>
-                </div>
-              </Link>
-            )}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Right Column: Quick Action Sectors */}
+          <main className="account-sectors-container">
+            <div className="account-sectors-grid">
               <Link
                 to="/account/orders"
-                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+                className="sector-card"
+                id="link-acquisition-history"
               >
-                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
-                  <HiOutlineShoppingBag size={17} />
+                <div className="sector-icon-wrap">
+                  <HiOutlineShoppingBag size={20} />
                 </div>
-                <h3 className="text-sm font-medium text-white">Acquisition History</h3>
-                <p className="text-xs text-stone-400 mt-1">
-                  Track bespoke shipments & receipts
+                <h3 className="sector-title">Acquisition History</h3>
+                <p className="sector-desc">
+                  Track bespoke shipments, receipts and delivery status
                 </p>
               </Link>
 
               <Link
                 to="/wishlist"
-                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+                className="sector-card"
+                id="link-saved-pieces"
               >
-                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
-                  <HiOutlineHeart size={17} />
+                <div className="sector-icon-wrap">
+                  <HiOutlineHeart size={20} />
                 </div>
-                <h3 className="text-sm font-medium text-white">Saved Atelier Pieces</h3>
-                <p className="text-xs text-stone-400 mt-1">
-                  Your personal curated shortlist
+                <h3 className="sector-title">Saved Atelier Pieces</h3>
+                <p className="sector-desc">
+                  Your personal curated shortlist and bookmarked styles
                 </p>
               </Link>
 
               <Link
                 to="/account/profile"
-                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+                className="sector-card"
+                id="link-profile-settings"
               >
-                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
-                  <HiOutlineUser size={17} />
+                <div className="sector-icon-wrap">
+                  <HiOutlineUser size={20} />
                 </div>
-                <h3 className="text-sm font-medium text-white">Profile Settings</h3>
-                <p className="text-xs text-stone-400 mt-1">
-                  Edit name, email, phone & password
+                <h3 className="sector-title">Profile Settings</h3>
+                <p className="sector-desc">
+                  Edit patron name, email, contact telephone & passkey
                 </p>
               </Link>
 
               <Link
                 to="/account/addresses"
-                className="bg-[#0E0E0E] hover:bg-[#141414] border border-[#222] hover:border-[#333] rounded-lg p-5 transition-all group block"
+                className="sector-card"
+                id="link-saved-addresses"
               >
-                <div className="w-8 h-8 rounded bg-[#181818] text-stone-300 flex items-center justify-center mb-3 group-hover:text-[#F97D01] transition-colors">
-                  <HiOutlineEnvelope size={17} />
+                <div className="sector-icon-wrap">
+                  <HiOutlineEnvelope size={20} />
                 </div>
-                <h3 className="text-sm font-medium text-white">Saved Addresses</h3>
-                <p className="text-xs text-stone-400 mt-1">
-                  Manage your delivery addresses
+                <h3 className="sector-title">Saved Addresses</h3>
+                <p className="sector-desc">
+                  Manage multiple delivery residences and default shipping location
                 </p>
               </Link>
             </div>
 
-            <div className="bg-[#0E0E0E] border border-[#222] rounded-lg p-5">
-              <h3 className="text-xs uppercase tracking-wider text-stone-400 font-mono mb-2">
-                Atelier Concierge
-              </h3>
-              <p className="text-xs text-stone-400 mb-3">
-                Need custom prescription alignment, titanium frame adjustments, or bespoke sizing?
+            {/* Concierge Support Block */}
+            <div className="account-concierge-card">
+              <h3 className="concierge-card-title">Atelier Concierge</h3>
+              <p className="concierge-card-desc">
+                Need custom prescription alignment, titanium frame adjustments, or bespoke sizing advice?
               </p>
-              <Link
-                to="/contact"
-                className="text-xs text-[#F97D01] hover:text-[#E06F00] font-medium tracking-wide uppercase inline-flex items-center gap-1"
-              >
+              <Link to="/contact" className="concierge-card-link">
                 <span>Initiate Concierge Request</span>
-                <span>→</span>
+                <span aria-hidden="true">→</span>
               </Link>
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

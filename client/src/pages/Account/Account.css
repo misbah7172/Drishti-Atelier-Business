@@ -1,0 +1,491 @@
+/* ==========================================================================
+   Drishti Atelier — Luxury Customer Account Portal
+   Theme: Clean Light Editorial (#FAFAFA / #FFFFFF, #0F172A, #F97D01)
+   ========================================================================== */
+
+.account-page {
+  background-color: #fafafa;
+  color: #0f172a;
+  min-height: 100vh;
+  padding-top: 108px;
+  padding-bottom: 6rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (max-width: 991px) {
+  .account-page {
+    padding-top: 92px;
+    padding-bottom: 4rem;
+  }
+}
+
+.account-container {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .account-container {
+    padding-inline: 2rem;
+  }
+}
+
+/* ==========================================================================
+   Header Profile Card
+   ========================================================================== */
+
+.account-header-card {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.account-header-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #f97d01 50%, transparent 100%);
+}
+
+.account-header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .account-header-content {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.account-user-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.account-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid rgba(249, 125, 1, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #f97d01;
+  box-shadow: inset 0 2px 4px rgba(249, 125, 1, 0.1);
+  flex-shrink: 0;
+}
+
+.account-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.account-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.account-name {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.account-role-badge {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+.role-admin {
+  background-color: #fff7ed;
+  color: #ea580c;
+  border: 1px solid rgba(249, 125, 1, 0.35);
+}
+
+.role-customer {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.account-email {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.account-signout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.account-signout-btn:hover {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
+}
+
+/* ==========================================================================
+   Admin Callout Card
+   ========================================================================== */
+
+.account-admin-card {
+  display: block;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+  border: 1.5px solid rgba(249, 125, 1, 0.35);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(249, 125, 1, 0.06);
+}
+
+.account-admin-card:hover {
+  border-color: #f97d01;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(249, 125, 1, 0.18);
+}
+
+.account-admin-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.account-admin-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.account-admin-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #ffedd5;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.account-admin-card:hover .account-admin-icon {
+  transform: rotate(30deg);
+}
+
+.account-admin-title {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.account-admin-card:hover .account-admin-title {
+  color: #ea580c;
+}
+
+.account-admin-subtitle {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0.2rem 0 0 0;
+}
+
+.account-admin-arrow {
+  color: #94a3b8;
+  font-size: 1.25rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.account-admin-card:hover .account-admin-arrow {
+  transform: translateX(4px);
+  color: #ea580c;
+}
+
+/* ==========================================================================
+   Two-Column Layout
+   ========================================================================== */
+
+.account-main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+}
+
+@media (min-width: 992px) {
+  .account-main-grid {
+    grid-template-columns: 320px 1fr;
+  }
+}
+
+/* ==========================================================================
+   Dossier Specs Card (Left Column)
+   ========================================================================== */
+
+.dossier-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+  height: fit-content;
+}
+
+.dossier-card-title {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dossier-specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.dossier-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dossier-spec-label {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.dossier-spec-value {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.88rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.spec-mono {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: #0f172a;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.spec-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+.status-dot-active {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* ==========================================================================
+   Action Sectors Grid (Right Column)
+   ========================================================================== */
+
+.account-sectors-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.account-sectors-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .account-sectors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sector-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.sector-card:hover {
+  border-color: #f97d01;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -4px rgba(249, 125, 1, 0.12);
+}
+
+.sector-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.sector-card:hover .sector-icon-wrap {
+  background-color: #fff7ed;
+  border-color: rgba(249, 125, 1, 0.3);
+  color: #f97d01;
+  transform: scale(1.05);
+}
+
+.sector-title {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #0f172a;
+  margin: 0 0 0.35rem 0;
+  transition: color 0.2s ease;
+}
+
+.sector-card:hover .sector-title {
+  color: #ea580c;
+}
+
+.sector-desc {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   Concierge Service Card
+   ========================================================================== */
+
+.account-concierge-card {
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+}
+
+.concierge-card-title {
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0 0 0.4rem 0;
+}
+
+.concierge-card-desc {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.concierge-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading, 'Oswald', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f97d01;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.concierge-card-link:hover {
+  color: #ea580c;
+  gap: 0.65rem;
+}

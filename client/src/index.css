@@ -210,7 +210,14 @@ select {
   color: var(--color-white);
 }
 
-.theme-light {
+.theme-light,
+[data-theme="light"] {
+  background-color: var(--color-studio-white);
+  color: #070707;
+}
+
+.theme-light body,
+[data-theme="light"] body {
   background-color: var(--color-studio-white);
   color: #070707;
 }
