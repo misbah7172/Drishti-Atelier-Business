@@ -1,4 +1,7 @@
-/* Settings Page Styles */
+/* ==========================================================================
+   Admin Settings (Clean Light Editorial Theme)
+   ========================================================================== */
+
 .settings-layout {
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -36,51 +39,55 @@
   background: none;
   border: 1px solid transparent;
   border-radius: 6px;
-  color: #777;
-  font-size: 0.78rem;
+  color: #4B5563;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
   text-align: left;
   white-space: nowrap;
 }
 
 .settings-tab:hover {
-  color: #ddd;
-  background: #0d0d0d;
+  color: #111827;
+  background: #F3F4F6;
 }
 
 .settings-tab-active {
   color: #F97D01 !important;
-  background: rgba(249, 125, 1, 0.06) !important;
-  border-color: rgba(249, 125, 1, 0.15);
+  background: rgba(249, 125, 1, 0.08) !important;
+  border-color: rgba(249, 125, 1, 0.2);
+  font-weight: 600;
 }
 
 .settings-tab-icon {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  flex-shrink: 0;
 }
 
 .settings-tab-label {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading, inherit);
   letter-spacing: 0.04em;
 }
 
 /* Panel */
 .settings-panel {
-  background: #0a0a0a;
-  border: 1px solid #1a1a1a;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 8px;
   padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .settings-panel-title {
-  font-family: var(--font-heading);
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: #ddd;
+  font-family: var(--font-heading, inherit);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #111827;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 /* Fields */
@@ -96,37 +103,38 @@
 
 .settings-field-label {
   display: block;
-  font-family: var(--font-heading);
+  font-family: var(--font-heading, inherit);
   font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: #bbb;
-  margin-bottom: 0.15rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #374151;
+  margin-bottom: 0.2rem;
 }
 
 .settings-field-key {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-family: monospace;
-  color: #444;
+  color: #9CA3AF;
   margin-bottom: 0.4rem;
 }
 
 .settings-field-input {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  background: #070707;
-  border: 1px solid #1a1a1a;
+  padding: 0.65rem 0.85rem;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 6px;
-  color: #ddd;
+  color: #111827;
   font-size: 0.82rem;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .settings-field-input:focus {
   border-color: #F97D01;
+  box-shadow: 0 0 0 3px rgba(249, 125, 1, 0.1);
 }
 
 .settings-textarea {
@@ -138,12 +146,13 @@
   position: absolute;
   top: 0;
   right: 0;
-  font-size: 0.6rem;
-  font-family: var(--font-heading);
-  letter-spacing: 0.1em;
+  font-size: 0.65rem;
+  font-family: var(--font-heading, inherit);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #F97D01;
-  background: rgba(249, 125, 1, 0.08);
-  padding: 0.15rem 0.4rem;
-  border-radius: 3px;
+  color: #C2410C;
+  background: #FFEDD5;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 600;
 }

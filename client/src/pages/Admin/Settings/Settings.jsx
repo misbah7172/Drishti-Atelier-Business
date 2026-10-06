@@ -48,9 +48,7 @@ export default function Settings() {
     setSaving(true);
     try {
       await api.put('/admin/settings', { settings: dirty });
-      toast.success(`${Object.keys(dirty).length} setting(s) saved`, {
-        style: { background: '#070707', color: '#fff', border: '1px solid #222' },
-      });
+      toast.success(`${Object.keys(dirty).length} setting(s) saved`);
       // Update local state
       const updated = { ...settings };
       for (const cat of Object.keys(updated)) {
@@ -89,7 +87,7 @@ export default function Settings() {
       </div>
 
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: '#555' }}>Loading settings...</div>
+        <div style={{ padding: '3rem', textAlign: 'center', color: '#6B7280' }}>Loading settings...</div>
       ) : (
         <div className="settings-layout">
           {/* Tabs */}

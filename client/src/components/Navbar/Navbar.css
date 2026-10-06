@@ -228,6 +228,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 8px rgba(249, 125, 1, 0.4);
+}
+
+.navbar-cart-active {
+  color: #ffffff;
+}
+
+.navbar-logout-btn {
+  color: #a8a8a8;
+}
+
+.navbar-logout-btn:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+.mobile-logout-card {
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-logout-card:hover {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+}
+
+[data-theme="light"] .navbar-cart-active {
+  color: #050505;
+}
+
+[data-theme="light"] .navbar-logout-btn {
+  color: #555555;
+}
+
+[data-theme="light"] .navbar-logout-btn:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+
+[data-theme="light"] .mobile-logout-card {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .mobile-logout-card:hover {
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 .navbar-badge-dot {

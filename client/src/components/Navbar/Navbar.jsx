@@ -148,15 +148,13 @@ export default function Navbar() {
           {/* Cart (Desktop Only) */}
           <Link
             to="/cart"
-            className="navbar-action-btn desktop-only"
+            className={`navbar-action-btn desktop-only ${cartCount > 0 ? 'navbar-cart-active' : ''}`}
             id="cart-link"
             aria-label="Shopping Cart"
           >
             <HiOutlineShoppingBag size={19} />
-            {cartCount > 0 ? (
+            {cartCount > 0 && (
               <span className="navbar-badge-pill">{cartCount}</span>
-            ) : (
-              <span className="navbar-badge-dot" aria-hidden="true" />
             )}
           </Link>
 
@@ -166,13 +164,27 @@ export default function Navbar() {
             className="navbar-action-btn desktop-only"
             id="account-link"
             aria-label={isAuthenticated ? `${user?.name} Account` : 'Account Login'}
-            title={isAuthenticated ? `${user?.name} (${user?.role})` : 'Account Login'}
+            title={isAuthenticated ? `${user?.name} (${isAdmin ? 'Admin' : 'Client'})` : 'Account Login'}
           >
             <HiOutlineUser size={19} className={isAuthenticated ? 'text-[#F97D01]' : ''} />
             {isAuthenticated && (
               <span className="navbar-badge-dot" style={{ backgroundColor: '#F97D01' }} aria-hidden="true" />
             )}
           </Link>
+
+          {/* Logout (Desktop Only) */}
+          {isAuthenticated && (
+            <button
+              type="button"
+              onClick={logout}
+              className="navbar-action-btn desktop-only navbar-logout-btn"
+              id="logout-btn"
+              aria-label="Sign Out"
+              title="Sign Out"
+            >
+              <HiOutlineArrowRightOnRectangle size={19} />
+            </button>
+          )}
 
           {/* Mobile Hamburger Toggle (Mobile/Tablet Only) */}
           <button
@@ -344,6 +356,27 @@ export default function Navbar() {
                 </span>
               </div>
             </Link>
+
+            {isAuthenticated && (
+              <button
+                type="button"
+                className="mobile-action-card mobile-logout-card"
+                onClick={() => {
+                  logout();
+                  closeMobile();
+                }}
+                id="mobile-logout-btn"
+                aria-label="Sign Out"
+              >
+                <div className="mobile-action-card-icon-wrap" style={{ color: '#ef4444' }}>
+                  <HiOutlineArrowRightOnRectangle size={20} />
+                </div>
+                <div className="mobile-action-card-text">
+                  <span className="mobile-action-card-title">Sign Out</span>
+                  <span className="mobile-action-card-sub">End session</span>
+                </div>
+              </button>
+            )}
           </div>
 
           {/* Drawer Footer: Copyright */}

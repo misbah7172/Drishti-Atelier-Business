@@ -21,15 +21,15 @@ export default function ManageCategories() {
     setSaving(true);
     try {
       const body = { ...form, slug: form.slug || form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''), parent_id: form.parent_id || null };
-      if (editingId) { await api.put(`/admin/categories/${editingId}`, body); toast.success('Updated', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); }
-      else { await api.post('/admin/categories', body); toast.success('Created', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); }
+      if (editingId) { await api.put(`/admin/categories/${editingId}`, body); toast.success('Updated'); }
+      else { await api.post('/admin/categories', body); toast.success('Created'); }
       resetForm(); fetchCategories();
     } catch (err) { toast.error(err.response?.data?.message || 'Failed'); } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    try { await api.delete(`/admin/categories/${deleteTarget.id}`); toast.success('Deleted', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); setDeleteTarget(null); fetchCategories(); }
+    try { await api.delete(`/admin/categories/${deleteTarget.id}`); toast.success('Deleted'); setDeleteTarget(null); fetchCategories(); }
     catch (err) { toast.error(err.response?.data?.message || 'Cannot delete — has products'); }
   };
 
@@ -55,7 +55,7 @@ export default function ManageCategories() {
 
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>Category</th><th>Slug</th><th>Parent</th><th>Products</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={5} className="table-empty">Loading...</td></tr> : categories.length === 0 ? <tr><td colSpan={5} className="table-empty">No categories</td></tr> : categories.map((c) => (
-          <tr key={c.id}><td style={{ color: '#ddd', fontWeight: c.parent_id ? 400 : 500, paddingLeft: c.parent_id ? '2rem' : '1rem' }}>{c.parent_id ? '↳ ' : ''}{c.name}</td><td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#666' }}>{c.slug}</td><td>{c.parent_id ? parents.find(p => p.id === c.parent_id)?.name || '—' : '—'}</td><td>{c.product_count || 0}</td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => handleEdit(c)}><HiOutlinePencil size={13} /> Edit</button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(c)}><HiOutlineTrash size={13} /></button></td></tr>
+          <tr key={c.id}><td style={{ color: '#111827', fontWeight: c.parent_id ? 500 : 600, paddingLeft: c.parent_id ? '2rem' : '1rem' }}>{c.parent_id ? '↳ ' : ''}{c.name}</td><td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#6B7280' }}>{c.slug}</td><td>{c.parent_id ? parents.find(p => p.id === c.parent_id)?.name || '—' : '—'}</td><td>{c.product_count || 0}</td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => handleEdit(c)}><HiOutlinePencil size={13} /> Edit</button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(c)}><HiOutlineTrash size={13} /></button></td></tr>
         ))}</tbody></table></div>
 
       {deleteTarget && <div className="admin-modal-overlay" onClick={() => setDeleteTarget(null)}><div className="admin-modal confirm-dialog" onClick={(e) => e.stopPropagation()}>

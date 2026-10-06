@@ -22,8 +22,8 @@ export default function ManageCoupons() {
     e.preventDefault(); if (!form.code || !form.discount_value) return toast.error('Code and value required');
     setSaving(true);
     try {
-      if (editingId) { await api.put(`/admin/coupons/${editingId}`, form); toast.success('Updated', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); }
-      else { await api.post('/admin/coupons', form); toast.success('Created', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); }
+      if (editingId) { await api.put(`/admin/coupons/${editingId}`, form); toast.success('Updated'); }
+      else { await api.post('/admin/coupons', form); toast.success('Created'); }
       resetForm(); fetch();
     } catch (err) { toast.error(err.response?.data?.message || 'Failed'); } finally { setSaving(false); }
   };
@@ -63,7 +63,7 @@ export default function ManageCoupons() {
 
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Min Order</th><th>Uses</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={8} className="table-empty">Loading...</td></tr> : coupons.length === 0 ? <tr><td colSpan={8} className="table-empty">No coupons</td></tr> : coupons.map((c) => (
-          <tr key={c.id}><td style={{ fontFamily: 'var(--font-heading)', color: '#ddd', letterSpacing: '0.08em' }}>{c.code}</td><td><span className={`badge badge-${c.discount_type}`}>{c.discount_type}</span></td><td>{c.discount_type === 'percentage' ? `${c.discount_value}%` : `৳${c.discount_value}`}{c.max_discount ? ` (max ৳${c.max_discount})` : ''}</td><td>{c.min_order_amount ? `৳${c.min_order_amount}` : '—'}</td><td>{c.usage_count || 0}{c.usage_limit ? `/${c.usage_limit}` : ''}</td><td>{c.expires_at ? new Date(c.expires_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }) : '∞'}</td><td><span className={`badge ${c.is_active ? 'badge-active' : 'badge-inactive'}`}>{c.is_active ? 'Active' : 'Inactive'}</span></td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => handleEdit(c)}><HiOutlinePencil size={13} /></button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(c)}><HiOutlineTrash size={13} /></button></td></tr>
+          <tr key={c.id}><td style={{ fontFamily: 'var(--font-heading)', color: '#111827', fontWeight: 600, letterSpacing: '0.08em' }}>{c.code}</td><td><span className={`badge badge-${c.discount_type}`}>{c.discount_type}</span></td><td>{c.discount_type === 'percentage' ? `${c.discount_value}%` : `৳${c.discount_value}`}{c.max_discount ? ` (max ৳${c.max_discount})` : ''}</td><td>{c.min_order_amount ? `৳${c.min_order_amount}` : '—'}</td><td>{c.usage_count || 0}{c.usage_limit ? `/${c.usage_limit}` : ''}</td><td>{c.expires_at ? new Date(c.expires_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }) : '∞'}</td><td><span className={`badge ${c.is_active ? 'badge-active' : 'badge-inactive'}`}>{c.is_active ? 'Active' : 'Inactive'}</span></td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => handleEdit(c)}><HiOutlinePencil size={13} /></button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(c)}><HiOutlineTrash size={13} /></button></td></tr>
         ))}</tbody></table></div>
 
       {deleteTarget && <div className="admin-modal-overlay" onClick={() => setDeleteTarget(null)}><div className="admin-modal confirm-dialog" onClick={(e) => e.stopPropagation()}>

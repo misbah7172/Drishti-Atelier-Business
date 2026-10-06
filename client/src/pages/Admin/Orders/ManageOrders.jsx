@@ -24,7 +24,7 @@ export default function ManageOrders() {
       const body = {}; if (newStatus !== editing.order_status) body.order_status = newStatus; if (newPayment !== editing.payment_status) body.payment_status = newPayment; if (note) body.note = note;
       if (!body.order_status && !body.payment_status) { setEditing(null); return; }
       await api.put(`/admin/orders/${editing.id}/status`, body);
-      toast.success('Order updated', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); setEditing(null); fetchOrders();
+      toast.success('Order updated'); setEditing(null); fetchOrders();
     } catch { toast.error('Failed'); }
   };
   const totalPages = Math.ceil(total / 20);
@@ -38,7 +38,7 @@ export default function ManageOrders() {
       </div>
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>Order #</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th><th>Date</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={8} className="table-empty">Loading...</td></tr> : orders.length === 0 ? <tr><td colSpan={8} className="table-empty">No orders</td></tr> : orders.map((o) => (
-          <tr key={o.id}><td style={{ color: '#ddd' }}>{o.order_number}</td><td>{o.customer_name}</td><td>{o.items_count}</td><td style={{ fontFamily: 'var(--font-heading)', color: '#ddd' }}>৳{parseFloat(o.total).toLocaleString()}</td><td><span className={`badge badge-${o.order_status}`}>{o.order_status}</span></td><td><span className={`badge badge-${o.payment_status}`}>{o.payment_status}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td><td><button type="button" className="admin-btn-sm" onClick={() => openEdit(o)}>Update</button></td></tr>
+          <tr key={o.id}><td style={{ color: '#111827', fontWeight: 600 }}>{o.order_number}</td><td>{o.customer_name}</td><td>{o.items_count}</td><td style={{ fontFamily: 'var(--font-heading)', color: '#111827', fontWeight: 600 }}>৳{parseFloat(o.total).toLocaleString()}</td><td><span className={`badge badge-${o.order_status}`}>{o.order_status}</span></td><td><span className={`badge badge-${o.payment_status}`}>{o.payment_status}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td><td><button type="button" className="admin-btn-sm" onClick={() => openEdit(o)}>Update</button></td></tr>
         ))}</tbody></table></div>
       {totalPages > 1 && <div className="admin-pagination"><span className="admin-page-info">Page {page} of {totalPages}</span><div className="admin-page-btns"><button className="admin-page-btn" disabled={page <= 1} onClick={() => setPage(page - 1)}>← Prev</button><button className="admin-page-btn" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next →</button></div></div>}
 

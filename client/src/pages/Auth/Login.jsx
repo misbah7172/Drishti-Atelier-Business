@@ -42,10 +42,10 @@ export default function Login() {
     setSubmitting(false);
 
     if (result.success) {
-      if (from) {
+      if (result.user?.role === 'admin') {
+        navigate((from && from.startsWith('/admin')) ? from : '/admin', { replace: true });
+      } else if (from) {
         navigate(from, { replace: true });
-      } else if (result.user.role === 'admin') {
-        navigate('/admin', { replace: true });
       } else {
         navigate('/account', { replace: true });
       }
@@ -61,10 +61,10 @@ export default function Login() {
     setSubmitting(false);
 
     if (result.success) {
-      if (from) {
+      if (result.user?.role === 'admin') {
+        navigate((from && from.startsWith('/admin')) ? from : '/admin', { replace: true });
+      } else if (from) {
         navigate(from, { replace: true });
-      } else if (result.user.role === 'admin') {
-        navigate('/admin', { replace: true });
       } else {
         navigate('/account', { replace: true });
       }

@@ -17,7 +17,7 @@ export default function ManageProducts() {
   const handleSearch = (e) => { e.preventDefault(); setPage(1); fetchProducts(); };
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    try { await api.delete(`/admin/products/${deleteTarget.id}`); toast.success('Product deleted', { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); setDeleteTarget(null); fetchProducts(); } catch (err) { toast.error(err.response?.data?.message || 'Failed'); }
+    try { await api.delete(`/admin/products/${deleteTarget.id}`); toast.success('Product deleted'); setDeleteTarget(null); fetchProducts(); } catch (err) { toast.error(err.response?.data?.message || 'Failed'); }
   };
 
   return (
@@ -27,9 +27,9 @@ export default function ManageProducts() {
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>Product</th><th>SKU</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={6} className="table-empty">Loading...</td></tr> : products.length === 0 ? <tr><td colSpan={6} className="table-empty">No products</td></tr> : products.map((p) => (
           <tr key={p.id}>
-            <td><div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><img src={p.primary_image || '/images/blue-aviator.png'} alt="" style={{ width: 36, height: 36, borderRadius: 4, objectFit: 'cover', background: '#111' }} /><div><div style={{ color: '#ddd', fontWeight: 500, fontSize: '0.82rem' }}>{p.name}</div><div style={{ color: '#555', fontSize: '0.7rem' }}>{p.brand || ''}</div></div></div></td>
-            <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#777' }}>{p.sku || '—'}</td>
-            <td style={{ fontFamily: 'var(--font-heading)', color: '#ddd' }}>৳{parseFloat(p.price).toLocaleString()}</td>
+            <td><div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><img src={p.primary_image || '/images/blue-aviator.png'} alt="" style={{ width: 36, height: 36, borderRadius: 4, objectFit: 'cover', background: '#F3F4F6' }} /><div><div style={{ color: '#111827', fontWeight: 600, fontSize: '0.82rem' }}>{p.name}</div><div style={{ color: '#6B7280', fontSize: '0.7rem' }}>{p.brand || ''}</div></div></div></td>
+            <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#6B7280' }}>{p.sku || '—'}</td>
+            <td style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, color: '#111827' }}>৳{parseFloat(p.price).toLocaleString()}</td>
             <td><span style={{ color: p.stock <= 5 ? '#ef4444' : p.stock <= 15 ? '#f59e0b' : '#22c55e' }}>{p.stock}</span></td>
             <td><span className={`badge badge-${p.status === 'active' ? 'active' : 'inactive'}`}>{p.status}</span></td>
             <td className="admin-actions"><Link to={`/admin/products/${p.id}`} className="admin-btn-sm"><HiOutlinePencil size={13} /> Edit</Link><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(p)}><HiOutlineTrash size={13} /></button></td>

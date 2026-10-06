@@ -129,6 +129,10 @@ export default function App() {
                 <Route path="account/orders/:id" element={<OrderDetail />} />
               </Route>
 
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
+
               {/* Protected Admin Routes (Phase 8 / 9) */}
               <Route element={<AdminRoute />}>
                 <Route path="admin" element={<AdminLayout />}>
@@ -144,10 +148,6 @@ export default function App() {
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>
               </Route>
-
-              {/* 404 */}
-              <Route path="*" element={<NotFound />} />
-            </Route>
           </Routes>
         </BrowserRouter>
         </WishlistProvider>

@@ -23,8 +23,9 @@ export function AuthProvider({ children }) {
         headers: { Authorization: `Bearer ${activeToken}` },
       });
 
-      if (response.data?.status === 'success' && response.data?.data?.user) {
-        setUser(response.data.data.user);
+      const fetchedUser = response.data?.data?.user || response.data?.user;
+      if (response.data?.status === 'success' && fetchedUser) {
+        setUser(fetchedUser);
       } else {
         // Token invalid or user not found
         localStorage.removeItem('token');

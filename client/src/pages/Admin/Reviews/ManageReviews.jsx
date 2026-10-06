@@ -12,11 +12,11 @@ export default function ManageReviews() {
   useEffect(() => { fetchReviews(); }, [page]);
 
   const toggleVisibility = async (id, current) => {
-    try { await api.put(`/admin/reviews/${id}/visibility`, { is_visible: !current }); toast.success(`Review ${!current ? 'shown' : 'hidden'}`, { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); fetchReviews(); } catch { toast.error('Failed'); }
+    try { await api.put(`/admin/reviews/${id}/visibility`, { is_visible: !current }); toast.success(`Review ${!current ? 'shown' : 'hidden'}`); fetchReviews(); } catch { toast.error('Failed'); }
   };
   const handleDelete = async () => { if (!deleteTarget) return; try { await api.delete(`/admin/reviews/${deleteTarget.id}`); toast.success('Deleted'); setDeleteTarget(null); fetchReviews(); } catch { toast.error('Failed'); } };
 
-  const Stars = ({ n }) => <div style={{ display: 'flex', gap: 1 }}>{[1,2,3,4,5].map(i => <HiStar key={i} size={13} style={{ color: i <= n ? '#F97D01' : '#333' }} />)}</div>;
+  const Stars = ({ n }) => <div style={{ display: 'flex', gap: 1 }}>{[1,2,3,4,5].map(i => <HiStar key={i} size={13} style={{ color: i <= n ? '#F97D01' : '#D1D5DB' }} />)}</div>;
   const totalPages = Math.ceil(total / 20);
 
   return (
@@ -24,7 +24,7 @@ export default function ManageReviews() {
       <div className="admin-page-header"><div><h1 className="admin-page-title">Reviews</h1><p className="admin-page-subtitle">{total} customer reviews</p></div></div>
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Visible</th><th>Date</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={7} className="table-empty">Loading...</td></tr> : reviews.length === 0 ? <tr><td colSpan={7} className="table-empty">No reviews</td></tr> : reviews.map((r) => (
-          <tr key={r.id}><td style={{ color: '#ddd' }}>{r.user_name}</td><td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.product_name}</td><td><Stars n={r.rating} /></td><td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#999' }}>{r.comment || '—'}</td><td><span className={`badge ${r.is_visible ? 'badge-active' : 'badge-inactive'}`}>{r.is_visible ? 'Yes' : 'Hidden'}</span></td><td>{new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => toggleVisibility(r.id, r.is_visible)} title={r.is_visible ? 'Hide' : 'Show'}>{r.is_visible ? <HiOutlineEyeSlash size={14} /> : <HiOutlineEye size={14} />}</button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(r)}><HiOutlineTrash size={14} /></button></td></tr>
+          <tr key={r.id}><td style={{ color: '#111827', fontWeight: 600 }}>{r.user_name}</td><td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.product_name}</td><td><Stars n={r.rating} /></td><td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#6B7280' }}>{r.comment || '—'}</td><td><span className={`badge ${r.is_visible ? 'badge-active' : 'badge-inactive'}`}>{r.is_visible ? 'Yes' : 'Hidden'}</span></td><td>{new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td><td className="admin-actions"><button type="button" className="admin-btn-sm" onClick={() => toggleVisibility(r.id, r.is_visible)} title={r.is_visible ? 'Hide' : 'Show'}>{r.is_visible ? <HiOutlineEyeSlash size={14} /> : <HiOutlineEye size={14} />}</button><button type="button" className="admin-btn-sm admin-btn-danger" onClick={() => setDeleteTarget(r)}><HiOutlineTrash size={14} /></button></td></tr>
         ))}</tbody></table></div>
       {totalPages > 1 && <div className="admin-pagination"><span className="admin-page-info">Page {page} of {totalPages}</span><div className="admin-page-btns"><button className="admin-page-btn" disabled={page <= 1} onClick={() => setPage(page - 1)}>← Prev</button><button className="admin-page-btn" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next →</button></div></div>}
 

@@ -191,6 +191,9 @@ async function getMe(req, res) {
   res.status(200).json({
     status: 'success',
     user: req.user,
+    data: {
+      user: req.user,
+    },
   });
 }
 

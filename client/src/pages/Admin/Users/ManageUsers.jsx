@@ -23,7 +23,7 @@ export default function ManageUsers() {
   useEffect(() => { fetchUsers(); }, [page, roleFilter]);
   const handleSearch = (e) => { e.preventDefault(); setPage(1); fetchUsers(); };
   const toggleStatus = async (id, current) => {
-    try { await api.put(`/admin/users/${id}/status`, { is_active: !current }); toast.success(`User ${!current ? 'enabled' : 'disabled'}`, { style: { background: '#070707', color: '#fff', border: '1px solid #222' } }); fetchUsers(); } catch { toast.error('Failed'); }
+    try { await api.put(`/admin/users/${id}/status`, { is_active: !current }); toast.success(`User ${!current ? 'enabled' : 'disabled'}`); fetchUsers(); } catch { toast.error('Failed'); }
   };
   const totalPages = Math.ceil(total / 20);
 
@@ -36,7 +36,7 @@ export default function ManageUsers() {
       </div>
       <div className="admin-table-wrap"><table className="admin-mgmt-table"><thead><tr><th>User</th><th>Email</th><th>Phone</th><th>Role</th><th>Orders</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody>
         {loading ? <tr><td colSpan={8} className="table-empty">Loading...</td></tr> : users.length === 0 ? <tr><td colSpan={8} className="table-empty">No users found</td></tr> : users.map((u) => (
-          <tr key={u.id}><td style={{ color: '#ddd', fontWeight: 500 }}>{u.name}</td><td>{u.email}</td><td>{u.phone || '—'}</td><td><span className={`badge badge-${u.role}`}>{u.role}</span></td><td>{u.order_count}</td><td><span className={`badge ${u.is_active ? 'badge-active' : 'badge-inactive'}`}>{u.is_active ? 'Active' : 'Disabled'}</span></td><td>{new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}</td><td><button type="button" className={`admin-btn-sm ${u.is_active ? 'admin-btn-danger' : ''}`} onClick={() => toggleStatus(u.id, u.is_active)}>{u.is_active ? <><HiOutlineShieldExclamation size={14} /> Disable</> : <><HiOutlineShieldCheck size={14} /> Enable</>}</button></td></tr>
+          <tr key={u.id}><td style={{ color: '#111827', fontWeight: 600 }}>{u.name}</td><td>{u.email}</td><td>{u.phone || '—'}</td><td><span className={`badge badge-${u.role}`}>{u.role}</span></td><td>{u.order_count}</td><td><span className={`badge ${u.is_active ? 'badge-active' : 'badge-inactive'}`}>{u.is_active ? 'Active' : 'Disabled'}</span></td><td>{new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}</td><td><button type="button" className={`admin-btn-sm ${u.is_active ? 'admin-btn-danger' : ''}`} onClick={() => toggleStatus(u.id, u.is_active)}>{u.is_active ? <><HiOutlineShieldExclamation size={14} /> Disable</> : <><HiOutlineShieldCheck size={14} /> Enable</>}</button></td></tr>
         ))}</tbody></table></div>
       {totalPages > 1 && <div className="admin-pagination"><span className="admin-page-info">Page {page} of {totalPages}</span><div className="admin-page-btns"><button className="admin-page-btn" disabled={page <= 1} onClick={() => setPage(page - 1)}>← Prev</button><button className="admin-page-btn" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next →</button></div></div>}
     </div>
