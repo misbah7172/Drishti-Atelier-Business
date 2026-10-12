@@ -1,47 +1,44 @@
 -- ============================================
--- Drishti — Seed Data
+-- Drishti — Seed Data (Real CSV Product Catalog)
 -- ============================================
 -- Run AFTER schema.sql
--- Usage: node database/run-seed.js
+-- Usage: node database/setup.js
 -- ============================================
 
 -- ============================================
--- CATEGORIES (7)
+-- CATEGORIES (8)
 -- ============================================
-INSERT INTO categories (name, slug, description, sort_order) VALUES
-  ('Sunglasses',          'sunglasses',          'Stylish sunglasses for UV protection and fashion',          1),
-  ('Prescription Glasses','prescription-glasses', 'Corrective lenses for clear Drishti every day',             2),
-  ('Blue Light Glasses',  'blue-light-glasses',  'Protect your eyes from harmful blue light screens',         3),
-  ('Men',                 'men',                 'Eyewear designed for men',                                  4),
-  ('Women',               'women',               'Eyewear designed for women',                                5),
-  ('Unisex',              'unisex',              'Eyewear for everyone',                                      6),
-  ('Kids',                'kids',                'Safe and durable eyewear for children',                     7);
+INSERT INTO categories (id, name, slug, description, sort_order) VALUES
+  (1, 'Sunglasses',          'sunglasses',          'UV400 luxury & performance sunglasses',          1),
+  (2, 'Prescription Glasses','prescription-glasses', 'Precision optical frames for clear Drishti',    2),
+  (3, 'Blue Light Glasses',  'blue-light-glasses',  'Protect your eyes from digital screen glare',     3),
+  (4, 'Men',                 'men',                 'Eyewear designed for men',                       4),
+  (5, 'Women',               'women',               'Eyewear designed for women',                     5),
+  (6, 'Unisex',              'unisex',              'Eyewear for everyone',                           6),
+  (7, 'Kids',                'kids',                'Safe, flexible, and durable eyewear for kids',   7),
+  (8, 'Sports Eyewear',      'sports',              'High-performance eyewear for athletics & outdoor',8)
+ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, slug = EXCLUDED.slug;
 
 -- ============================================
 -- SUBCATEGORIES
 -- ============================================
 INSERT INTO subcategories (category_id, name, slug, sort_order) VALUES
-  -- Sunglasses
   (1, 'Aviator',     'aviator-sunglasses',     1),
   (1, 'Wayfarer',    'wayfarer-sunglasses',    2),
   (1, 'Round',       'round-sunglasses',       3),
   (1, 'Sport',       'sport-sunglasses',       4),
-  -- Prescription
-  (2, 'Single Drishti','single-Drishti',          1),
+  (2, 'Single Drishti','single-Drishti',       1),
   (2, 'Bifocal',     'bifocal',                2),
   (2, 'Progressive', 'progressive',            3),
-  -- Blue Light
-  (3, 'Computer',    'computer-glasses',        1),
-  (3, 'Gaming',      'gaming-glasses',          2),
-  -- Men
-  (4, 'Formal',      'men-formal',              1),
-  (4, 'Casual',      'men-casual',              2),
-  -- Women
-  (5, 'Cat Eye',     'women-cat-eye',           1),
-  (5, 'Oversized',   'women-oversized',         2),
-  -- Kids
-  (7, 'Flexible',    'kids-flexible',            1),
-  (7, 'Sporty',      'kids-sporty',              2);
+  (3, 'Computer',    'computer-glasses',       1),
+  (3, 'Gaming',      'gaming-glasses',         2),
+  (4, 'Formal',      'men-formal',             1),
+  (4, 'Casual',      'men-casual',             2),
+  (5, 'Cat Eye',     'women-cat-eye',          1),
+  (5, 'Oversized',   'women-oversized',        2),
+  (7, 'Flexible',    'kids-flexible',          1),
+  (7, 'Sporty',      'kids-sporty',            2)
+ON CONFLICT (slug) DO NOTHING;
 
 -- ============================================
 -- TAGS (8)
@@ -54,209 +51,335 @@ INSERT INTO tags (name, slug) VALUES
   ('Sale',         'sale'),
   ('Lightweight',  'lightweight'),
   ('Polarized',    'polarized'),
-  ('UV Protection','uv-protection');
+  ('UV Protection','uv-protection')
+ON CONFLICT (slug) DO NOTHING;
 
 -- ============================================
--- PRODUCTS (24 realistic eyewear products)
+-- PRODUCTS (108 Products from CSV Catalog)
 -- ============================================
-INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, subcategory_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Non-Brand A2406 Eyewear', 'non-brand-a2406', 'A2406', 'Model: A2406\nBrand: Non-Brand\nBatch Memo: 27 no\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 54-19-147\nAuthentic Drishti Atelier piece.', 'Non-Brand A2406 in classic black finish.', 300.00, 405.00, 1, 0, 2, 'Non-Brand', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '54-19-147', 'active', false, false, true);
 
--- 1
-('Classic Aviator Sunglasses', 'classic-aviator-sunglasses', 'VEC-SUN-001',
- 'Timeless aviator sunglasses with premium metal frame and UV400 polarized lenses. The teardrop-shaped lenses offer full eye coverage while the adjustable nose pads ensure a comfortable fit all day long. Perfect for driving, outdoor activities, and everyday style.',
- 'Timeless aviator with UV400 polarized lenses',
- 2450.00, 3200.00, 45, 5, 1, 1, 'Drishti Elite', 'Metal', 'Aviator', 'Gold', 'unisex', 'Medium', 'active', true, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Non-Brand P322 Eyewear', 'non-brand-p322', 'P322', 'Model: P322\nBrand: Non-Brand\nBatch Memo: 25 no\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 51-19-148\nAuthentic Drishti Atelier piece.', 'Non-Brand P322 in classic black finish.', 400.00, 540.00, 1, 0, 2, 'Non-Brand', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '51-19-148', 'active', false, false, true);
 
--- 2
-('Urban Wayfarer Matte Black', 'urban-wayfarer-matte-black', 'VEC-SUN-002',
- 'Modern wayfarer sunglasses in a sleek matte black finish. Crafted from lightweight acetate with spring hinges for flexibility and durability. Features scratch-resistant lenses with 100% UV protection. A must-have for any eyewear collection.',
- 'Sleek matte black wayfarer with spring hinges',
- 1950.00, 2500.00, 60, 5, 1, 2, 'StreetVue', 'Acetate', 'Wayfarer', 'Black', 'unisex', 'Large', 'active', true, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Non-Brand AMTHH70208', 'non-brand-amthh70208', 'AMTHH70208', 'Model: AMTHH70208\nBrand: Non-Brand\nBatch Memo: 26NO\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Non-Brand AMTHH70208 in classic black finish.', 170.00, 230.00, 1, 0, 5, 'Non-Brand', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'women', 'Standard Fit', 'active', false, false, true);
 
--- 3
-('Retro Round Gold Frame', 'retro-round-gold-frame', 'VEC-SUN-003',
- 'Vintage-inspired round sunglasses with a thin gold metal frame. Lightweight design weighing just 22 grams. Green-tinted lenses provide natural color perception while blocking harmful UV rays. Ideal for a bohemian or classic look.',
- 'Vintage round frame with green-tinted lenses',
- 1750.00, NULL, 30, 5, 1, 3, 'RetroSpec', 'Metal', 'Round', 'Gold', 'unisex', 'Small', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Hermès 58149 C3 Eyewear', 'herm-s-58149-c3', '58149-C3', 'Model: 58149 C3\nBrand: Hermès\nBatch Memo: 23 no\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 62-14-140\nAuthentic Drishti Atelier piece.', 'Hermès 58149 C3 in classic black finish.', 420.00, 567.00, 1, 0, 2, 'Hermès', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '62-14-140', 'active', false, false, true);
 
--- 4
-('ProSport Wrap-Around Sunglasses', 'prosport-wrap-around-sunglasses', 'VEC-SUN-004',
- 'High-performance sport sunglasses designed for athletes and active lifestyles. Wrap-around design provides maximum peripheral Drishti and wind protection. Rubberized grips on the nose and temples keep them secure during intense activities. Includes a hard case and cleaning cloth.',
- 'Performance sport sunglasses with wrap-around fit',
- 3200.00, 3800.00, 25, 5, 1, 4, 'ActiveDrishti', 'TR90 Nylon', 'Wrap', 'Black/Red', 'men', 'Large', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Non-Brand W90139', 'non-brand-w90139', 'W90139', 'Model: W90139\nBrand: Non-Brand\nBatch Memo: 24 no(2)\nBox: samebox 2-12\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-18-145\nAuthentic Drishti Atelier piece.', 'Non-Brand W90139 in classic black finish.', 270.00, 365.00, 1, 0, 2, 'Non-Brand', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-18-145', 'active', false, true, true);
 
--- 5
-('Elegant Cat Eye Tortoise', 'elegant-cat-eye-tortoise', 'VEC-SUN-005',
- 'Sophisticated cat-eye sunglasses in a rich tortoiseshell pattern. Handcrafted acetate frame with gradient brown lenses. The feminine silhouette adds a touch of glamour to any outfit. Features premium Italian hinges for smooth, durable operation.',
- 'Sophisticated cat-eye in rich tortoiseshell',
- 2800.00, 3500.00, 35, 5, 5, 12, 'Bella Vista', 'Acetate', 'Cat Eye', 'Tortoise', 'women', 'Medium', 'active', true, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Oakley OO9528 3N', 'oakley-oo9528-3n', 'OO9528-3N', 'Model: OO9528 3N\nBrand: Oakley\nBatch Memo: Sports(21)\nBox: A\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 60-18-130\nAuthentic Drishti Atelier piece.', 'Oakley OO9528 3N in classic black finish.', 550.00, 743.00, 1, 0, 8, 'Oakley', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '60-18-130', 'active', false, true, true);
 
--- 6
-('ClearView Prescription Rectangle', 'clearview-prescription-rectangle', 'VEC-RX-001',
- 'Professional rectangular prescription frames in classic black. Designed for everyday wear with a comfortable lightweight build. Compatible with single Drishti, bifocal, and progressive lenses. Adjustable nose pads and flexible temples ensure a personalized fit.',
- 'Classic rectangular frames for everyday clarity',
- 1800.00, 2200.00, 50, 5, 2, 5, 'ClearView', 'Metal', 'Rectangle', 'Black', 'men', 'Medium', 'active', false, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Oakley OO9135-02', 'oakley-oo9135-02', 'OO9135-02', 'Model: OO9135-02\nBrand: Oakley\nBatch Memo: Sports(21)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-16\nAuthentic Drishti Atelier piece.', 'Oakley OO9135-02 in classic black finish.', 550.00, 743.00, 1, 0, 8, 'Oakley', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-16', 'active', true, true, true);
 
--- 7
-('Harmony Oval Rose Gold', 'harmony-oval-rose-gold', 'VEC-RX-002',
- 'Delicate oval prescription frames in trendy rose gold. Ultra-thin titanium frame is incredibly lightweight yet strong. The oval shape suits most face types and provides a soft, elegant look. Spring hinges adapt to your head shape for all-day comfort.',
- 'Elegant oval titanium frames in rose gold',
- 3500.00, 4200.00, 20, 3, 2, 5, 'Harmony', 'Titanium', 'Oval', 'Rose Gold', 'women', 'Small', 'active', true, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Oakley 1181 Eyewear', 'oakley-1181', '1181-ORANGE', 'Model: 1181\nBrand: Oakley\nBatch Memo: Sports(21)\nBox: Original Case\nColor: Orange\nMaterial: Impact-Resistant Polycarbonate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Oakley 1181 in orange finish.', 550.00, 743.00, 1, 0, 8, 'Oakley', 'Impact-Resistant Polycarbonate', 'Geometric', 'Orange', 'unisex', 'Standard Fit', 'active', false, true, true);
 
--- 8
-('Executive Half-Rim Silver', 'executive-half-rim-silver', 'VEC-RX-003',
- 'Sophisticated half-rim prescription glasses with a polished silver frame. The semi-rimless design creates a clean, professional appearance. Durable stainless steel construction with silicone nose pads for comfort. Perfect for the boardroom or casual outings.',
- 'Professional half-rim frames in polished silver',
- 2600.00, NULL, 40, 5, 2, 5, 'ExecLine', 'Stainless Steel', 'Rectangle', 'Silver', 'men', 'Large', 'active', false, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Oakley 1181 Eyewear', 'oakley-1181-1', '1181-BLUE', 'Model: 1181\nBrand: Oakley\nBatch Memo: Sports(21)\nBox: Original Case\nColor: Blue\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Oakley 1181 in blue finish.', 550.00, 743.00, 1, 0, 8, 'Oakley', 'Handcrafted Acetate', 'Geometric', 'Blue', 'unisex', 'Standard Fit', 'active', false, true, true);
 
--- 9
-('FlexiKids Round Blue', 'flexikids-round-blue', 'VEC-KID-001',
- 'Fun and flexible round glasses designed specifically for kids. Made from virtually indestructible TR90 material that bends without breaking. Soft silicone temple tips keep glasses secure during play. Available with prescription or plano lenses.',
- 'Virtually indestructible round frames for kids',
- 1200.00, 1500.00, 55, 10, 7, 15, 'FlexiKids', 'TR90 Nylon', 'Round', 'Blue', 'kids', 'Small', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Oakley 1181 Eyewear', 'oakley-1181-2', '1181-GREEN', 'Model: 1181\nBrand: Oakley\nBatch Memo: Sports(21)\nBox: Original Case\nColor: Green\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Oakley 1181 in green finish.', 550.00, 743.00, 1, 0, 8, 'Oakley', 'Handcrafted Acetate', 'Geometric', 'Green', 'unisex', 'Standard Fit', 'active', false, true, true);
 
--- 10
-('DigitalShield Pro', 'digitalshield-pro', 'VEC-BL-001',
- 'Advanced blue light blocking glasses engineered for digital professionals. Filters up to 40% of harmful blue light from screens while maintaining color accuracy. Anti-reflective coating reduces glare and eye strain. Lightweight frame designed for extended computer use.',
- 'Professional blue light blockers for screen use',
- 1650.00, 2000.00, 70, 10, 3, 8, 'DigitalShield', 'TR90 Nylon', 'Rectangle', 'Matte Black', 'unisex', 'Medium', 'active', true, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Conpolshe 1118 Eyewear', 'conpolshe-1118', '1118', 'Model: 1118\nBrand: Conpolshe\nBatch Memo: Sports(21)\nBox: Original Case\nColor: Black\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Conpolshe 1118 in black finish.', 550.00, 743.00, 1, 0, 8, 'Conpolshe', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', 'Standard Fit', 'active', false, false, true);
 
--- 11
-('GameDrishti RGB Frame', 'gameDrishti-rgb-frame', 'VEC-BL-002',
- 'Gaming-focused blue light glasses with a bold frame design. Enhanced amber-tinted lenses maximize blue light filtration for marathon gaming sessions. Ergonomic temple design fits comfortably under headsets. Includes a microfiber pouch and cleaning spray.',
- 'Gaming-focused blue light glasses with bold design',
- 1900.00, 2400.00, 40, 5, 3, 9, 'GameDrishti', 'Polycarbonate', 'Rectangle', 'Black/Yellow', 'unisex', 'Large', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Versace M013 Eyewear', 'versace-m013', 'M013', 'Model: M013\nBrand: Versace\nBatch Memo: 1no(20 )\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-17-143\nAuthentic Drishti Atelier piece.', 'Versace M013 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Versace', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-17-143', 'active', false, false, true);
 
--- 12
-('Zenith Rimless Titanium', 'zenith-rimless-titanium', 'VEC-RX-004',
- 'Minimalist rimless prescription glasses in pure titanium. Weighing only 12 grams, these are among the lightest frames available. The frameless design offers an unobstructed field of Drishti and a barely-there feel. Precision-drilled lens mounting for maximum stability.',
- 'Ultra-light rimless titanium frames at just 12g',
- 4500.00, 5500.00, 15, 3, 2, 5, 'Zenith', 'Titanium', 'Rimless', 'Gunmetal', 'unisex', 'Medium', 'active', true, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior Classic Local Eyewear', 'dior-dior-loc', 'DIOR-LOC', 'Model: local\nBrand: Dior\nBatch Memo: 1no(20 )\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Dior local in classic black finish.', 380.00, 513.00, 2, 0, 2, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', 'Standard Fit', 'active', false, false, true);
 
--- 13
-('Boulevard Oversized Square', 'boulevard-oversized-square', 'VEC-SUN-006',
- 'Fashion-forward oversized square sunglasses for making a statement. Bold acetate frame in deep burgundy with gradient grey lenses. The oversized silhouette provides excellent sun coverage. A favorite among fashion influencers and trendsetters.',
- 'Bold oversized square frames in deep burgundy',
- 2200.00, 2800.00, 30, 5, 5, 13, 'Boulevard', 'Acetate', 'Square', 'Burgundy', 'women', 'Large', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Prada CF58463 Eyewear', 'prada-cf58463', 'CF58463', 'Model: CF58463\nBrand: Prada\nBatch Memo: 1no(20 )\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 57-15-145\nAuthentic Drishti Atelier piece.', 'Prada CF58463 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Prada', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '57-15-145', 'active', false, false, true);
 
--- 14
-('Titan Sport Shield', 'titan-sport-shield', 'VEC-SUN-007',
- 'Ultra-durable sport shield sunglasses with impact-resistant polycarbonate lenses. Interchangeable lens system includes clear, amber, and dark lenses for any condition. Ventilated frame prevents fogging during intense activity. Rubber grip nose bridge and temple ends.',
- 'Impact-resistant sport shield with 3 lens options',
- 3800.00, 4500.00, 18, 3, 4, 11, 'Titan', 'Grilamid', 'Shield', 'Matte Black', 'men', 'Large', 'active', false, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tom Ford 9821 Eyewear', 'tom-ford-9821', '9821', 'Model: 9821\nBrand: Tom Ford\nBatch Memo: 1no(20 )\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 55-16-145\nAuthentic Drishti Atelier piece.', 'Tom Ford 9821 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Tom Ford', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '55-16-145', 'active', false, true, true);
 
--- 15
-('Luna Butterfly Pearl', 'luna-butterfly-pearl', 'VEC-SUN-008',
- 'Stunning butterfly sunglasses in iridescent pearl white. The feminine butterfly shape flatters round and oval faces. Gradient pink lenses add a romantic touch. Decorated with subtle crystal accents on the temple tips.',
- 'Iridescent butterfly sunglasses with crystal accents',
- 2950.00, 3600.00, 22, 5, 5, 13, 'Luna', 'Acetate', 'Butterfly', 'Pearl White', 'women', 'Medium', 'active', false, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Ray-Ban 4# Eyewear', 'ray-ban-4', '4#', 'Model: 4#\nBrand: Ray-Ban\nBatch Memo: 1no(20 )\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 18-58-148\nAuthentic Drishti Atelier piece.', 'Ray-Ban 4# in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Ray-Ban', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '18-58-148', 'active', false, true, true);
 
--- 16
-('Scholar Classic Black', 'scholar-classic-black', 'VEC-RX-005',
- 'Traditional full-rim rectangular prescription glasses. Thick black acetate frame exudes intellectual style and confidence. Spring-loaded hinges provide flexibility. An iconic shape that has stood the test of time. Suitable for all lens types.',
- 'Iconic full-rim rectangle in thick black acetate',
- 1500.00, NULL, 80, 10, 2, 5, 'Scholar', 'Acetate', 'Rectangle', 'Black', 'unisex', 'Medium', 'active', false, true, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Maybach 3489-1 Eyewear', 'maybach-3489-1', '3489-1', 'Model: 3489-1\nBrand: Maybach\nBatch Memo: 1no(20 )\nBox: Samebox 13-30\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 55-18-143\nAuthentic Drishti Atelier piece.', 'Maybach 3489-1 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Maybach', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '55-18-143', 'active', false, false, true);
 
--- 17
-('AeroLite Pilot Gradient', 'aerolite-pilot-gradient', 'VEC-SUN-009',
- 'Premium pilot sunglasses with gradient blue lenses. Ultra-thin beta-titanium frame combines strength with featherweight comfort. Double bridge design adds character. Adjustable silicone nose pads for a custom fit.',
- 'Premium pilot with gradient blue titanium frame',
- 3400.00, 4000.00, 28, 5, 1, 1, 'AeroLite', 'Beta Titanium', 'Aviator', 'Silver/Blue', 'men', 'Large', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot M11-44 C6', 'moscot-m11-44-c6', 'M11-44-C6', 'Model: M11-44 C6\nBrand: Moscot\nBatch Memo: 1no(20 )\nBox: B\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-18-142\nAuthentic Drishti Atelier piece.', 'Moscot M11-44 C6 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-18-142', 'active', false, true, true);
 
--- 18
-('Pixie Mini Round', 'pixie-mini-round', 'VEC-KID-002',
- 'Adorable mini round glasses for young children aged 3-7. Extra-flexible hinges withstand rough handling. Hypoallergenic silicone nose pads are gentle on sensitive skin. Fun colorful frames that kids love to wear.',
- 'Adorable flexible round glasses for ages 3-7',
- 950.00, 1200.00, 65, 10, 7, 15, 'Pixie', 'TR90 Nylon', 'Round', 'Red/Blue', 'kids', 'Extra Small', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Marc Jacobs M11-43', 'marc-jacobs-m11-43', 'M11-43', 'Model: M11-43\nBrand: Marc Jacobs\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 48-24-142\nAuthentic Drishti Atelier piece.', 'Marc Jacobs M11-43 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Marc Jacobs', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '48-24-142', 'active', false, false, true);
 
--- 19
-('NightDrive Anti-Glare', 'nightdrive-anti-glare', 'VEC-BL-003',
- 'Specialized night driving glasses with yellow-tinted anti-glare lenses. Reduces headlight and streetlight glare for safer nighttime driving. Clip-on option available for prescription wearers. Polarized lenses cut road surface reflections.',
- 'Night driving glasses with anti-glare lenses',
- 1400.00, 1800.00, 50, 10, 3, 8, 'NightDrive', 'Metal', 'Rectangle', 'Black', 'unisex', 'Medium', 'active', false, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 34113 Eyewear', 'moscot-34113', '34113', 'Model: 34113\nBrand: Moscot\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 57-18-143\nAuthentic Drishti Atelier piece.', 'Moscot 34113 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '57-18-143', 'active', false, true, true);
 
--- 20
-('Vintage Clubmaster Walnut', 'vintage-clubmaster-walnut', 'VEC-SUN-010',
- 'Classic clubmaster-style sunglasses with genuine walnut wood browline. Hand-polished metal lower rim with adjustable nose pads. Green G-15 lenses provide excellent color contrast and 100% UV protection. Each frame has unique wood grain patterns.',
- 'Clubmaster with genuine walnut wood browline',
- 3100.00, 3800.00, 12, 3, 1, 2, 'Artisan', 'Wood/Metal', 'Browline', 'Walnut/Gold', 'unisex', 'Medium', 'active', true, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 60001 C2 Eyewear', 'moscot-60001-c2', '60001-C2', 'Model: 60001 C2\nBrand: Moscot\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-19-145\nAuthentic Drishti Atelier piece.', 'Moscot 60001 C2 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-19-145', 'active', false, true, true);
 
--- 21
-('Infinity Progressive Lens Frame', 'infinity-progressive-lens-frame', 'VEC-RX-006',
- 'Designed specifically for progressive lens wearers. Tall lens height ensures smooth transition zones between distance, intermediate, and reading areas. Lightweight titanium frame in a refined rectangular shape. Silicone-lined temples prevent slipping.',
- 'Optimized frame for progressive lens wearers',
- 2900.00, NULL, 35, 5, 2, 7, 'Infinity', 'Titanium', 'Rectangle', 'Dark Grey', 'unisex', 'Large', 'active', false, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Balmain ZS98086 Eyewear', 'balmain-zs98086', 'ZS98086', 'Model: ZS98086\nBrand: Balmain\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 50-18-142\nAuthentic Drishti Atelier piece.', 'Balmain ZS98086 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Balmain', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '50-18-142', 'active', false, false, true);
 
--- 22
-('Sporty Kids Wraparound', 'sporty-kids-wraparound', 'VEC-KID-003',
- 'Active-lifestyle kids sunglasses with a secure wraparound design. Shatterproof polycarbonate lenses meet ANSI Z87.1 safety standards. Integrated strap keeps glasses secure during sports. Available in multiple vibrant color options.',
- 'Shatterproof wraparound sunglasses for active kids',
- 1100.00, 1400.00, 45, 10, 7, 15, 'ActiveKids', 'Polycarbonate', 'Wrap', 'Blue/Green', 'kids', 'Small', 'active', false, false, true),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior MJ-514 C1 Eyewear', 'dior-mj-514-c1', 'MJ-514-C1', 'Model: MJ-514 C1\nBrand: Dior\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-22-143\nAuthentic Drishti Atelier piece.', 'Dior MJ-514 C1 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-22-143', 'active', false, false, true);
 
--- 23
-('DuoFlex Bifocal Reader', 'duoflex-bifocal-reader', 'VEC-RX-007',
- 'Comfortable bifocal reading glasses with a visible D-segment lens area. Lightweight plastic frame with flexible temples. The rounded rectangular shape provides a wide field of view for both distance and reading. Available in multiple diopter strengths.',
- 'Comfortable bifocal readers with flexible frame',
- 1350.00, 1600.00, 55, 10, 2, 6, 'DuoFlex', 'Plastic', 'Rectangle', 'Havana', 'unisex', 'Medium', 'active', false, false, false),
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 3492 Eyewear', 'moscot-3492', '3492', 'Model: 3492\nBrand: Moscot\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 54-21-142\nAuthentic Drishti Atelier piece.', 'Moscot 3492 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '54-21-142', 'active', false, true, true);
 
--- 24
-('Luxe Geometric Rose', 'luxe-geometric-rose', 'VEC-SUN-011',
- 'Contemporary geometric sunglasses in a stunning rose-tinted design. Angular hexagonal shape stands out from the crowd. Premium CR-39 lenses with anti-scratch coating. Designed for those who see eyewear as a fashion statement rather than a necessity.',
- 'Bold geometric hexagonal sunglasses in rose',
- 2650.00, 3200.00, 20, 5, 5, 12, 'Luxe', 'Acetate', 'Geometric', 'Rose', 'women', 'Medium', 'active', false, false, true);
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior MJ544 C1 Eyewear', 'dior-mj544-c1', 'MJ544-C1', 'Model: MJ544 C1\nBrand: Dior\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-18-144\nAuthentic Drishti Atelier piece.', 'Dior MJ544 C1 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-18-144', 'active', false, true, true);
 
--- ============================================
--- PRODUCT TAGS (assign tags to products)
--- ============================================
-INSERT INTO product_tags (product_id, tag_id) VALUES
-  -- Classic Aviator: Best Seller, Polarized, UV Protection
-  (1, 3), (1, 7), (1, 8),
-  -- Urban Wayfarer: Best Seller, UV Protection
-  (2, 3), (2, 8),
-  -- Retro Round: New, Lightweight
-  (3, 1), (3, 6),
-  -- ProSport Wrap: New, UV Protection
-  (4, 1), (4, 8),
-  -- Cat Eye: Premium, Trending
-  (5, 4), (5, 2),
-  -- ClearView Rx: Best Seller, Lightweight
-  (6, 3), (6, 6),
-  -- Harmony Oval: New, Premium
-  (7, 1), (7, 4),
-  -- Executive Half-Rim: Best Seller
-  (8, 3),
-  -- FlexiKids: New, Lightweight
-  (9, 1), (9, 6),
-  -- DigitalShield: Best Seller, Trending
-  (10, 3), (10, 2),
-  -- GameDrishti: New, Trending
-  (11, 1), (11, 2),
-  -- Zenith Rimless: Premium, Lightweight
-  (12, 4), (12, 6),
-  -- Boulevard: New, Trending
-  (13, 1), (13, 2),
-  -- Titan Sport: UV Protection, Polarized
-  (14, 8), (14, 7),
-  -- Luna Butterfly: Best Seller, Premium
-  (15, 3), (15, 4),
-  -- Scholar Classic: Best Seller
-  (16, 3),
-  -- AeroLite Pilot: New, Premium
-  (17, 1), (17, 4),
-  -- Pixie Mini: New, Lightweight
-  (18, 1), (18, 6),
-  -- NightDrive: Polarized
-  (19, 7),
-  -- Vintage Clubmaster: Premium, Trending
-  (20, 4), (20, 2),
-  -- Infinity Progressive: Lightweight
-  (21, 6),
-  -- Sporty Kids: New, UV Protection
-  (22, 1), (22, 8),
-  -- DuoFlex Bifocal: Sale
-  (23, 5),
-  -- Luxe Geometric: New, Trending
-  (24, 1), (24, 2);
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tom Ford 9813 Eyewear', 'tom-ford-9813', '9813', 'Model: 9813\nBrand: Tom Ford\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 54-15-143\nAuthentic Drishti Atelier piece.', 'Tom Ford 9813 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Tom Ford', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '54-15-143', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dita KSL98295 C6', 'dita-ksl98295-c6', 'KSL98295-C6', 'Model: KSL98295 C6\nBrand: Dita\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 50-21-144\nAuthentic Drishti Atelier piece.', 'Dita KSL98295 C6 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Dita', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '50-21-144', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 3492 Eyewear', 'moscot-3492-1', '3492-1', 'Model: 3492\nBrand: Moscot\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 54-21-142\nAuthentic Drishti Atelier piece.', 'Moscot 3492 in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '54-21-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Louis Vuitton Signature Edition Eyewear', 'louis-vuitton-louisvuitton-na', 'LOUISVUITTON-NA', 'Model: N/A\nBrand: Louis Vuitton\nBatch Memo: 1no(20)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: Standard Fit\nAuthentic Drishti Atelier piece.', 'Louis Vuitton N/A in classic black finish.', 380.00, 513.00, 1, 0, 2, 'Louis Vuitton', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', 'Standard Fit', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Danmac P8169 (thin)Brown', 'danmac-p8169-thin-brown', 'P8169-thin-Brown', 'Model: P8169 (thin)Brown\nBrand: Danmac\nBatch Memo: 15no(5)\nBox: Original Case\nColor: Brown\nMaterial: Handcrafted Acetate\nSize: 50-17-146\nAuthentic Drishti Atelier piece.', 'Danmac P8169 (thin)Brown in brown finish.', 260.00, 351.00, 1, 0, 1, 'Danmac', 'Handcrafted Acetate', 'Geometric', 'Brown', 'unisex', '50-17-146', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Danmac P8005 (fat)Red', 'danmac-p8005-fat-red', 'P8005-fat-Red', 'Model: P8005 (fat)Red\nBrand: Danmac\nBatch Memo: 15no(5)\nBox: Original Case\nColor: Red\nMaterial: Handcrafted Acetate\nSize: 50-18-142\nAuthentic Drishti Atelier piece.', 'Danmac P8005 (fat)Red in red finish.', 260.00, 351.00, 1, 0, 1, 'Danmac', 'Handcrafted Acetate', 'Geometric', 'Red', 'unisex', '50-18-142', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Danmac 5802(thine)Red', 'danmac-5802-thine-red', '5802-thine-Red', 'Model: 5802(thine)Red\nBrand: Danmac\nBatch Memo: 15no(5)\nBox: Original Case\nColor: Red\nMaterial: Handcrafted Acetate\nSize: 50-20-145\nAuthentic Drishti Atelier piece.', 'Danmac 5802(thine)Red in red finish.', 260.00, 351.00, 1, 0, 1, 'Danmac', 'Handcrafted Acetate', 'Geometric', 'Red', 'women', '50-20-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Danmac P8005 (fat)black', 'danmac-p8005-fat-black', 'P8005-fat-black', 'Model: P8005 (fat)black\nBrand: Danmac\nBatch Memo: 15no(5)\nBox: Samebox 31-48\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 50-18-142\nAuthentic Drishti Atelier piece.', 'Danmac P8005 (fat)black in black finish.', 260.00, 351.00, 1, 0, 1, 'Danmac', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', '50-18-142', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Danmac 5802(thine)Pink', 'danmac-5802-thine-pink', '5802-thine-Pink', 'Model: 5802(thine)Pink\nBrand: Danmac\nBatch Memo: 15no(5)\nBox: C\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 50-20-145\nAuthentic Drishti Atelier piece.', 'Danmac 5802(thine)Pink in pink finish.', 260.00, 351.00, 1, 0, 1, 'Danmac', 'Handcrafted Acetate', 'Geometric', 'Pink', 'unisex', '50-20-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior 8489 C4 Eyewear', 'dior-8489-c4', '8489-C4', 'Model: 8489 C4\nBrand: Dior\nBatch Memo: 16no(2)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 54-16-145\nAuthentic Drishti Atelier piece.', 'Dior 8489 C4 in classic black finish.', 320.00, 432.00, 1, 0, 2, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '54-16-145', 'active', true, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior 8488 C5 Eyewear', 'dior-8488-c5', '8488-C5', 'Model: 8488 C5\nBrand: Dior\nBatch Memo: 16no(2)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 55-16-145\nAuthentic Drishti Atelier piece.', 'Dior 8488 C5 in classic black finish.', 320.00, 432.00, 1, 0, 5, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'women', '55-16-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Smeir 18892 Eyewear', 'smeir-18892', '18892', 'Model: 18892\nBrand: Smeir\nBatch Memo: 17no(1)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 48-22-148\nAuthentic Drishti Atelier piece.', 'Smeir 18892 in classic black finish.', 450.00, 608.00, 1, 0, 2, 'Smeir', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '48-22-148', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Porsche Design TR90 C2', 'porsche-design-tr90-c2', 'TR90-C2', 'Model: TR90 C2\nBrand: Porsche Design\nBatch Memo: 18no(1)\nBox: Original Case\nColor: Classic Black\nMaterial: TR90 Ultra-Flex Nylon\nSize: 52-19-142\nAuthentic Drishti Atelier piece.', 'Porsche Design TR90 C2 in classic black finish.', 270.00, 365.00, 1, 0, 4, 'Porsche Design', 'TR90 Ultra-Flex Nylon', 'Geometric', 'Classic Black', 'men', '52-19-142', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Chihao CH1666 Eyewear', 'chihao-ch1666', 'CH1666', 'Model: CH1666\nBrand: Chihao\nBatch Memo: 13no(6)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-20-147\nAuthentic Drishti Atelier piece.', 'Chihao CH1666 in classic black finish.', 330.00, 446.00, 1, 0, 2, 'Chihao', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '52-20-147', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Diyiyan 52219 C2', 'diyiyan-52219-c2', '52219-C2', 'Model: 52219 C2\nBrand: Diyiyan\nBatch Memo: 13no(6)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 55-19-150\nAuthentic Drishti Atelier piece.', 'Diyiyan 52219 C2 in classic black finish.', 330.00, 446.00, 1, 0, 4, 'Diyiyan', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '55-19-150', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Proya 52219 C1(Gold)', 'proya-52219-c1-gold', '52219-C1-Gold', 'Model: 52219 C1(Gold)\nBrand: Proya\nBatch Memo: 13no(6)\nBox: Original Case\nColor: Gold\nMaterial: Handcrafted Acetate\nSize: 55-19-150\nAuthentic Drishti Atelier piece.', 'Proya 52219 C1(Gold) in gold finish.', 330.00, 446.00, 1, 0, 2, 'Proya', 'Handcrafted Acetate', 'Geometric', 'Gold', 'unisex', '55-19-150', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Escape TR2071 Eyewear', 'escape-tr2071', 'TR2071', 'Model: TR2071\nBrand: Escape\nBatch Memo: 19no(1)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 50-17-143\nAuthentic Drishti Atelier piece.', 'Escape TR2071 in classic black finish.', 350.00, 473.00, 1, 0, 5, 'Escape', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '50-17-143', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Porsche Design 2345 C1', 'porsche-design-2345-c1', '2345-C1', 'Model: 2345 C1\nBrand: Porsche Design\nBatch Memo: 14no(7)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 51-20-145\nAuthentic Drishti Atelier piece.', 'Porsche Design 2345 C1 in classic black finish.', 350.00, 473.00, 1, 0, 4, 'Porsche Design', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '51-20-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Charmant 8418 C2', 'charmant-8418-c2', '8418-C2', 'Model: 8418 C2\nBrand: Charmant\nBatch Memo: 14no(7)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 50-18-146\nAuthentic Drishti Atelier piece.', 'Charmant 8418 C2 in classic black finish.', 350.00, 473.00, 1, 0, 4, 'Charmant', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '50-18-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Porsche Design 8448 C1', 'porsche-design-8448-c1', '8448-C1', 'Model: 8448 C1\nBrand: Porsche Design\nBatch Memo: 14no(7)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 53-18-145\nAuthentic Drishti Atelier piece.', 'Porsche Design 8448 C1 in classic black finish.', 350.00, 473.00, 1, 0, 4, 'Porsche Design', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '53-18-145', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Charmant 8423 C1 Glossy', 'charmant-8423-c1-glossy', '8423-C1-Glossy', 'Model: 8423 C1 Glossy\nBrand: Charmant\nBatch Memo: 14no(7)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-19-146\nAuthentic Drishti Atelier piece.', 'Charmant 8423 C1 Glossy in classic black finish.', 350.00, 473.00, 1, 0, 4, 'Charmant', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '52-19-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Charmant 8423 C1 Matt', 'charmant-8423-c1-matt', '8423-C1-Matt', 'Model: 8423 C1 Matt\nBrand: Charmant\nBatch Memo: 14no(7)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 52-19-146\nAuthentic Drishti Atelier piece.', 'Charmant 8423 C1 Matt in classic black finish.', 350.00, 473.00, 1, 0, 4, 'Charmant', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'men', '52-19-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Off-White ZS98595(black)', 'off-white-zs98595-black', 'ZS98595-black', 'Model: ZS98595(black)\nBrand: Off-White\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 52-18-145\nAuthentic Drishti Atelier piece.', 'Off-White ZS98595(black) in black finish.', 420.00, 567.00, 1, 0, 1, 'Off-White', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', '52-18-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Celine KK66-28 C2(Blak)', 'celine-kk66-28-c2-blak', 'KK66-28-C2-Blak', 'Model: KK66-28 C2(Blak)\nBrand: Celine\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Classic Black\nMaterial: Handcrafted Acetate\nSize: 53-21-147\nAuthentic Drishti Atelier piece.', 'Celine KK66-28 C2(Blak) in classic black finish.', 420.00, 567.00, 1, 0, 1, 'Celine', 'Handcrafted Acetate', 'Geometric', 'Classic Black', 'unisex', '53-21-147', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Giorgio Armani KK66-19 C3(Gray)', 'giorgio-armani-kk66-19-c3-gray', 'KK66-19-C3-Gray', 'Model: KK66-19 C3(Gray)\nBrand: Giorgio Armani\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Gray\nMaterial: Handcrafted Acetate\nSize: 55-17-147\nAuthentic Drishti Atelier piece.', 'Giorgio Armani KK66-19 C3(Gray) in gray finish.', 420.00, 567.00, 1, 0, 1, 'Giorgio Armani', 'Handcrafted Acetate', 'Geometric', 'Gray', 'unisex', '55-17-147', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Prada KK66-25 C2(Black)', 'prada-kk66-25-c2-black', 'KK66-25-C2-Black', 'Model: KK66-25 C2(Black)\nBrand: Prada\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 53-22-147\nAuthentic Drishti Atelier piece.', 'Prada KK66-25 C2(Black) in black finish.', 420.00, 567.00, 1, 0, 1, 'Prada', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', '53-22-147', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Off-White ZS98595(gray)', 'off-white-zs98595-gray', 'ZS98595-gray', 'Model: ZS98595(gray)\nBrand: Off-White\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Gray\nMaterial: Handcrafted Acetate\nSize: 52-18-145\nAuthentic Drishti Atelier piece.', 'Off-White ZS98595(gray) in gray finish.', 420.00, 567.00, 1, 0, 1, 'Off-White', 'Handcrafted Acetate', 'Geometric', 'Gray', 'unisex', '52-18-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dita ZS98560 C9 (clear)', 'dita-zs98560-c9-clear', 'ZS98560-C9-clear', 'Model: ZS98560 C9 (clear)\nBrand: Dita\nBatch Memo: 2no(13)\nBox: Same Box 49-61\nColor: Transparent Crystal\nMaterial: Handcrafted Acetate\nSize: 54-20-145\nAuthentic Drishti Atelier piece.', 'Dita ZS98560 C9 (clear) in transparent crystal finish.', 420.00, 567.00, 1, 0, 1, 'Dita', 'Handcrafted Acetate', 'Geometric', 'Transparent Crystal', 'unisex', '54-20-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior KK66-1 C5 (Black)', 'dior-kk66-1-c5-black', 'KK66-1-C5-Black', 'Model: KK66-1 C5 (Black)\nBrand: Dior\nBatch Memo: 2no(13)\nBox: D\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 51-22-146\nAuthentic Drishti Atelier piece.', 'Dior KK66-1 C5 (Black) in black finish.', 420.00, 567.00, 1, 0, 1, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', '51-22-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Burberry BU2821(Black&white)', 'burberry-bu2821-black-white', 'BU2821-Black&white', 'Model: BU2821(Black&white)\nBrand: Burberry\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Black & White\nMaterial: Handcrafted Acetate\nSize: 61-21-142\nAuthentic Drishti Atelier piece.', 'Burberry BU2821(Black&white) in black & white finish.', 420.00, 567.00, 1, 0, 1, 'Burberry', 'Handcrafted Acetate', 'Geometric', 'Black & White', 'unisex', '61-21-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Balmain ZS98123(GrayGolden)', 'balmain-zs98123-graygolden', 'ZS98123-GrayGolden', 'Model: ZS98123(GrayGolden)\nBrand: Balmain\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Gray & Gold\nMaterial: Handcrafted Acetate\nSize: 52-17-142\nAuthentic Drishti Atelier piece.', 'Balmain ZS98123(GrayGolden) in gray & gold finish.', 420.00, 567.00, 1, 0, 1, 'Balmain', 'Handcrafted Acetate', 'Geometric', 'Gray & Gold', 'unisex', '52-17-142', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior KK66-1 C3 (Gray)', 'dior-kk66-1-c3-gray', 'KK66-1-C3-Gray', 'Model: KK66-1 C3 (Gray)\nBrand: Dior\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Gray\nMaterial: Handcrafted Acetate\nSize: 51-22-146\nAuthentic Drishti Atelier piece.', 'Dior KK66-1 C3 (Gray) in gray finish.', 420.00, 567.00, 1, 0, 1, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Gray', 'unisex', '51-22-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Dior KK66-22 C2 (Mat BLACK)', 'dior-kk66-22-c2-mat-black', 'KK66-22-C2-Mat-BLACK', 'Model: KK66-22 C2 (Mat BLACK)\nBrand: Dior\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Matte Black\nMaterial: Handcrafted Acetate\nSize: 55-19-147\nAuthentic Drishti Atelier piece.', 'Dior KK66-22 C2 (Mat BLACK) in matte black finish.', 420.00, 567.00, 1, 0, 1, 'Dior', 'Handcrafted Acetate', 'Geometric', 'Matte Black', 'unisex', '55-19-147', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Louis Vuitton 2611(Black Golden)', 'louis-vuitton-2611-black-golden', '2611-Black-Golden', 'Model: 2611(Black Golden)\nBrand: Louis Vuitton\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Black & Gold\nMaterial: Handcrafted Acetate\nSize: 51-18-142\nAuthentic Drishti Atelier piece.', 'Louis Vuitton 2611(Black Golden) in black & gold finish.', 420.00, 567.00, 1, 0, 1, 'Louis Vuitton', 'Handcrafted Acetate', 'Geometric', 'Black & Gold', 'unisex', '51-18-142', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Louis Vuitton Z2596U(Black)', 'louis-vuitton-z2596u-black', 'Z2596U-Black', 'Model: Z2596U(Black)\nBrand: Louis Vuitton\nBatch Memo: 2no(13)\nBox: Original Case\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 54-18-144\nAuthentic Drishti Atelier piece.', 'Louis Vuitton Z2596U(Black) in black finish.', 420.00, 567.00, 1, 0, 1, 'Louis Vuitton', 'Handcrafted Acetate', 'Geometric', 'Black', 'unisex', '54-18-144', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Ray-Ban RB2140 902/51 3N(Tiger Black)', 'ray-ban-rb2140-902-51-3n-tiger-black', 'RB2140-902-51-3N-Tiger-Black', 'Model: RB2140 902/51 3N(Tiger Black)\nBrand: Ray-Ban\nBatch Memo: 5NO(2)\nBox: Original Case\nColor: Tiger Black\nMaterial: Handcrafted Acetate\nSize: 50-22-150\nAuthentic Drishti Atelier piece.', 'Ray-Ban RB2140 902/51 3N(Tiger Black) in tiger black finish.', 1300.00, 1755.00, 1, 0, 1, 'Ray-Ban', 'Handcrafted Acetate', 'Wayfarer', 'Tiger Black', 'unisex', '50-22-150', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Ray-Ban RB2140 901/17 3N(Black)', 'ray-ban-rb2140-901-17-3n-black', 'RB2140-901-17-3N-Black', 'Model: RB2140 901/17 3N(Black)\nBrand: Ray-Ban\nBatch Memo: 5NO(2)\nBox: Original Case\nColor: Black\nMaterial: Handcrafted Acetate\nSize: 50-22-150\nAuthentic Drishti Atelier piece.', 'Ray-Ban RB2140 901/17 3N(Black) in black finish.', 1300.00, 1755.00, 1, 0, 1, 'Ray-Ban', 'Handcrafted Acetate', 'Wayfarer', 'Black', 'unisex', '50-22-150', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP815 (Transparent)Rectangle', 'podcast-ep815-transparent-rectangle', 'EP815-Transparent-Rectangle', 'Model: EP815 (Transparent)Rectangle\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Original Case\nColor: Transparent Crystal\nMaterial: Handcrafted Acetate\nSize: 53-19-146\nAuthentic Drishti Atelier piece.', 'Podcast EP815 (Transparent)Rectangle in transparent crystal finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Rectangle', 'Transparent Crystal', 'unisex', '53-19-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP814 (Transparent)Square', 'podcast-ep814-transparent-square', 'EP814-Transparent-Square', 'Model: EP814 (Transparent)Square\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Original Case\nColor: Transparent Crystal\nMaterial: Handcrafted Acetate\nSize: 53-19-146\nAuthentic Drishti Atelier piece.', 'Podcast EP814 (Transparent)Square in transparent crystal finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Square', 'Transparent Crystal', 'unisex', '53-19-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP814 (Transparent)Round', 'podcast-ep814-transparent-round', 'EP814-Transparent-Round', 'Model: EP814 (Transparent)Round\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Original Case\nColor: Transparent Crystal\nMaterial: Handcrafted Acetate\nSize: 48-24-146\nAuthentic Drishti Atelier piece.', 'Podcast EP814 (Transparent)Round in transparent crystal finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Round', 'Transparent Crystal', 'unisex', '48-24-146', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP802(Trans Brown)Square', 'podcast-ep802-trans-brown-square', 'EP802-Trans-Brown-Square', 'Model: EP802(Trans Brown)Square\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Original Case\nColor: Transparent Brown\nMaterial: Handcrafted Acetate\nSize: 54-20-146\nAuthentic Drishti Atelier piece.', 'Podcast EP802(Trans Brown)Square in transparent brown finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Square', 'Transparent Brown', 'unisex', '54-20-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP814( Mad Black)', 'podcast-ep814-mad-black', 'EP814-Mad-Black', 'Model: EP814( Mad Black)\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Original Case\nColor: Matte Black\nMaterial: Handcrafted Acetate\nSize: 52-19-146\nAuthentic Drishti Atelier piece.', 'Podcast EP814( Mad Black) in matte black finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Geometric', 'Matte Black', 'unisex', '52-19-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Podcast EP805(Trans Brown)Round', 'podcast-ep805-trans-brown-round', 'EP805-Trans-Brown-Round', 'Model: EP805(Trans Brown)Round\nBrand: Podcast\nBatch Memo: 7no(6)\nBox: Samebox 62-81\nColor: Transparent Brown\nMaterial: Handcrafted Acetate\nSize: 50-21-146\nAuthentic Drishti Atelier piece.', 'Podcast EP805(Trans Brown)Round in transparent brown finish.', 220.00, 297.00, 1, 0, 2, 'Podcast', 'Handcrafted Acetate', 'Round', 'Transparent Brown', 'unisex', '50-21-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot YD1452 C3 (Trans Black)', 'moscot-yd1452-c3-trans-black', 'YD1452-C3-Trans-Black', 'Model: YD1452 C3 (Trans Black)\nBrand: Moscot\nBatch Memo: 3no(2)\nBox: E\nColor: Transparent Black\nMaterial: Handcrafted Acetate\nSize: 53-21-145\nAuthentic Drishti Atelier piece.', 'Moscot YD1452 C3 (Trans Black) in transparent black finish.', 1050.00, 1418.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Transparent Black', 'unisex', '53-21-145', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot YD1452 C2 (Tiger Black)', 'moscot-yd1452-c2-tiger-black', 'YD1452-C2-Tiger-Black', 'Model: YD1452 C2 (Tiger Black)\nBrand: Moscot\nBatch Memo: 3no(2)\nBox: Original Case\nColor: Tiger Black\nMaterial: Handcrafted Acetate\nSize: 53-21-145\nAuthentic Drishti Atelier piece.', 'Moscot YD1452 C2 (Tiger Black) in tiger black finish.', 1050.00, 1418.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Tiger Black', 'unisex', '53-21-145', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tom Ford FT1179 C001(Glossy Black)', 'tom-ford-ft1179-c001-glossy-black', 'FT1179-C001-Glossy-Black', 'Model: FT1179 C001(Glossy Black)\nBrand: Tom Ford\nBatch Memo: 4no(2)\nBox: Original Case\nColor: Glossy Black\nMaterial: Handcrafted Acetate\nSize: 54-20-145\nAuthentic Drishti Atelier piece.', 'Tom Ford FT1179 C001(Glossy Black) in glossy black finish.', 950.00, 1283.00, 1, 0, 2, 'Tom Ford', 'Handcrafted Acetate', 'Geometric', 'Glossy Black', 'unisex', '54-20-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Balmain 120509 J(Glossy black)Gold Strip', 'balmain-120509-j-glossy-black-gold-strip', '120509-J-Glossy-black-Gold-Strip', 'Model: 120509 J(Glossy black)Gold Strip\nBrand: Balmain\nBatch Memo: 4no(2)\nBox: Original Case\nColor: Glossy Black\nMaterial: Stainless Steel / Alloy\nSize: 50-19-145\nAuthentic Drishti Atelier piece.', 'Balmain 120509 J(Glossy black)Gold Strip in glossy black finish.', 950.00, 1283.00, 1, 0, 2, 'Balmain', 'Stainless Steel / Alloy', 'Geometric', 'Glossy Black', 'unisex', '50-19-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 2704 (Transparent)', 'moscot-2704-transparent', '2704-Transparent', 'Model: 2704 (Transparent)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Transparent Crystal\nMaterial: Handcrafted Acetate\nSize: 53-17-148\nAuthentic Drishti Atelier piece.', 'Moscot 2704 (Transparent) in transparent crystal finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Transparent Crystal', 'unisex', '53-17-148', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot BY002(Mad Black)', 'moscot-by002-mad-black', 'BY002-Mad-Black', 'Model: BY002(Mad Black)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Matte Black\nMaterial: Handcrafted Acetate\nSize: 54-19-149\nAuthentic Drishti Atelier piece.', 'Moscot BY002(Mad Black) in matte black finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Matte Black', 'unisex', '54-19-149', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tom Ford 21058 (Tiger Blackk)', 'tom-ford-21058-tiger-blackk', '21058-Tiger-Blackk', 'Model: 21058 (Tiger Blackk)\nBrand: Tom Ford\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Tiger Black\nMaterial: Handcrafted Acetate\nSize: 52-18-145\nAuthentic Drishti Atelier piece.', 'Tom Ford 21058 (Tiger Blackk) in tiger black finish.', 280.00, 378.00, 1, 0, 2, 'Tom Ford', 'Handcrafted Acetate', 'Geometric', 'Tiger Black', 'unisex', '52-18-145', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot P83284(Glossy Black)', 'moscot-p83284-glossy-black', 'P83284-Glossy-Black', 'Model: P83284(Glossy Black)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Glossy Black\nMaterial: Handcrafted Acetate\nSize: 53-18-142\nAuthentic Drishti Atelier piece.', 'Moscot P83284(Glossy Black) in glossy black finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Glossy Black', 'unisex', '53-18-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 2704(Glossy Black)', 'moscot-2704-glossy-black', '2704-Glossy-Black', 'Model: 2704(Glossy Black)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Glossy Black\nMaterial: Handcrafted Acetate\nSize: 53-17-148\nAuthentic Drishti Atelier piece.', 'Moscot 2704(Glossy Black) in glossy black finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Glossy Black', 'unisex', '53-17-148', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot 8801(Glossy Brown)', 'moscot-8801-glossy-brown', '8801-Glossy-Brown', 'Model: 8801(Glossy Brown)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Brown\nMaterial: Handcrafted Acetate\nSize: 49-19-14\nAuthentic Drishti Atelier piece.', 'Moscot 8801(Glossy Brown) in brown finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Brown', 'unisex', '49-19-14', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tom Ford 21057(TranspRENT Black)', 'tom-ford-21057-transprent-black', '21057-TranspRENT-Black', 'Model: 21057(TranspRENT Black)\nBrand: Tom Ford\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Transparent Black\nMaterial: Handcrafted Acetate\nSize: 52-18-145\nAuthentic Drishti Atelier piece.', 'Tom Ford 21057(TranspRENT Black) in transparent black finish.', 280.00, 378.00, 1, 0, 2, 'Tom Ford', 'Handcrafted Acetate', 'Geometric', 'Transparent Black', 'unisex', '52-18-145', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Moscot BY002(Glossy Black)', 'moscot-by002-glossy-black', 'BY002-Glossy-Black', 'Model: BY002(Glossy Black)\nBrand: Moscot\nBatch Memo: 6no(9)\nBox: Original Case\nColor: Glossy Black\nMaterial: Handcrafted Acetate\nSize: 54-19-149\nAuthentic Drishti Atelier piece.', 'Moscot BY002(Glossy Black) in glossy black finish.', 280.00, 378.00, 1, 0, 2, 'Moscot', 'Handcrafted Acetate', 'Geometric', 'Glossy Black', 'unisex', '54-19-149', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 5704 C6(Transparent Pink)', 'titan-5704-c6-transparent-pink', '5704-C6-Transparent-Pink', 'Model: 5704 C6(Transparent Pink)\nBrand: Titan\nBatch Memo: 11no(3)\nBox: Original Case\nColor: Transparent Pink\nMaterial: Handcrafted Acetate\nSize: 52-16-142\nAuthentic Drishti Atelier piece.', 'Titan 5704 C6(Transparent Pink) in transparent pink finish.', 180.00, 243.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Transparent Pink', 'women', '52-16-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 5704 C6(Brown)', 'titan-5704-c6-brown', '5704-C6-Brown', 'Model: 5704 C6(Brown)\nBrand: Titan\nBatch Memo: 11no(3)\nBox: Original Case\nColor: Brown\nMaterial: Handcrafted Acetate\nSize: 52-16-142\nAuthentic Drishti Atelier piece.', 'Titan 5704 C6(Brown) in brown finish.', 180.00, 243.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Brown', 'women', '52-16-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 2003 C3(pink)', 'titan-2003-c3-pink', '2003-C3-pink', 'Model: 2003 C3(pink)\nBrand: Titan\nBatch Memo: 11no(3)\nBox: Original Case\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 50-18-143\nAuthentic Drishti Atelier piece.', 'Titan 2003 C3(pink) in pink finish.', 180.00, 243.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Pink', 'women', '50-18-143', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Balenciaga 5183(Wooden Olive)', 'balenciaga-5183-wooden-olive', '5183-Wooden-Olive', 'Model: 5183(Wooden Olive)\nBrand: Balenciaga\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Olive Wood\nMaterial: Natural Wood\nSize: 52-16-143\nAuthentic Drishti Atelier piece.', 'Balenciaga 5183(Wooden Olive) in olive wood finish.', 260.00, 351.00, 1, 0, 2, 'Balenciaga', 'Natural Wood', 'Geometric', 'Olive Wood', 'unisex', '52-16-143', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Montblanc 570876(Wooden Glossy T Black)', 'montblanc-570876-wooden-glossy-t-black', '570876-Wooden-Glossy-T-Black', 'Model: 570876(Wooden Glossy T Black)\nBrand: Montblanc\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Black\nMaterial: Natural Wood\nSize: 49-21-146\nAuthentic Drishti Atelier piece.', 'Montblanc 570876(Wooden Glossy T Black) in black finish.', 260.00, 351.00, 1, 0, 2, 'Montblanc', 'Natural Wood', 'Geometric', 'Black', 'unisex', '49-21-146', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Miu Miu 5191(Wooden Trans Matt)', 'miu-miu-5191-wooden-trans-matt', '5191-Wooden-Trans-Matt', 'Model: 5191(Wooden Trans Matt)\nBrand: Miu Miu\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Translucent Matte Wood\nMaterial: Natural Wood\nSize: 50-20-148\nAuthentic Drishti Atelier piece.', 'Miu Miu 5191(Wooden Trans Matt) in translucent matte wood finish.', 260.00, 351.00, 1, 0, 2, 'Miu Miu', 'Natural Wood', 'Geometric', 'Translucent Matte Wood', 'unisex', '50-20-148', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Montblanc 278876 C2(Wooden T Glossy Black)', 'montblanc-278876-c2-wooden-t-glossy-black', '278876-C2-Wooden-T-Glossy-Black', 'Model: 278876 C2(Wooden T Glossy Black)\nBrand: Montblanc\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Glossy Black\nMaterial: Natural Wood\nSize: 48-23-146\nAuthentic Drishti Atelier piece.', 'Montblanc 278876 C2(Wooden T Glossy Black) in glossy black finish.', 260.00, 351.00, 1, 0, 2, 'Montblanc', 'Natural Wood', 'Geometric', 'Glossy Black', 'unisex', '48-23-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Montblanc 5186(Wooden T Matt)', 'montblanc-5186-wooden-t-matt', '5186-Wooden-T-Matt', 'Model: 5186(Wooden T Matt)\nBrand: Montblanc\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Natural Wood\nMaterial: Natural Wood\nSize: 53-17-143\nAuthentic Drishti Atelier piece.', 'Montblanc 5186(Wooden T Matt) in natural wood finish.', 260.00, 351.00, 1, 0, 2, 'Montblanc', 'Natural Wood', 'Geometric', 'Natural Wood', 'unisex', '53-17-143', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Miu Miu 5191(Wooden T White Matt)', 'miu-miu-5191-wooden-t-white-matt', '5191-Wooden-T-White-Matt', 'Model: 5191(Wooden T White Matt)\nBrand: Miu Miu\nBatch Memo: 8no(9)\nBox: Original Case\nColor: White Matte Wood\nMaterial: Natural Wood\nSize: 50-20-148\nAuthentic Drishti Atelier piece.', 'Miu Miu 5191(Wooden T White Matt) in white matte wood finish.', 260.00, 351.00, 1, 0, 2, 'Miu Miu', 'Natural Wood', 'Geometric', 'White Matte Wood', 'unisex', '50-20-148', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Local Atelier HB2708 C2(wooden black matt)', 'local-atelier-hb2708-c2-wooden-black-matt', 'HB2708-C2-wooden-black-matt', 'Model: HB2708 C2(wooden black matt)\nBrand: Local Atelier\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Black\nMaterial: Natural Wood\nSize: 49-22-146\nAuthentic Drishti Atelier piece.', 'Local Atelier HB2708 C2(wooden black matt) in black finish.', 260.00, 351.00, 1, 0, 2, 'Local Atelier', 'Natural Wood', 'Geometric', 'Black', 'unisex', '49-22-146', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Montblanc 571876 C5(Wooden Glossy Black)', 'montblanc-571876-c5-wooden-glossy-black', '571876-C5-Wooden-Glossy-Black', 'Model: 571876 C5(Wooden Glossy Black)\nBrand: Montblanc\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Glossy Black\nMaterial: Natural Wood\nSize: 51-23-146\nAuthentic Drishti Atelier piece.', 'Montblanc 571876 C5(Wooden Glossy Black) in glossy black finish.', 260.00, 351.00, 1, 0, 2, 'Montblanc', 'Natural Wood', 'Geometric', 'Glossy Black', 'unisex', '51-23-146', 'active', true, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Montblanc 278876 C1(Wooden Glossy White)', 'montblanc-278876-c1-wooden-glossy-white', '278876-C1-Wooden-Glossy-White', 'Model: 278876 C1(Wooden Glossy White)\nBrand: Montblanc\nBatch Memo: 8no(9)\nBox: Original Case\nColor: Glossy White Wood\nMaterial: Natural Wood\nSize: 48-23-146\nAuthentic Drishti Atelier piece.', 'Montblanc 278876 C1(Wooden Glossy White) in glossy white wood finish.', 260.00, 351.00, 1, 0, 2, 'Montblanc', 'Natural Wood', 'Geometric', 'Glossy White Wood', 'women', '48-23-146', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tiffany & Co. 3301(Glossy Blown Pink)', 'tiffany-co-3301-glossy-blown-pink', '3301-Glossy-Blown-Pink', 'Model: 3301(Glossy Blown Pink)\nBrand: Tiffany & Co.\nBatch Memo: 12no(3)\nBox: Original Case\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 51-17-141\nAuthentic Drishti Atelier piece.', 'Tiffany & Co. 3301(Glossy Blown Pink) in pink finish.', 260.00, 351.00, 1, 0, 1, 'Tiffany & Co.', 'Handcrafted Acetate', 'Geometric', 'Pink', 'women', '51-17-141', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tiffany & Co. 3301(Glossy Trans Black)', 'tiffany-co-3301-glossy-trans-black', '3301-Glossy-Trans-Black', 'Model: 3301(Glossy Trans Black)\nBrand: Tiffany & Co.\nBatch Memo: 12no(3)\nBox: samebox 82-101\nColor: Transparent Black\nMaterial: Handcrafted Acetate\nSize: 51-17-141\nAuthentic Drishti Atelier piece.', 'Tiffany & Co. 3301(Glossy Trans Black) in transparent black finish.', 260.00, 351.00, 1, 0, 1, 'Tiffany & Co.', 'Handcrafted Acetate', 'Geometric', 'Transparent Black', 'women', '51-17-141', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Tiffany & Co. 3301(Glossy Trans pink)', 'tiffany-co-3301-glossy-trans-pink', '3301-Glossy-Trans-pink', 'Model: 3301(Glossy Trans pink)\nBrand: Tiffany & Co.\nBatch Memo: 12no(3)\nBox: F\nColor: Transparent Pink\nMaterial: Handcrafted Acetate\nSize: 51-17-141\nAuthentic Drishti Atelier piece.', 'Tiffany & Co. 3301(Glossy Trans pink) in transparent pink finish.', 260.00, 351.00, 1, 0, 1, 'Tiffany & Co.', 'Handcrafted Acetate', 'Geometric', 'Transparent Pink', 'women', '51-17-141', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 2425(Glossy Blue)', 'titan-2425-glossy-blue', '2425-Glossy-Blue', 'Model: 2425(Glossy Blue)\nBrand: Titan\nBatch Memo: 9no(6)\nBox: Original Case\nColor: Blue\nMaterial: Handcrafted Acetate\nSize: 49-17-147\nAuthentic Drishti Atelier piece.', 'Titan 2425(Glossy Blue) in blue finish.', 130.00, 176.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Blue', 'women', '49-17-147', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 2502(Glossy pink)', 'titan-2502-glossy-pink', '2502-Glossy-pink', 'Model: 2502(Glossy pink)\nBrand: Titan\nBatch Memo: 9no(6)\nBox: Original Case\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 50-18-139\nAuthentic Drishti Atelier piece.', 'Titan 2502(Glossy pink) in pink finish.', 130.00, 176.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Pink', 'women', '50-18-139', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 2511(Glossy Gray)', 'titan-2511-glossy-gray', '2511-Glossy-Gray', 'Model: 2511(Glossy Gray)\nBrand: Titan\nBatch Memo: 9no(6)\nBox: Original Case\nColor: Gray\nMaterial: Handcrafted Acetate\nSize: 51-18-142\nAuthentic Drishti Atelier piece.', 'Titan 2511(Glossy Gray) in gray finish.', 130.00, 176.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Gray', 'women', '51-18-142', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan 2425(Red Flower)', 'titan-2425-red-flower', '2425-Red-Flower', 'Model: 2425(Red Flower)\nBrand: Titan\nBatch Memo: 9no(6)\nBox: Original Case\nColor: Red Floral\nMaterial: Handcrafted Acetate\nSize: 49-17-147\nAuthentic Drishti Atelier piece.', 'Titan 2425(Red Flower) in red floral finish.', 130.00, 176.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Red Floral', 'women', '49-17-147', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Titan LD2413(Glossy Trans Pink)', 'titan-ld2413-glossy-trans-pink', 'LD2413-Glossy-Trans-Pink', 'Model: LD2413(Glossy Trans Pink)\nBrand: Titan\nBatch Memo: 9no(6)\nBox: Original Case\nColor: Transparent Pink\nMaterial: Handcrafted Acetate\nSize: 43-19-140\nAuthentic Drishti Atelier piece.', 'Titan LD2413(Glossy Trans Pink) in transparent pink finish.', 130.00, 176.00, 1, 0, 5, 'Titan', 'Handcrafted Acetate', 'Geometric', 'Transparent Pink', 'women', '43-19-140', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Adidas ZC1112 C9 (Cyan)', 'adidas-zc1112-c9-cyan', 'ZC1112-C9-Cyan', 'Model: ZC1112 C9 (Cyan)\nBrand: Adidas\nBatch Memo: 28no(8)\nBox: Original Case\nColor: Cyan\nMaterial: Handcrafted Acetate\nSize: 48-17-136\nAuthentic Drishti Atelier piece.', 'Adidas ZC1112 C9 (Cyan) in cyan finish.', 250.00, 338.00, 1, 0, 7, 'Adidas', 'Handcrafted Acetate', 'Geometric', 'Cyan', 'kids', '48-17-136', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Local Atelier Q014 C3 (Purple)', 'local-atelier-q014-c3-purple', 'Q014-C3-Purple', 'Model: Q014 C3 (Purple)\nBrand: Local Atelier\nBatch Memo: 28no(8)\nBox: Original Case\nColor: Purple\nMaterial: Handcrafted Acetate\nSize: 45-15-135\nAuthentic Drishti Atelier piece.', 'Local Atelier Q014 C3 (Purple) in purple finish.', 250.00, 338.00, 1, 0, 7, 'Local Atelier', 'Handcrafted Acetate', 'Geometric', 'Purple', 'kids', '45-15-135', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Adidas ZC1112 C5 (Pink)', 'adidas-zc1112-c5-pink', 'ZC1112-C5-Pink', 'Model: ZC1112 C5 (Pink)\nBrand: Adidas\nBatch Memo: 28no(8)\nBox: Samebox 102-109\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 48-17-136\nAuthentic Drishti Atelier piece.', 'Adidas ZC1112 C5 (Pink) in pink finish.', 250.00, 338.00, 1, 0, 7, 'Adidas', 'Handcrafted Acetate', 'Geometric', 'Pink', 'kids', '48-17-136', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Adidas ZC1112 C4(Baby Pink)', 'adidas-zc1112-c4-baby-pink', 'ZC1112-C4-Baby-Pink', 'Model: ZC1112 C4(Baby Pink)\nBrand: Adidas\nBatch Memo: 28no(8)\nBox: G\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 48-17-136\nAuthentic Drishti Atelier piece.', 'Adidas ZC1112 C4(Baby Pink) in pink finish.', 250.00, 338.00, 1, 0, 7, 'Adidas', 'Handcrafted Acetate', 'Geometric', 'Pink', 'kids', '48-17-136', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Hugo Boss BA-507 (Purple Black)', 'hugo-boss-ba-507-purple-black', 'BA-507-Purple-Black', 'Model: BA-507 (Purple Black)\nBrand: Hugo Boss\nBatch Memo: 29no(2)\nBox: Original Case\nColor: Purple & Black\nMaterial: Handcrafted Acetate\nSize: 46-17-130\nAuthentic Drishti Atelier piece.', 'Hugo Boss BA-507 (Purple Black) in purple & black finish.', 170.00, 230.00, 1, 0, 7, 'Hugo Boss', 'Handcrafted Acetate', 'Geometric', 'Purple & Black', 'kids', '46-17-130', 'active', false, true, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Porsche Design 6005(Pink White)', 'porsche-design-6005-pink-white', '6005-Pink-White', 'Model: 6005(Pink White)\nBrand: Porsche Design\nBatch Memo: 29no(2)\nBox: Original Case\nColor: Pink\nMaterial: Handcrafted Acetate\nSize: 47-16-130\nAuthentic Drishti Atelier piece.', 'Porsche Design 6005(Pink White) in pink finish.', 170.00, 230.00, 1, 0, 7, 'Porsche Design', 'Handcrafted Acetate', 'Geometric', 'Pink', 'kids', '47-16-130', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Nucey 1008(Transparent Black)', 'nucey-1008-transparent-black', '1008-Transparent-Black', 'Model: 1008(Transparent Black)\nBrand: Nucey\nBatch Memo: 30no(2)\nBox: Original Case\nColor: Transparent Black\nMaterial: Handcrafted Acetate\nSize: 43-17-130\nAuthentic Drishti Atelier piece.', 'Nucey 1008(Transparent Black) in transparent black finish.', 250.00, 338.00, 1, 0, 7, 'Nucey', 'Handcrafted Acetate', 'Geometric', 'Transparent Black', 'kids', '43-17-130', 'active', false, false, true);
+
+INSERT INTO products (name, slug, sku, description, short_description, price, compare_price, stock, low_stock_threshold, category_id, brand, frame_material, frame_shape, frame_color, gender, size, status, featured, bestseller, new_arrival) VALUES
+  ('Nucey 1003(Trans Orange)', 'nucey-1003-trans-orange', '1003-Trans-Orange', 'Model: 1003(Trans Orange)\nBrand: Nucey\nBatch Memo: 30no(2)\nBox: Original Case\nColor: Orange\nMaterial: Handcrafted Acetate\nSize: 43-17-131\nAuthentic Drishti Atelier piece.', 'Nucey 1003(Trans Orange) in orange finish.', 250.00, 338.00, 1, 0, 7, 'Nucey', 'Handcrafted Acetate', 'Geometric', 'Orange', 'kids', '43-17-131', 'active', false, false, true);
 
 -- ============================================
 -- COUPONS (sample)
@@ -264,17 +387,5 @@ INSERT INTO product_tags (product_id, tag_id) VALUES
 INSERT INTO coupons (code, description, discount_type, discount_value, min_order_amount, max_discount, usage_limit, is_active, expires_at) VALUES
   ('DRISHTI20',   'Get 20% off your first order',       'percentage', 20.00, 1000.00, 500.00,  100, true, NOW() + INTERVAL '6 months'),
   ('WELCOME10',  'Welcome discount — 10% off',         'percentage', 10.00, 500.00,  300.00,  200, true, NOW() + INTERVAL '3 months'),
-  ('FLAT500',    'Flat ৳500 off on orders above ৳3000', 'fixed',      500.00, 3000.00, NULL,    50,  true, NOW() + INTERVAL '1 month');
-
--- ============================================
--- ADMIN USER (password: Admin@123)
--- Hash generated with bcryptjs, 10 salt rounds
--- CHANGE THIS PASSWORD BEFORE PRODUCTION
--- ============================================
--- Note: The admin account is created by the seed script (run-seed.js)
--- because the password hash must be generated at runtime with bcryptjs.
-
--- ============================================
--- DONE
--- ============================================
--- Seed data inserted successfully.
+  ('FLAT500',    'Flat ৳500 off on orders above ৳3000', 'fixed',      500.00, 3000.00, NULL,    50,  true, NOW() + INTERVAL '1 month')
+ON CONFLICT (code) DO NOTHING;

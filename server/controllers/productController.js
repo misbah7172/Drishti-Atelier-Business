@@ -38,14 +38,42 @@ async function getProducts(req, res, next) {
       sort = 'newest',
       page = 1,
       limit = 12,
+      status,
+      has_images,
+      sku,
+      model_no,
     } = req.query;
 
     const pageNum = Math.max(1, parseInt(page) || 1);
     const limitNum = Math.max(1, Math.min(100, parseInt(limit) || 12));
     const offset = (pageNum - 1) * limitNum;
 
-    const whereConditions = ["p.status = 'active'"];
+    const whereConditions = [];
     const queryParams = [];
+
+    // Role / Admin status check
+    const isAdmin = req.user?.role === 'admin' || req.baseUrl?.includes('admin');
+    if (status && status !== 'all') {
+      queryParams.push(status);
+      whereConditions.push(`p.status = $${queryParams.length}`);
+    } else if (!isAdmin && !status) {
+      whereConditions.push("p.status = 'active'");
+    }
+
+    // Has images filter
+    if (has_images === 'true') {
+      whereConditions.push('EXISTS (SELECT 1 FROM product_images pi WHERE pi.product_id = p.id)');
+    } else if (has_images === 'false') {
+      whereConditions.push('NOT EXISTS (SELECT 1 FROM product_images pi WHERE pi.product_id = p.id)');
+    }
+
+    // Specific SKU or Model No filter
+    const targetModel = sku || model_no;
+    if (targetModel && targetModel.trim()) {
+      queryParams.push(`%${targetModel.trim()}%`);
+      const paramIdx = queryParams.length;
+      whereConditions.push(`(p.sku ILIKE $${paramIdx} OR p.name ILIKE $${paramIdx})`);
+    }
 
     // Search term
     if (search && search.trim()) {
@@ -54,6 +82,11 @@ async function getProducts(req, res, next) {
       whereConditions.push(
         `(p.name ILIKE $${paramIdx} OR p.description ILIKE $${paramIdx} OR p.brand ILIKE $${paramIdx} OR p.sku ILIKE $${paramIdx})`
       );
+    }
+
+    // If whereConditions is empty, allow all
+    if (whereConditions.length === 0) {
+      whereConditions.push('1=1');
     }
 
     // Category filter
@@ -175,6 +208,7 @@ async function getProducts(req, res, next) {
                ORDER BY pi.is_primary DESC, pi.sort_order ASC, pi.id ASC 
                LIMIT 1
              ) AS primary_image,
+             COALESCE((SELECT COUNT(*) FROM product_images pi WHERE pi.product_id = p.id), 0)::INTEGER AS image_count,
              COALESCE((SELECT AVG(rating) FROM reviews r WHERE r.product_id = p.id), 5.0)::NUMERIC(2,1) AS average_rating,
              COALESCE((SELECT COUNT(*) FROM reviews r WHERE r.product_id = p.id), 0) AS review_count
       FROM products p
@@ -245,7 +279,7 @@ async function getFeaturedProducts(req, res, next) {
  */
 async function getProductByIdOrSlug(req, res, next) {
   try {
-    const { idOrSlug } = req.params;
+    const idOrSlug = req.params.idOrSlug || req.params.id;
     const isId = !isNaN(idOrSlug);
 
     const sql = `
@@ -432,8 +466,9 @@ async function updateProduct(req, res, next) {
         featured = COALESCE($17, featured),
         bestseller = COALESCE($18, bestseller),
         new_arrival = COALESCE($19, new_arrival),
+        sku = COALESCE($20, sku),
         updated_at = NOW()
-       WHERE id = $20
+       WHERE id = $21
        RETURNING *`,
       [
         body.name ? body.name.trim() : null,
@@ -455,6 +490,7 @@ async function updateProduct(req, res, next) {
         body.featured !== undefined ? (body.featured === true || body.featured === 'true') : null,
         body.bestseller !== undefined ? (body.bestseller === true || body.bestseller === 'true') : null,
         body.new_arrival !== undefined ? (body.new_arrival === true || body.new_arrival === 'true') : null,
+        body.sku ? body.sku.trim() : null,
         id,
       ]
     );
@@ -585,6 +621,71 @@ async function deleteProductImage(req, res, next) {
   }
 }
 
+
+/**
+ * POST /api/products/:id/images/url (Admin only - Add image by URL)
+ */
+async function addProductImageUrl(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { imageUrl, image_url, alt_text, is_primary } = req.body;
+    const finalUrl = (imageUrl || image_url || '').trim();
+
+    if (!finalUrl) {
+      return res.status(400).json({ status: 'fail', message: 'Image URL is required.' });
+    }
+
+    const prodCheck = await query('SELECT id FROM products WHERE id = $1', [id]);
+    if (prodCheck.rows.length === 0) {
+      return res.status(404).json({ status: 'fail', message: 'Product not found.' });
+    }
+
+    const existingImages = await query('SELECT COUNT(*) FROM product_images WHERE product_id = $1', [id]);
+    const shouldBePrimary = is_primary === true || parseInt(existingImages.rows[0].count) === 0;
+
+    if (shouldBePrimary) {
+      await query('UPDATE product_images SET is_primary = false WHERE product_id = $1', [id]);
+    }
+
+    const sortOrder = parseInt(existingImages.rows[0].count);
+
+    const result = await query(
+      `INSERT INTO product_images (product_id, image_url, alt_text, is_primary, sort_order)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [id, finalUrl, alt_text || null, shouldBePrimary, sortOrder]
+    );
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Product image added successfully!',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * PUT /api/products/:id/images/:imageId/primary (Admin only)
+ */
+async function setPrimaryProductImage(req, res, next) {
+  try {
+    const { id, imageId } = req.params;
+    await query('UPDATE product_images SET is_primary = false WHERE product_id = $1', [id]);
+    const result = await query(
+      'UPDATE product_images SET is_primary = true WHERE id = $1 AND product_id = $2 RETURNING *',
+      [imageId, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ status: 'fail', message: 'Image not found for this product.' });
+    }
+    res.status(200).json({ status: 'success', message: 'Primary image updated!', data: result.rows[0] });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getProducts,
   getFeaturedProducts,
@@ -594,4 +695,6 @@ module.exports = {
   deleteProduct,
   uploadProductImages,
   deleteProductImage,
+  addProductImageUrl,
+  setPrimaryProductImage,
 };
