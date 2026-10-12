@@ -2,16 +2,25 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { query } = require('../db/pool');
 
+// Validate JWT_SECRET at module load
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  console.error('FATAL: JWT_SECRET must be set and at least 32 characters.');
+  if (process.env.NODE_ENV === 'production') process.exit(1);
+}
+const JWT_ISSUER = 'drishti-atelier';
+const JWT_AUDIENCE = 'drishti-client';
+
 /**
  * Generate JWT Token helper
  */
 function generateToken(user) {
-  const secret = process.env.JWT_SECRET || 'vision-eye-care-dev-secret-key-2026';
+  const secret = JWT_SECRET || 'dev-only-fallback-secret-key-min32chars!';
   const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
   return jwt.sign(
     { id: user.id, email: user.email, role: user.role },
     secret,
-    { expiresIn }
+    { expiresIn, issuer: JWT_ISSUER, audience: JWT_AUDIENCE }
   );
 }
 
@@ -119,7 +128,8 @@ async function login(req, res, next) {
 
     // Find user in database by email, exact phone, or stripped digits phone
     const userResult = await query(
-      `SELECT id, name AS full_name, name, email, password_hash, phone, role, is_active, created_at, avatar_url, google_id, auth_provider 
+      `SELECT id, name AS full_name, name, email, password_hash, phone, role, is_active, created_at, avatar_url, google_id, auth_provider,
+              failed_login_attempts, locked_until
        FROM users 
        WHERE LOWER(email) = $1 
           OR phone = $2 
@@ -136,6 +146,15 @@ async function login(req, res, next) {
     }
 
     const user = userResult.rows[0];
+
+    // H-08: Account lockout check
+    if (user.locked_until && new Date(user.locked_until) > new Date()) {
+      const minutesLeft = Math.ceil((new Date(user.locked_until) - new Date()) / 60000);
+      return res.status(429).json({
+        status: 'fail',
+        message: `Account temporarily locked. Try again in ${minutesLeft} minute(s).`,
+      });
+    }
 
     if (!user.is_active) {
       return res.status(403).json({
@@ -155,10 +174,24 @@ async function login(req, res, next) {
     // Compare password
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) {
+      // H-08: Increment failed attempts, lock after 5
+      const attempts = (user.failed_login_attempts || 0) + 1;
+      const lockUntil = attempts >= 5 ? "NOW() + INTERVAL '30 minutes'" : 'locked_until';
+      await query(
+        `UPDATE users SET failed_login_attempts = $1, locked_until = ${attempts >= 5 ? "NOW() + INTERVAL '30 minutes'" : 'locked_until'} WHERE id = $2`,
+        [attempts, user.id]
+      );
       return res.status(401).json({
         status: 'fail',
-        message: 'Invalid email/phone number or password.',
+        message: attempts >= 5
+          ? 'Too many failed attempts. Account locked for 30 minutes.'
+          : 'Invalid email/phone number or password.',
       });
+    }
+
+    // H-08: Reset failed attempts on success
+    if (user.failed_login_attempts > 0) {
+      await query('UPDATE users SET failed_login_attempts = 0, locked_until = NULL WHERE id = $1', [user.id]);
     }
 
     // Update last login timestamp
@@ -167,8 +200,10 @@ async function login(req, res, next) {
       [user.id]
     );
 
-    // Remove password_hash from response object
+    // Remove sensitive fields from response
     delete user.password_hash;
+    delete user.failed_login_attempts;
+    delete user.locked_until;
 
     const token = generateToken(user);
 
