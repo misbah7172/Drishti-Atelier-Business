@@ -39,7 +39,7 @@ export default function EditorialTestimonials() {
           <div className="testimonial-quote-box" key={currentIndex}>
             <div className="testimonial-stars-row">
               {Array.from({ length: active.rating }).map((_, i) => (
-                <HiOutlineStar key={i} size={18} className="star-icon" />
+                <HiOutlineStar key={i} size={15} className="star-icon" />
               ))}
             </div>
 

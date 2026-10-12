@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Phase 11 — Global UI Polish
+   Micro-animations, transitions, scroll, and responsive refinements
+   ========================================================================== */
+
+/* --- Smooth Page Transitions --- */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.public-page,
+.shop-page,
+.product-detail,
+.cart-page,
+.wishlist-page,
+.checkout-page,
+.account-page,
+.admin-page {
+  animation: fadeSlideUp 0.35s ease-out;
+}
+
+/* --- Button Hover Polish --- */
+.btn, button, [type="submit"] {
+  transition: all 0.2s ease;
+}
+
+.btn:active, button:active {
+  transform: scale(0.97);
+}
+
+/* --- Link Hover Underline Animation --- */
+.footer-nav-link,
+.footer-sub-link {
+  position: relative;
+}
+
+.footer-nav-link::after,
+.footer-sub-link::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #F97D01;
+  transition: width 0.25s ease;
+}
+
+.footer-nav-link:hover::after,
+.footer-sub-link:hover::after {
+  width: 100%;
+}
+
+/* --- Focus Visible (Accessibility) --- */
+*:focus-visible {
+  outline: 2px solid #F97D01;
+  outline-offset: 2px;
+}
+
+/* Remove outlines on mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Smooth Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F97D01;
+}
+
+/* --- Toast Overrides (react-hot-toast) --- */
+[data-sonner-toaster],
+div[role="status"] {
+  font-family: var(--font-body) !important;
+}
+
+/* --- Image Loading Transition --- */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* --- Mobile Responsive Fixes (≤768px) --- */
+@media (max-width: 768px) {
+  /* Public pages */
+  .public-page { padding: 2rem 1rem 3rem; }
+  .public-hero-title { font-size: 1.4rem; }
+  .values-grid { grid-template-columns: 1fr; }
+
+  /* Admin pages */
+  .admin-page { padding: 1.25rem 1rem; }
+  .admin-page-header { flex-direction: column; }
+  .admin-page-title { font-size: 1.1rem; }
+  .admin-toolbar { flex-direction: column; }
+  .admin-search { max-width: 100%; }
+  .admin-form-row { grid-template-columns: 1fr; }
+
+  /* Tables horizontal scroll */
+  .admin-table-wrap { margin: 0 -1rem; border-radius: 0; border-left: none; border-right: none; }
+  .admin-mgmt-table { min-width: 600px; }
+
+  /* Shop grid */
+  .skeleton-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+}
+
+/* --- Small Mobile (≤480px) --- */
+@media (max-width: 480px) {
+  .public-hero-title { font-size: 1.15rem; letter-spacing: 0.08em; }
+  .public-hero-sub { font-size: 0.8rem; }
+
+  .contact-grid { gap: 2rem; }
+
+  .not-found-code { font-size: 5rem; }
+  .not-found-title { font-size: 1rem; }
+  .not-found-actions { flex-direction: column; width: 100%; }
+  .not-found-actions .btn { justify-content: center; }
+}
+
+/* --- Large Desktop (≥1440px) --- */
+@media (min-width: 1440px) {
+  .public-page { max-width: 1000px; }
+  .admin-page { max-width: 1300px; }
+}
+
+/* --- Badge Hover Animation --- */
+.badge {
+  transition: transform 0.15s ease;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* --- Card Hover Lift --- */
+.value-card,
+.faq-item {
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.value-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(249, 125, 1, 0.05);
+}
+
+/* --- Modal Entrance --- */
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.admin-modal {
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+/* --- Skeleton Grid Responsive --- */
+@media (max-width: 640px) {
+  .skeleton-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .skeleton-grid { grid-template-columns: repeat(4, 1fr); }
+}

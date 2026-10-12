@@ -16,6 +16,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ============================================
 DROP TABLE IF EXISTS order_status_history CASCADE;
 DROP TABLE IF EXISTS coupon_usages CASCADE;
+DROP TABLE IF EXISTS coupons CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS payments CASCADE;
@@ -41,13 +42,18 @@ CREATE TABLE users (
   name          VARCHAR(100) NOT NULL,
   email         VARCHAR(255) NOT NULL UNIQUE,
   phone         VARCHAR(20),
-  password_hash VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255), -- Nullable for OAuth users
   role          VARCHAR(20) NOT NULL DEFAULT 'customer'
                 CHECK (role IN ('customer', 'admin')),
+  google_id     VARCHAR(255) UNIQUE,
+  avatar_url    VARCHAR(500),
+  auth_provider VARCHAR(50) DEFAULT 'local',
   is_active     BOOLEAN NOT NULL DEFAULT true,
   created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
 
 -- ============================================
 -- 2. CATEGORIES
@@ -451,6 +457,44 @@ CREATE TRIGGER trg_coupons_updated_at
 
 CREATE TRIGGER trg_reviews_updated_at
   BEFORE UPDATE ON reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 20. SITE SETTINGS (Admin-configurable key-value store)
+-- ============================================
+CREATE TABLE IF NOT EXISTS site_settings (
+  key         VARCHAR(100) PRIMARY KEY,
+  value       TEXT NOT NULL,
+  category    VARCHAR(50) NOT NULL DEFAULT 'general',
+  label       VARCHAR(200),
+  updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Seed default settings
+INSERT INTO site_settings (key, value, category, label) VALUES
+  -- General
+  ('site_name', 'Drishti Atelier', 'general', 'Site Name'),
+  ('site_tagline', 'Premium Eyewear for the Modern Eye', 'general', 'Tagline'),
+  ('site_description', 'Bangladesh''s premier destination for luxury eyewear.', 'general', 'Site Description'),
+  -- Contact
+  ('contact_email', 'hello@drishtiatelier.com', 'contact', 'Contact Email'),
+  ('contact_phone', '+880 1700-000-000', 'contact', 'Phone Number'),
+  ('contact_address', 'House 42, Road 11, Block D, Dhanmondi, Dhaka 1205', 'contact', 'Address'),
+  ('business_hours', 'Sat–Thu: 10AM – 8PM, Friday: Closed', 'contact', 'Business Hours'),
+  -- Social
+  ('social_instagram', 'https://instagram.com/drishtiatelier', 'social', 'Instagram URL'),
+  ('social_twitter', 'https://x.com/drishtiatelier', 'social', 'X (Twitter) URL'),
+  ('social_facebook', '', 'social', 'Facebook URL'),
+  -- Store
+  ('shipping_fee_dhaka', '60', 'store', 'Shipping Fee (Dhaka) ৳'),
+  ('shipping_fee_outside', '120', 'store', 'Shipping Fee (Outside Dhaka) ৳'),
+  ('free_shipping_threshold', '3000', 'store', 'Free Shipping Above ৳'),
+  ('min_order_amount', '0', 'store', 'Minimum Order Amount ৳'),
+  -- SEO
+  ('seo_title', 'Drishti Atelier — Premium Eyewear', 'seo', 'Default Page Title'),
+  ('seo_description', 'Shop luxury sunglasses, optical frames, and blue light glasses at Drishti Atelier. Curated collection with nationwide delivery in Bangladesh.', 'seo', 'Default Meta Description'),
+  ('seo_keywords', 'eyewear, sunglasses, optical frames, Bangladesh, luxury, Drishti', 'seo', 'Meta Keywords'),
+  ('google_analytics_id', '', 'seo', 'Google Analytics ID')
+ON CONFLICT (key) DO NOTHING;
 
 -- ============================================
 -- DONE

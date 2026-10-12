@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
@@ -13,15 +14,32 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174')
+  .split(',')
+  .map((url) => url.trim().replace(/\/$/, ''));
 
-app.use(morgan('dev'));
-app.use(express.json({ limit: '10mb' }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, uptime/health checks)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      // Allow any localhost or 127.0.0.1 port (for local development only)
+      if (process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked request from origin: ${origin}`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  })
+);
+
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ------------------------------------
@@ -30,9 +48,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ------------------------------------
-// Health Check
+// Root & OAuth Redirect Handler
 // ------------------------------------
-app.get('/api/health', (req, res) => {
+app.get('/', (req, res, next) => {
+  if (req.query.code || req.query.error) {
+    const authController = require('./controllers/authController');
+    return authController.handleGoogleRedirect(req, res, next);
+  }
   res.json({
     status: 'ok',
     message: 'Drishti API is running',
@@ -42,20 +64,48 @@ app.get('/api/health', (req, res) => {
 });
 
 // ------------------------------------
-// API Routes (will be added per phase)
+// Health Check (Supports both /health and /api/health for Render)
 // ------------------------------------
-// Phase 3: app.use('/api/auth', require('./routes/auth'));
-// Phase 4: app.use('/api/products', require('./routes/products'));
-// Phase 4: app.use('/api/categories', require('./routes/categories'));
-// Phase 5: app.use('/api/cart', require('./routes/cart'));
-// Phase 5: app.use('/api/wishlist', require('./routes/wishlist'));
-// Phase 6: app.use('/api/orders', require('./routes/orders'));
-// Phase 9: app.use('/api/admin', require('./routes/admin'));
+const healthCheckHandler = (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'drishti-api',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+};
+
+app.get('/health', healthCheckHandler);
+app.get('/api/health', healthCheckHandler);
+
+// Rate limiters
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'development' ? 500 : 10,
+  message: { status: 'fail', message: 'Too many attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+});
+const contactLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 10, message: { status: 'fail', message: 'Too many messages. Try again later.' } });
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: process.env.NODE_ENV === 'development' ? 1000 : 300, standardHeaders: true, legacyHeaders: false });
+
+// API Routes
+app.use('/api/auth', authLimiter, require('./routes/auth'));
+app.use('/api/products', apiLimiter, require('./routes/products'));
+app.use('/api/categories', apiLimiter, require('./routes/categories'));
+app.use('/api/cart', apiLimiter, require('./routes/cart'));
+app.use('/api/wishlist', apiLimiter, require('./routes/wishlist'));
+app.use('/api/orders', apiLimiter, require('./routes/orders'));
+app.use('/api/addresses', apiLimiter, require('./routes/addresses'));
+app.use('/api/admin', apiLimiter, require('./routes/admin'));
+app.use('/api', contactLimiter, require('./routes/public'));
 
 // ------------------------------------
 // 404 Handler
 // ------------------------------------
-app.use('/api/*', (req, res) => {
+app.use('/api/{*path}', (req, res) => {
   res.status(404).json({
     status: 'error',
     message: `Route not found: ${req.method} ${req.originalUrl}`,

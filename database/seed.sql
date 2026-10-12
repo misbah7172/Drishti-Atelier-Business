@@ -191,7 +191,7 @@ INSERT INTO products (name, slug, sku, description, short_description, price, co
 ('Sporty Kids Wraparound', 'sporty-kids-wraparound', 'VEC-KID-003',
  'Active-lifestyle kids sunglasses with a secure wraparound design. Shatterproof polycarbonate lenses meet ANSI Z87.1 safety standards. Integrated strap keeps glasses secure during sports. Available in multiple vibrant color options.',
  'Shatterproof wraparound sunglasses for active kids',
- 1100.00, 1400.00, 45, 10, 7, 16, 'ActiveKids', 'Polycarbonate', 'Wrap', 'Blue/Green', 'kids', 'Small', 'active', false, false, true),
+ 1100.00, 1400.00, 45, 10, 7, 15, 'ActiveKids', 'Polycarbonate', 'Wrap', 'Blue/Green', 'kids', 'Small', 'active', false, false, true),
 
 -- 23
 ('DuoFlex Bifocal Reader', 'duoflex-bifocal-reader', 'VEC-RX-007',

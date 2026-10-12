@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   HiOutlineShoppingBag,
   HiOutlineHeart,
@@ -7,10 +7,11 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlineBars3,
   HiOutlineXMark,
-  HiOutlineSun,
-  HiOutlineMoon,
+  HiOutlineArrowRightOnRectangle,
 } from 'react-icons/hi2';
-import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import './Navbar.css';
 
 const navLinks = [
@@ -28,10 +29,11 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const navigate = useNavigate();
-  const { toggleTheme, isDark } = useTheme();
+  const location = useLocation();
 
-  const cartCount = 0; // Connected to CartContext
-  const wishlistCount = 0; // Connected to WishlistContext
+  const { user, isAuthenticated, logout, isAdmin } = useAuth();
+  const { itemCount: cartCount } = useCart();
+  const { count: wishlistCount } = useWishlist();
 
   // Track window scroll for glassmorphism transition
   useEffect(() => {
@@ -76,9 +78,12 @@ export default function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
 
+  const isHome = location.pathname === '/';
+  const isScrolledOrInternal = scrolled || !isHome;
+
   return (
     <header
-      className={`navbar-editorial ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'} ${
+      className={`navbar-editorial ${isScrolledOrInternal ? 'navbar-scrolled' : 'navbar-transparent'} ${
         mobileOpen ? 'navbar-mobile-active' : ''
       }`}
       id="main-navbar"
@@ -95,19 +100,25 @@ export default function Navbar() {
 
         {/* Center: Editorial Categories */}
         <nav className="navbar-links" id="desktop-nav" aria-label="Main Navigation">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `navbar-nav-link ${isActive ? 'nav-link-active' : ''}`
-              }
-              end={link.end}
-            >
-              <span className="nav-link-text">{link.label}</span>
-              <span className="nav-link-indicator" aria-hidden="true" />
-            </NavLink>
-          ))}
+          {navLinks.map((link) => {
+            // Custom active detection: compare both pathname and search params
+            const linkUrl = new URL(link.to, window.location.origin);
+            const isActive = link.end
+              ? location.pathname === linkUrl.pathname && !linkUrl.search
+              : location.pathname === linkUrl.pathname &&
+                (!linkUrl.search || location.search === linkUrl.search);
+
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`navbar-nav-link ${isActive ? 'nav-link-active' : ''}`}
+              >
+                <span className="nav-link-text">{link.label}</span>
+                <span className="nav-link-indicator" aria-hidden="true" />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right: Actions */}
@@ -140,43 +151,43 @@ export default function Navbar() {
           {/* Cart (Desktop Only) */}
           <Link
             to="/cart"
-            className="navbar-action-btn desktop-only"
+            className={`navbar-action-btn desktop-only ${cartCount > 0 ? 'navbar-cart-active' : ''}`}
             id="cart-link"
             aria-label="Shopping Cart"
           >
             <HiOutlineShoppingBag size={19} />
-            {cartCount > 0 ? (
+            {cartCount > 0 && (
               <span className="navbar-badge-pill">{cartCount}</span>
-            ) : (
-              <span className="navbar-badge-dot" aria-hidden="true" />
             )}
           </Link>
 
           {/* Account (Desktop Only) */}
           <Link
-            to="/login"
+            to={isAuthenticated ? (isAdmin ? '/admin' : '/account') : '/login'}
             className="navbar-action-btn desktop-only"
             id="account-link"
-            aria-label="Account Login"
+            aria-label={isAuthenticated ? `${user?.name} Account` : 'Account Login'}
+            title={isAuthenticated ? `${user?.name} (${isAdmin ? 'Admin' : 'Client'})` : 'Account Login'}
           >
-            <HiOutlineUser size={19} />
+            <HiOutlineUser size={19} className={isAuthenticated ? 'text-[#F97D01]' : ''} />
+            {isAuthenticated && (
+              <span className="navbar-badge-dot" style={{ backgroundColor: '#F97D01' }} aria-hidden="true" />
+            )}
           </Link>
 
-          {/* Theme Toggle Button (Desktop Only) */}
-          <button
-            type="button"
-            className="navbar-action-btn theme-toggle-btn desktop-only"
-            id="theme-toggle"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-            title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-          >
-            {isDark ? (
-              <HiOutlineSun size={19} className="theme-toggle-icon" />
-            ) : (
-              <HiOutlineMoon size={19} className="theme-toggle-icon" />
-            )}
-          </button>
+          {/* Logout (Desktop Only) */}
+          {isAuthenticated && (
+            <button
+              type="button"
+              onClick={logout}
+              className="navbar-action-btn desktop-only navbar-logout-btn"
+              id="logout-btn"
+              aria-label="Sign Out"
+              title="Sign Out"
+            >
+              <HiOutlineArrowRightOnRectangle size={19} />
+            </button>
+          )}
 
           {/* Mobile Hamburger Toggle (Mobile/Tablet Only) */}
           <button
@@ -257,37 +268,35 @@ export default function Navbar() {
 
           {/* Navigation Links */}
           <nav className="mobile-nav-links">
-            {navLinks.map((link, idx) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className="mobile-editorial-link"
-                style={{ '--delay': `${idx * 0.05 + 0.06}s` }}
-                end={link.end}
-                onClick={closeMobile}
-              >
-                <span className="mobile-link-num">0{idx + 1}</span>
-                <span className="mobile-link-title">{link.label}</span>
-              </NavLink>
-            ))}
-            <NavLink
-              to="/about"
-              className="mobile-editorial-link"
-              style={{ '--delay': '0.32s' }}
-              onClick={closeMobile}
-            >
-              <span className="mobile-link-num">05</span>
-              <span className="mobile-link-title">The Craft</span>
-            </NavLink>
-            <NavLink
+            {navLinks.map((link, idx) => {
+              const linkUrl = new URL(link.to, window.location.origin);
+              const isActive = link.end
+                ? location.pathname === linkUrl.pathname && !linkUrl.search
+                : location.pathname === linkUrl.pathname &&
+                  (!linkUrl.search || location.search === linkUrl.search);
+
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`mobile-editorial-link ${isActive ? 'active' : ''}`}
+                  style={{ '--delay': `${idx * 0.05 + 0.06}s` }}
+                  onClick={closeMobile}
+                >
+                  <span className="mobile-link-num">0{idx + 1}</span>
+                  <span className="mobile-link-title">{link.label}</span>
+                </Link>
+              );
+            })}
+            <Link
               to="/contact"
-              className="mobile-editorial-link"
+              className={`mobile-editorial-link ${location.pathname === '/contact' ? 'active' : ''}`}
               style={{ '--delay': '0.38s' }}
               onClick={closeMobile}
             >
               <span className="mobile-link-num">06</span>
               <span className="mobile-link-title">Bespoke Inquiries</span>
-            </NavLink>
+            </Link>
           </nav>
 
           {/* Quick Commerce Action Tiles: Cart, Wishlist, Account */}
@@ -333,45 +342,48 @@ export default function Navbar() {
             </Link>
 
             <Link
-              to="/login"
+              to={isAuthenticated ? (isAdmin ? '/admin' : '/account') : '/login'}
               className="mobile-action-card"
               onClick={closeMobile}
               id="mobile-account-link"
             >
-              <div className="mobile-action-card-icon-wrap">
+              <div className={`mobile-action-card-icon-wrap ${isAuthenticated ? 'text-[#F97D01]' : ''}`}>
                 <HiOutlineUser size={20} />
               </div>
               <div className="mobile-action-card-text">
-                <span className="mobile-action-card-title">Account</span>
-                <span className="mobile-action-card-sub">Sign In</span>
+                <span className="mobile-action-card-title">
+                  {isAuthenticated ? (user?.name?.split(' ')[0] || 'Account') : 'Account'}
+                </span>
+                <span className="mobile-action-card-sub">
+                  {isAuthenticated ? (isAdmin ? 'Admin Console' : 'My Dossier') : 'Sign In'}
+                </span>
               </div>
             </Link>
-          </div>
 
-          {/* Drawer Footer: Atmosphere / Theme & Copyright */}
-          <div className="mobile-drawer-footer">
-            <div className="mobile-theme-row">
-              <span className="mobile-theme-label">Atmosphere</span>
+            {isAuthenticated && (
               <button
                 type="button"
-                className="mobile-theme-toggle-btn"
-                onClick={toggleTheme}
-                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+                className="mobile-action-card mobile-logout-card"
+                onClick={() => {
+                  logout();
+                  closeMobile();
+                }}
+                id="mobile-logout-btn"
+                aria-label="Sign Out"
               >
-                {isDark ? (
-                  <>
-                    <HiOutlineSun size={17} />
-                    <span>Light Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <HiOutlineMoon size={17} />
-                    <span>Dark Mode</span>
-                  </>
-                )}
+                <div className="mobile-action-card-icon-wrap" style={{ color: '#ef4444' }}>
+                  <HiOutlineArrowRightOnRectangle size={20} />
+                </div>
+                <div className="mobile-action-card-text">
+                  <span className="mobile-action-card-title">Sign Out</span>
+                  <span className="mobile-action-card-sub">End session</span>
+                </div>
               </button>
-            </div>
+            )}
+          </div>
 
+          {/* Drawer Footer: Copyright */}
+          <div className="mobile-drawer-footer">
             <p className="mobile-footer-copyright">
               Crafted with titanium, sapphire crystal & architectural intent.
             </p>

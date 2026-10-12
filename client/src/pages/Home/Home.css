@@ -31,3 +31,8 @@
   position: relative;
   z-index: 1;
 }
+
+.home-editorial-page > section.top-categories-section,
+.home-editorial-page > section#top-categories {
+  z-index: 50;
+}

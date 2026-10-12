@@ -127,16 +127,6 @@ f:\Drishti_Eye_Care\
 | 1.9 | Setup routing shell | Frontend | React Router with placeholder routes |
 | 1.10 | Vite proxy config | Frontend | Proxy `/api` to backend `localhost:5000` |
 
-### Design System Tokens (Tailwind)
-
-```text
-Colors:
-  black:       #050505    dark-black:  #0B0B0B
-  neon-yellow: #DFFF00    white:       #FFFFFF
-  light-gray:  #F4F4F4    dark-gray:   #171717
-  muted-gray:  #A1A1A1    border-gray: #292929
-```
-
 ### Deliverables Checklist
 
 - [ ] `npm run dev` runs the frontend on `:5173`
@@ -186,10 +176,10 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Schema executes without errors
-- [ ] Seed script populates data
-- [ ] Product ↔ Category joins work
-- [ ] Admin seed account exists
+- [x] Schema executes without errors
+- [x] Seed script populates data
+- [x] Product ↔ Category joins work
+- [x] Admin seed account exists
 
 ---
 
@@ -218,11 +208,11 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Register → Login → Logout flow works
-- [ ] Invalid credentials show error
-- [ ] Duplicate email prevented
-- [ ] Customer cannot access admin APIs
-- [ ] Admin can access admin APIs
+- [x] Register → Login → Logout flow works
+- [x] Invalid credentials show error
+- [x] Duplicate email prevented
+- [x] Customer cannot access admin APIs
+- [x] Admin can access admin APIs
 
 ---
 
@@ -259,13 +249,13 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Products load from database
-- [ ] Search returns relevant results
-- [ ] All filters work correctly
-- [ ] Pagination works
-- [ ] Product detail page renders all info
-- [ ] Admin can CRUD products
-- [ ] Cloudinary upload works
+- [x] Products load from database
+- [x] Search returns relevant results
+- [x] All filters work correctly
+- [x] Pagination works
+- [x] Product detail page renders all info
+- [ ] Admin can CRUD products (backend ready, admin UI Phase 9)
+- [ ] Cloudinary upload works (backend ready, admin UI Phase 9)
 
 ---
 
@@ -291,11 +281,11 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Cart survives page refresh
-- [ ] Quantity updates correctly
-- [ ] Cannot exceed stock
-- [ ] Wishlist add/remove works
-- [ ] Guest cart merges after login
+- [x] Cart survives page refresh
+- [x] Quantity updates correctly
+- [x] Cannot exceed stock
+- [x] Wishlist add/remove works
+- [x] Guest cart merges after login
 
 ---
 
@@ -324,12 +314,12 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Successful checkout creates order
-- [ ] Empty cart checkout blocked
-- [ ] Insufficient stock blocked
-- [ ] Invalid/expired coupon blocked
-- [ ] Stock decreases on order
-- [ ] Order appears in customer history
+- [x] Successful checkout creates order
+- [x] Empty cart checkout blocked
+- [x] Insufficient stock blocked
+- [x] Invalid/expired coupon blocked
+- [x] Stock decreases on order
+- [x] Order appears in customer history
 
 ---
 
@@ -352,10 +342,10 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Customer sees only their own data
-- [ ] Orders display correctly
-- [ ] Reviews require purchase
-- [ ] Profile updates work
+- [x] Customer sees only their own data
+- [x] Orders display correctly
+- [x] Reviews require purchase
+- [x] Profile updates work
 
 ---
 
@@ -381,9 +371,9 @@ Colors:
 
 ### Deliverables Checklist
 
-- [ ] Stats reflect real database data
-- [ ] Admin navigation works
-- [ ] Only admins can access
+- [x] Stats reflect real database data
+- [x] Admin navigation works
+- [x] Only admins can access
 
 ---
 
@@ -416,9 +406,9 @@ GET/DELETE           /api/admin/reviews
 
 ### Deliverables Checklist
 
-- [ ] Every CRUD operation works against the database
-- [ ] Confirmation dialogs for destructive actions
-- [ ] Cannot delete categories with products
+- [x] Every CRUD operation works against the database
+- [x] Confirmation dialogs for destructive actions
+- [x] Cannot delete categories with products
 
 ---
 
@@ -442,10 +432,10 @@ GET/DELETE           /api/admin/reviews
 
 ### Deliverables Checklist
 
-- [ ] All routes render
-- [ ] Contact form validates
-- [ ] No dead links
-- [ ] 404 catches unknown routes
+- [x] All routes render
+- [x] Contact form validates
+- [x] No dead links
+- [x] 404 catches unknown routes
 
 ---
 
@@ -477,6 +467,17 @@ GET/DELETE           /api/admin/reviews
 ✅ 1440px+ (large desktop)
 ```
 
+### Deliverables Checklist
+
+- [x] Skeleton loader components (base, grid, table, page loader)
+- [x] Page transition animations (fadeSlideUp)
+- [x] Modal entrance animations
+- [x] Focus accessibility (:focus-visible)
+- [x] Custom scrollbar styling
+- [x] Responsive fixes (360px – 1440px+)
+- [x] Card/badge hover micro-animations
+- [x] Existing loading/empty states verified across all pages
+
 ---
 
 ## Phase 12 — Security, SEO & Performance
@@ -487,37 +488,37 @@ GET/DELETE           /api/admin/reviews
 
 | Task | Status |
 |---|---|
-| Input validation (all endpoints) | ⬜ |
-| Parameterized SQL (verify all queries) | ⬜ |
-| JWT protection (verify all protected routes) | ⬜ |
-| Admin authorization (verify all admin endpoints) | ⬜ |
-| File upload validation (MIME, size, format) | ⬜ |
-| Rate limiting (login, register, API) | ⬜ |
-| CORS configuration | ⬜ |
-| No secrets in code/repo | ⬜ |
+| Input validation (all endpoints) | ✅ |
+| Parameterized SQL (verify all queries) | ✅ |
+| JWT protection (verify all protected routes) | ✅ |
+| Admin authorization (verify all admin endpoints) | ✅ |
+| File upload validation (MIME, size, format) | ✅ |
+| Rate limiting (login, register, API) | ✅ |
+| CORS configuration | ✅ |
+| No secrets in code/repo | ✅ |
 
 ### SEO
 
 | Task | Status |
 |---|---|
-| Dynamic page titles | ⬜ |
-| Meta descriptions | ⬜ |
-| Product-specific SEO (`/products/clean-slug`) | ⬜ |
-| Image alt text | ⬜ |
-| Heading hierarchy (`h1` → `h2` → `h3`) | ⬜ |
-| `robots.txt` | ⬜ |
-| Sitemap | ⬜ |
+| Dynamic page titles | ✅ |
+| Meta descriptions | ✅ |
+| Product-specific SEO (`/products/clean-slug`) | ✅ |
+| Image alt text | ✅ |
+| Heading hierarchy (`h1` → `h2` → `h3`) | ✅ |
+| `robots.txt` | ✅ |
+| Sitemap | ✅ |
 
 ### Performance
 
 | Task | Status |
 |---|---|
-| Image optimization (Cloudinary transforms) | ⬜ |
-| Lazy loading (images, routes) | ⬜ |
-| Server-side pagination (verified) | ⬜ |
-| Database indexes (verified) | ⬜ |
-| Efficient queries (no N+1) | ⬜ |
-| React rendering optimization | ⬜ |
+| Image optimization (Cloudinary transforms) | ✅ |
+| Lazy loading (images, routes) | ✅ |
+| Server-side pagination (verified) | ✅ |
+| Database indexes (verified) | ✅ |
+| Efficient queries (no N+1) | ✅ |
+| React rendering optimization | ✅ |
 
 ---
 
@@ -543,15 +544,29 @@ Admin Login → Dashboard → Product CRUD → Image Upload
 
 ### Bug Categories to Verify
 
-- [ ] Broken routes & dead links
-- [ ] Non-functional buttons
-- [ ] API errors / 500s
-- [ ] Database constraint violations
-- [ ] UI layout issues
-- [ ] Responsive breakdowns
-- [ ] Auth/authz bypasses
-- [ ] Stock/inventory bugs
-- [ ] Console errors
+- [x] Broken routes & dead links
+- [x] Non-functional buttons
+- [x] API errors / 500s
+- [x] Database constraint violations
+- [x] UI layout issues
+- [x] Responsive breakdowns
+- [x] Auth/authz bypasses — JWT issuer/audience, account lockout, rate limiting
+- [x] Stock/inventory bugs
+- [x] Console errors
+
+### Security Audit Remediation (from SECURITY_AUDIT_REMEDIATION.md)
+
+- [x] C-01: JWT secret fallback removed, validated at startup
+- [x] C-04: CORS restricted to exact production domains
+- [x] C-05: Auth rate limit tightened (10/15min prod, skip successful)
+- [x] H-06: Upload filenames use crypto.randomBytes
+- [x] H-08: Account lockout after 5 failed attempts (30min)
+- [x] H-09: JWT issuer/audience claims
+- [x] H-12: Demo credentials gated behind DEV mode
+- [x] H-15: DB SSL verification in production
+- [x] M-01: Contact/newsletter rate limited (10/hour)
+- [x] M-05: JSON body limit reduced to 2mb
+- [x] M-09: Order status transition validation
 
 ---
 
@@ -563,25 +578,25 @@ Admin Login → Dashboard → Product CRUD → Image Upload
 
 | Check | Status |
 |---|---|
-| Production env vars configured | ⬜ |
-| Database connection (production) | ⬜ |
-| Cloudinary configured | ⬜ |
-| `npm run build` succeeds | ⬜ |
-| No secrets in repository | ⬜ |
-| No mock/TODO functionality | ⬜ |
-| No unused/dead code | ⬜ |
-| No broken links | ⬜ |
-| No critical console errors | ⬜ |
+| Production env vars configured | ✅ |
+| Database connection (production) | ✅ |
+| Cloudinary configured | ✅ |
+| `npm run build` succeeds | ✅ |
+| No secrets in repository | ✅ |
+| No mock/TODO functionality | ✅ |
+| No unused/dead code | ✅ |
+| No broken links | ✅ |
+| No critical console errors | ✅ |
 
 ### Final Deliverables
 
-- [ ] Working frontend (built & deployable)
-- [ ] Working backend (production-ready)
-- [ ] Working Neon database (schema + seed)
-- [ ] Working Cloudinary integration
-- [ ] Complete customer e-commerce flow
-- [ ] Complete admin management flow
-- [ ] `README.md` with setup instructions
+- [x] Working frontend (built & deployable)
+- [x] Working backend (production-ready)
+- [x] Working Neon database (schema + seed)
+- [x] Working Cloudinary integration
+- [x] Complete customer e-commerce flow
+- [x] Complete admin management flow
+- [x] `README.md` with setup instructions
 
 ---
 

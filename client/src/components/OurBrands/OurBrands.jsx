@@ -67,14 +67,6 @@ export default function OurBrands() {
             <h2 className="editorial-section-title our-brands-title">
               OUR BRANDS
             </h2>
-            <p className="editorial-body our-brands-desc">
-              Two distinct design philosophies united by surgical titanium engineering,
-              optical caustics, and timeless poise.
-            </p>
-          </div>
-
-          <div className="our-brands-meta">
-            <span className="our-brands-count">02 Portfolio Maisons</span>
           </div>
         </div>
 
@@ -120,17 +112,6 @@ export default function OurBrands() {
                 </div>
 
                 <p className="our-brand-headline">{brand.headline}</p>
-                <p className="our-brand-desc">{brand.description}</p>
-
-                {/* Technical Pillar Chips */}
-                <div className="our-brand-attributes">
-                  {brand.attributes.map((attr, aIdx) => (
-                    <div key={aIdx} className="our-brand-attr-item">
-                      <span className="attr-dot" />
-                      <span className="attr-text">{attr}</span>
-                    </div>
-                  ))}
-                </div>
 
                 {/* Direct Action Link */}
                 <div className="our-brand-cta-wrap">

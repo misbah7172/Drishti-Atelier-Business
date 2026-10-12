@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiArrowRight, HiOutlineSparkles, HiCheck } from 'react-icons/hi2';
+import { HiOutlineSparkles, HiCheck } from 'react-icons/hi2';
 import './EyeglassesShapeGuide.css';
 
 const FACE_SHAPES = [
@@ -108,16 +108,6 @@ export default function EyeglassesShapeGuide() {
             <h2 className="editorial-section-title shape-guide-title">
               GET THE PERFECT SHAPE — EYEGLASSES
             </h2>
-            <p className="editorial-body shape-guide-desc">
-              Selecting the right frame geometry enhances natural facial symmetry.
-              Explore our signature silhouettes sculpted in pure titanium and
-              hand-polished acetate to find your ideal visual match.
-            </p>
-          </div>
-
-          <div className="shape-guide-badge-box">
-            <HiOutlineSparkles size={18} className="shape-sparkle-icon" />
-            <span className="shape-badge-text">Optical Silhouette Advisor</span>
           </div>
         </div>
 
@@ -152,8 +142,9 @@ export default function EyeglassesShapeGuide() {
               selectedFace !== 'all' && item.bestFor.includes(selectedFace);
 
             return (
-              <article
+              <Link
                 key={item.id}
+                to={item.link}
                 className={`shape-card ${isRecommended ? 'recommended-match' : ''}`}
                 id={`shape-card-${item.id}`}
               >
@@ -162,7 +153,7 @@ export default function EyeglassesShapeGuide() {
                   <span className="shape-card-badge">{item.badge}</span>
                   {isRecommended && (
                     <span className="shape-match-indicator">
-                      <HiCheck size={13} />
+                      <HiCheck size={12} />
                       <span>Ideal Match</span>
                     </span>
                   )}
@@ -181,23 +172,8 @@ export default function EyeglassesShapeGuide() {
                     <span className="face-fit-label">Best Suited For:</span>
                     <span className="face-fit-value">{item.faceText}</span>
                   </div>
-
-                  <p className="shape-card-desc">{item.description}</p>
-
-                  <div className="shape-specs-row">
-                    <span className="shape-specs-text">{item.specs}</span>
-                  </div>
-
-                  <Link
-                    to={item.link}
-                    className="shape-card-cta"
-                    id={`btn-shape-${item.id}`}
-                  >
-                    <span>Browse {item.name} Frames</span>
-                    <HiArrowRight size={14} className="cta-arrow" />
-                  </Link>
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>

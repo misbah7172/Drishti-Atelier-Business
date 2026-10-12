@@ -1,0 +1,184 @@
+/* ==========================================================================
+   Drishti Atelier — Admin Sidebar (Clean Light Editorial Theme)
+   ========================================================================== */
+
+.admin-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #FFFFFF;
+  border-right: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-collapsed {
+  width: 72px;
+}
+
+/* Brand Section */
+.sidebar-brand {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  position: relative;
+}
+
+.sidebar-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sidebar-brand-name {
+  font-family: var(--font-heading, inherit);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #F97D01;
+  line-height: 1.1;
+}
+
+.sidebar-brand-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6B7280;
+  font-weight: 600;
+}
+
+.sidebar-collapse-btn {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  color: #4B5563;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-collapse-btn:hover {
+  color: #111827;
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+}
+
+.sidebar-collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 1rem 0.5rem;
+}
+
+.sidebar-mobile-close-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #4B5563;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.sidebar-mobile-close-btn:hover {
+  color: #111827;
+  background: #F3F4F6;
+}
+
+/* Navigation List */
+.sidebar-nav {
+  flex: 1;
+  padding: 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  color: #4B5563;
+  text-decoration: none;
+  font-family: var(--font-heading, inherit);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+}
+
+.sidebar-link:hover {
+  color: #111827;
+  background: #F3F4F6;
+}
+
+.sidebar-active {
+  color: #F97D01 !important;
+  background: rgba(249, 125, 1, 0.09) !important;
+  font-weight: 600;
+}
+
+.sidebar-icon {
+  flex-shrink: 0;
+}
+
+.sidebar-collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0.75rem 0.5rem;
+}
+
+/* Footer Section */
+.sidebar-footer {
+  padding: 0.85rem 0.65rem;
+  border-top: 1px solid #E5E7EB;
+  background: #FAFAFC;
+}
+
+.sidebar-back {
+  color: #6B7280 !important;
+}
+
+.sidebar-back:hover {
+  color: #111827 !important;
+  background: #F3F4F6 !important;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 991px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar-mobile-open {
+    transform: translateX(0);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+    z-index: 300;
+  }
+
+  .sidebar-mobile-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only-btn {
+    display: none !important;
+  }
+}
