@@ -544,15 +544,29 @@ Admin Login → Dashboard → Product CRUD → Image Upload
 
 ### Bug Categories to Verify
 
-- [ ] Broken routes & dead links
-- [ ] Non-functional buttons
-- [ ] API errors / 500s
-- [ ] Database constraint violations
-- [ ] UI layout issues
-- [ ] Responsive breakdowns
-- [ ] Auth/authz bypasses
-- [ ] Stock/inventory bugs
-- [ ] Console errors
+- [x] Broken routes & dead links
+- [x] Non-functional buttons
+- [x] API errors / 500s
+- [x] Database constraint violations
+- [x] UI layout issues
+- [x] Responsive breakdowns
+- [x] Auth/authz bypasses — JWT issuer/audience, account lockout, rate limiting
+- [x] Stock/inventory bugs
+- [x] Console errors
+
+### Security Audit Remediation (from SECURITY_AUDIT_REMEDIATION.md)
+
+- [x] C-01: JWT secret fallback removed, validated at startup
+- [x] C-04: CORS restricted to exact production domains
+- [x] C-05: Auth rate limit tightened (10/15min prod, skip successful)
+- [x] H-06: Upload filenames use crypto.randomBytes
+- [x] H-08: Account lockout after 5 failed attempts (30min)
+- [x] H-09: JWT issuer/audience claims
+- [x] H-12: Demo credentials gated behind DEV mode
+- [x] H-15: DB SSL verification in production
+- [x] M-01: Contact/newsletter rate limited (10/hour)
+- [x] M-05: JSON body limit reduced to 2mb
+- [x] M-09: Order status transition validation
 
 ---
 
