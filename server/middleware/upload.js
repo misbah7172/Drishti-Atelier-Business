@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const crypto = require('crypto');
 
 // Configure disk storage for temp upload
 const storage = multer.diskStorage({
@@ -7,13 +8,18 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../uploads'));
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, 'product-' + uniqueSuffix + ext);
+    // H-06: Use crypto-random filename to prevent path traversal
+    const ext = path.extname(file.originalname).toLowerCase();
+    const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.avif'];
+    if (!allowedExts.includes(ext)) {
+      return cb(new Error('Invalid file extension'), false);
+    }
+    const safeName = 'product-' + crypto.randomBytes(16).toString('hex') + ext;
+    cb(null, safeName);
   },
 });
 
-// File filter (accept images only)
+// File filter (accept images only — MIME check)
 const fileFilter = (req, file, cb) => {
   const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
   if (allowedMimeTypes.includes(file.mimetype)) {

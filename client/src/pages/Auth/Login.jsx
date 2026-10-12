@@ -216,11 +216,12 @@ export default function Login() {
             text="Continue with Google"
           />
 
-          {/* Demo Accounts */}
+          {/* Demo Accounts — development only */}
+          {import.meta.env.DEV && (
           <div className="auth-demo-section">
             <div className="auth-demo-header">
               <HiOutlineShieldCheck size={14} />
-              <span>Instant Evaluation Credentials</span>
+              <span>Dev Evaluation Credentials</span>
             </div>
             <div className="auth-demo-grid">
               <button
@@ -241,6 +242,7 @@ export default function Login() {
               </button>
             </div>
           </div>
+          )}
         </div>
 
         {/* Register Footer Link */}

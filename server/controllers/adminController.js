@@ -185,10 +185,32 @@ async function getOrders(req, res, next) {
   } catch (e) { next(e); }
 }
 
+// M-09: Valid order status transitions
+const VALID_TRANSITIONS = {
+  pending: ['confirmed', 'cancelled'],
+  confirmed: ['processing', 'cancelled'],
+  processing: ['shipped', 'cancelled'],
+  shipped: ['delivered'],
+  delivered: [],
+  cancelled: [],
+};
+
 async function updateOrderStatus(req, res, next) {
   try {
     const { order_status, payment_status, note } = req.body;
     if (!order_status && !payment_status) return res.status(400).json({ status: 'fail', message: 'Provide order_status or payment_status.' });
+
+    // M-09: Validate status transition
+    if (order_status) {
+      const current = await query('SELECT order_status FROM orders WHERE id = $1', [req.params.id]);
+      if (!current.rows.length) return res.status(404).json({ status: 'fail', message: 'Order not found.' });
+      const currentStatus = current.rows[0].order_status;
+      const allowed = VALID_TRANSITIONS[currentStatus] || [];
+      if (!allowed.includes(order_status)) {
+        return res.status(400).json({ status: 'fail', message: `Cannot transition from '${currentStatus}' to '${order_status}'. Allowed: ${allowed.join(', ') || 'none'}.` });
+      }
+    }
+
     let updates = [], params = [], idx = 1;
     if (order_status) { updates.push(`order_status = $${idx}`); params.push(order_status); idx++; }
     if (payment_status) { updates.push(`payment_status = $${idx}`); params.push(payment_status); idx++; }

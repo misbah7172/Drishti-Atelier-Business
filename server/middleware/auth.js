@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { query } = require('../db/pool');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-only-fallback-secret-key-min32chars!';
+
 /**
  * Middleware to authenticate requests using JWT
  */
@@ -16,7 +18,10 @@ async function authenticateToken(req, res, next) {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'vision-eye-care-dev-secret-key-2026');
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      issuer: 'drishti-atelier',
+      audience: 'drishti-client',
+    });
 
     // Fetch latest user info from DB
     const result = await query(

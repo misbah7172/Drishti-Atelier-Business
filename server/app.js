@@ -26,12 +26,8 @@ app.use(
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      // Allow any localhost or 127.0.0.1 port (for local development)
-      if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-        return callback(null, true);
-      }
-      // Allow any onrender.com or vercel.app deployment
-      if (origin.endsWith('.onrender.com') || origin.endsWith('.vercel.app')) {
+      // Allow any localhost or 127.0.0.1 port (for local development only)
+      if (process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
       }
       return callback(new Error(`CORS blocked request from origin: ${origin}`));
@@ -42,8 +38,8 @@ app.use(
   })
 );
 
-app.use(morgan('dev'));
-app.use(express.json({ limit: '10mb' }));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ------------------------------------
@@ -86,12 +82,14 @@ app.get('/api/health', healthCheckHandler);
 // Rate limiters
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'development' ? 500 : 30,
+  max: process.env.NODE_ENV === 'development' ? 500 : 10,
   message: { status: 'fail', message: 'Too many attempts. Please try again in 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
+  skipSuccessfulRequests: true,
 });
-const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500, standardHeaders: true, legacyHeaders: false });
+const contactLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 10, message: { status: 'fail', message: 'Too many messages. Try again later.' } });
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: process.env.NODE_ENV === 'development' ? 1000 : 300, standardHeaders: true, legacyHeaders: false });
 
 // API Routes
 app.use('/api/auth', authLimiter, require('./routes/auth'));
@@ -102,7 +100,7 @@ app.use('/api/wishlist', apiLimiter, require('./routes/wishlist'));
 app.use('/api/orders', apiLimiter, require('./routes/orders'));
 app.use('/api/addresses', apiLimiter, require('./routes/addresses'));
 app.use('/api/admin', apiLimiter, require('./routes/admin'));
-app.use('/api', apiLimiter, require('./routes/public'));
+app.use('/api', contactLimiter, require('./routes/public'));
 
 // ------------------------------------
 // 404 Handler
