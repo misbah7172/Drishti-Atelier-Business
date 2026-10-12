@@ -241,9 +241,9 @@ export default function ProductDetail() {
               <span className="rail-code">{product.code}</span>
               <h1 className="rail-title">{product.name}</h1>
               <div className="rail-price-row">
-                <span className="rail-price">${product.price} USD</span>
+                <span className="rail-price">৳{product.price}</span>
                 {product.comparePrice && (
-                  <span className="rail-compare-price">${product.comparePrice} USD</span>
+                  <span className="rail-compare-price">৳{product.comparePrice}</span>
                 )}
                 <span className="rail-shipping-badge">Complimentary Global Courier</span>
               </div>
@@ -323,7 +323,7 @@ export default function ProductDetail() {
                 ) : (
                   <>
                     <HiOutlineShoppingBag size={18} />
-                    <span>Add to Bag — ${product.price}</span>
+                    <span>Add to Bag — ৳{product.price}</span>
                   </>
                 )}
               </button>

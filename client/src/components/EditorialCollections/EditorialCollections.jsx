@@ -79,7 +79,7 @@ export default function EditorialCollections() {
                 <span>Discover Vapour</span>
                 <HiArrowRight size={16} />
               </Link>
-              <span className="feature-price">Starting at $240 USD</span>
+              <span className="feature-price">Starting at ৳240</span>
             </div>
           </div>
 

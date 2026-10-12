@@ -113,6 +113,23 @@ app.use('/api/{*path}', (req, res) => {
 });
 
 // ------------------------------------
+// SPA Fallback — Serve client build for any non-API route
+// ------------------------------------
+const fs = require('fs');
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+const clientIndexPath = path.join(clientDistPath, 'index.html');
+
+if (fs.existsSync(clientIndexPath)) {
+  // Serve static assets from the client build (JS, CSS, images, etc.)
+  app.use(express.static(clientDistPath, { index: false }));
+
+  // All remaining non-API GET requests → index.html (React Router handles routing)
+  app.get('{*path}', (req, res) => {
+    res.sendFile(clientIndexPath);
+  });
+}
+
+// ------------------------------------
 // Global Error Handler
 // ------------------------------------
 app.use((err, req, res, next) => {

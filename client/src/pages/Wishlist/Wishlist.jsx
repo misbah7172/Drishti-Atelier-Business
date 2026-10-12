@@ -134,9 +134,9 @@ export default function Wishlist() {
                   </Link>
                   {item.brand && <span className="wishlist-card-brand">{item.brand}</span>}
                   <div className="wishlist-card-price-row">
-                    <span className="wishlist-card-price">${price.toFixed(2)}</span>
+                    <span className="wishlist-card-price">৳{price.toFixed(2)}</span>
                     {comparePrice && comparePrice > price && (
-                      <span className="wishlist-card-compare">${comparePrice.toFixed(2)}</span>
+                      <span className="wishlist-card-compare">৳{comparePrice.toFixed(2)}</span>
                     )}
                   </div>
 

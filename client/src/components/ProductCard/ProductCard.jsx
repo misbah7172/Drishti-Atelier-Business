@@ -121,7 +121,7 @@ export default function ProductCard({
             ) : (
               <>
                 <HiOutlineShoppingBag size={16} />
-                <span>Quick Add — ${price}</span>
+                <span>Quick Add — ৳{price}</span>
               </>
             )}
           </button>
@@ -152,9 +152,9 @@ export default function ProductCard({
         </Link>
 
         <div className="card-price-row">
-          <span className="card-price">${price} USD</span>
+          <span className="card-price">৳{price}</span>
           {comparePrice && comparePrice > price && (
-            <span className="card-compare-price">${comparePrice}</span>
+            <span className="card-compare-price">৳{comparePrice}</span>
           )}
           <span className="card-shipping-tag">Complimentary Shipping</span>
         </div>

@@ -135,7 +135,7 @@ export default function FrameFinder() {
               <h4 className="match-title">{match.name}</h4>
               <p className="match-desc">{match.desc}</p>
               <div className="match-footer-row">
-                <span className="match-price">{match.price} USD</span>
+                <span className="match-price">৳{match.price}</span>
                 <Link to={match.link} className="btn-editorial btn-sm">
                   <span>View Matched Frame</span>
                   <HiArrowRight size={14} />
