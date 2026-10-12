@@ -778,3 +778,168 @@
   color: #888888;
 }
 
+/* ==========================================================================
+   Light Theme Overrides
+   ========================================================================== */
+
+[data-theme="light"] .product-detail-page {
+  background-color: var(--color-studio-white);
+  color: #111111;
+}
+
+/* Breadcrumb */
+[data-theme="light"] .detail-breadcrumb { color: #888888; }
+[data-theme="light"] .breadcrumb-link { color: #999999; }
+[data-theme="light"] .breadcrumb-link:hover { color: #111111; }
+[data-theme="light"] .breadcrumb-separator { color: #cccccc; }
+[data-theme="light"] .breadcrumb-current { color: #111111; }
+
+/* Gallery Stage */
+[data-theme="light"] .detail-hero-canvas {
+  background-color: #f5f5f5;
+  border-color: #e5e5e5;
+}
+
+[data-theme="light"] .detail-hero-image {
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.12));
+}
+
+[data-theme="light"] .detail-canvas-caption {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .caption-text { color: #666666; }
+
+/* Angle Tabs */
+[data-theme="light"] .angle-tab-btn {
+  background: #ffffff;
+  border-color: #e0e0e0;
+  color: #666666;
+}
+
+[data-theme="light"] .angle-tab-btn:hover {
+  color: #111111;
+  border-color: #aaaaaa;
+}
+
+[data-theme="light"] .angle-tab-btn.tab-active {
+  background-color: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+[data-theme="light"] .tab-idx { color: #999999; }
+[data-theme="light"] .angle-tab-btn.tab-active .tab-idx { color: var(--color-accent); }
+
+/* Macro Callout */
+[data-theme="light"] .detail-macro-callout {
+  background-color: #f8f8f8;
+  border-color: #e8e8e8;
+}
+
+[data-theme="light"] .macro-callout-title { color: #111111; }
+[data-theme="light"] .macro-callout-desc { color: #666666; }
+
+/* Rail Header */
+[data-theme="light"] .rail-title { color: #111111; }
+[data-theme="light"] .rail-price { color: #111111; }
+[data-theme="light"] .rail-compare-price { color: #999999; }
+
+[data-theme="light"] .rail-shipping-badge {
+  color: #666666;
+  background: #f0f0f0;
+}
+
+[data-theme="light"] .rail-description { color: #555555; }
+
+/* Color Section */
+[data-theme="light"] .rail-color-section { border-top-color: #e5e5e5; }
+[data-theme="light"] .section-label { color: #888888; }
+[data-theme="light"] .selected-color-name { color: #111111; }
+
+[data-theme="light"] .rail-swatch-btn:hover { border-color: #aaaaaa; }
+
+/* Metrics Grid */
+[data-theme="light"] .rail-metrics-grid {
+  background-color: #f5f5f5;
+  border-color: #e5e5e5;
+}
+
+[data-theme="light"] .metric-lbl { color: #888888; }
+[data-theme="light"] .metric-val { color: #111111; }
+
+/* Stock Alert */
+[data-theme="light"] .rail-stock-alert {
+  border-top-color: rgba(249, 125, 1, 0.25);
+}
+
+/* Wishlist Toggle */
+[data-theme="light"] .rail-wishlist-toggle {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #888888;
+}
+
+[data-theme="light"] .rail-wishlist-toggle:hover {
+  color: #111111;
+  border-color: #cccccc;
+  background-color: #eeeeee;
+}
+
+/* Guarantees */
+[data-theme="light"] .rail-guarantees {
+  border-top-color: #e5e5e5;
+  border-bottom-color: #e5e5e5;
+}
+
+[data-theme="light"] .guarantee-row { color: #666666; }
+
+/* Accordions */
+[data-theme="light"] .accordion-item { border-bottom-color: #e5e5e5; }
+[data-theme="light"] .accordion-trigger { color: #111111; }
+[data-theme="light"] .accordion-chevron { color: #999999; }
+[data-theme="light"] .specs-feature-item { color: #555555; }
+
+/* Reviews */
+[data-theme="light"] .review-item { border-bottom-color: #e5e5e5; }
+[data-theme="light"] .review-author { color: #111111; }
+[data-theme="light"] .review-comment { color: #555555; }
+[data-theme="light"] .review-date { color: #999999; }
+
+/* Tags */
+[data-theme="light"] .product-tag {
+  color: #666666;
+  border-color: #dddddd;
+}
+
+[data-theme="light"] .product-tag:hover {
+  color: #F97D01;
+  border-color: #F97D01;
+}
+
+/* Related Section */
+[data-theme="light"] .detail-related-section { border-top-color: #e5e5e5; }
+
+/* Rating */
+[data-theme="light"] .rating-text { color: #888888; }
+
+/* Disabled Button */
+[data-theme="light"] .rail-add-btn:disabled {
+  background: #e0e0e0;
+  color: #999999;
+}
+
+/* Skeleton Loading */
+[data-theme="light"] .skeleton-image-large,
+[data-theme="light"] .skeleton-tab,
+[data-theme="light"] .skeleton-line,
+[data-theme="light"] .skeleton-btn {
+  background-color: #e8e8e8;
+}
+
+[data-theme="light"] .shimmer {
+  background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+}
