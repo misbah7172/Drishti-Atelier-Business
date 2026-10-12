@@ -49,6 +49,8 @@ import Addresses from './pages/Account/Addresses/Addresses';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/Admin/Dashboard/Dashboard';
 import ManageProducts from './pages/Admin/Products/ManageProducts';
+import EditProduct from './pages/Admin/Products/EditProduct';
+import AddProduct from './pages/Admin/Products/AddProduct';
 import ManageUsers from './pages/Admin/Users/ManageUsers';
 import ManageOrders from './pages/Admin/Orders/ManageOrders';
 import ManageCategories from './pages/Admin/Categories/ManageCategories';
@@ -138,8 +140,8 @@ export default function App() {
                 <Route path="admin" element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="products" element={<ManageProducts />} />
-                  <Route path="products/new" element={<PlaceholderPage title="Add Product" phase={9} />} />
-                  <Route path="products/:id" element={<PlaceholderPage title="Edit Product" phase={9} />} />
+                  <Route path="products/new" element={<AddProduct />} />
+                  <Route path="products/:id" element={<EditProduct />} />
                   <Route path="users" element={<ManageUsers />} />
                   <Route path="orders" element={<ManageOrders />} />
                   <Route path="categories" element={<ManageCategories />} />
