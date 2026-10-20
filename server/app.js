@@ -27,7 +27,11 @@ app.use(
         return callback(null, true);
       }
       // Allow Vercel preview and production deployments for this app
-      if (/^https:\/\/(drishti|vision)[a-z0-9\-]*\.vercel\.app$/.test(origin)) {
+      if (/^https:\/\/[a-z0-9\-]+\.vercel\.app$/.test(origin)) {
+        return callback(null, true);
+      }
+      // Allow Render frontend deployments
+      if (/^https:\/\/[a-z0-9\-]+\.onrender\.com$/.test(origin)) {
         return callback(null, true);
       }
       // Allow any localhost or 127.0.0.1 port (for local development only)

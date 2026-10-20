@@ -36,7 +36,7 @@ services:
   # 2. Frontend Static Site (React + Vite)
   # ========================================================
   - type: static
-    name: drishti-web
+    name: drishti-atelier-web
     plan: free
     region: oregon
     rootDir: client
