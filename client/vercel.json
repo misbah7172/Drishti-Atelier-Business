@@ -3,7 +3,6 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/(.*)",
@@ -21,7 +20,7 @@
       ]
     },
     {
-      "source": "/(.*).(svg|png|jpg|webp)",
+      "source": "/(.*).(svg|png|jpg|webp|ico)",
       "headers": [
         {
           "key": "Cache-Control",
