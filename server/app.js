@@ -26,6 +26,10 @@ app.use(
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
+      // Allow Vercel preview and production deployments for this app
+      if (/^https:\/\/(drishti|vision)[a-z0-9\-]*\.vercel\.app$/.test(origin)) {
+        return callback(null, true);
+      }
       // Allow any localhost or 127.0.0.1 port (for local development only)
       if (process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
@@ -99,6 +103,7 @@ app.use('/api/cart', apiLimiter, require('./routes/cart'));
 app.use('/api/wishlist', apiLimiter, require('./routes/wishlist'));
 app.use('/api/orders', apiLimiter, require('./routes/orders'));
 app.use('/api/addresses', apiLimiter, require('./routes/addresses'));
+app.use('/api/banners', apiLimiter, require('./routes/banners'));
 app.use('/api/admin', apiLimiter, require('./routes/admin'));
 app.use('/api', contactLimiter, require('./routes/public'));
 
@@ -111,6 +116,23 @@ app.use('/api/{*path}', (req, res) => {
     message: `Route not found: ${req.method} ${req.originalUrl}`,
   });
 });
+
+// ------------------------------------
+// SPA Fallback — Serve client build for any non-API route
+// ------------------------------------
+const fs = require('fs');
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+const clientIndexPath = path.join(clientDistPath, 'index.html');
+
+if (fs.existsSync(clientIndexPath)) {
+  // Serve static assets from the client build (JS, CSS, images, etc.)
+  app.use(express.static(clientDistPath, { index: false }));
+
+  // All remaining non-API GET requests → index.html (React Router handles routing)
+  app.get('{*path}', (req, res) => {
+    res.sendFile(clientIndexPath);
+  });
+}
 
 // ------------------------------------
 // Global Error Handler

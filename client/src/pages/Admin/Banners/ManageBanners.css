@@ -1,0 +1,418 @@
+/* ==========================================================================
+   Admin Banner Management Styles
+   Dedicated styles for banner creation, editor, and live storefront preview
+   ========================================================================== */
+
+.banner-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #E5E7EB;
+  padding-bottom: 0.5rem;
+}
+
+.banner-tab-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6B7280;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.banner-tab-btn:hover {
+  color: #111827;
+  background: #F3F4F6;
+}
+
+.banner-tab-btn.active {
+  color: #F97D01;
+  background: rgba(249, 125, 1, 0.08);
+  font-weight: 600;
+}
+
+.banner-tab-count {
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #E5E7EB;
+  color: #374151;
+  font-size: 0.6875rem;
+}
+
+.banner-tab-btn.active .banner-tab-count {
+  background: #F97D01;
+  color: #FFFFFF;
+}
+
+/* Banner Table Cells */
+.banner-cell-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-thumb {
+  width: 90px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  flex-shrink: 0;
+}
+
+.banner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.banner-title-text {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.85rem;
+}
+
+.banner-sub-text {
+  font-size: 0.75rem;
+  color: #6B7280;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.banner-badge-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F97D01;
+  background: rgba(249, 125, 1, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+/* Active Status Toggle Button */
+.banner-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.banner-toggle-btn.active {
+  background: #DCFCE7;
+  color: #166534;
+  border-color: #BBF7D0;
+}
+
+.banner-toggle-btn.inactive {
+  background: #F3F4F6;
+  color: #6B7280;
+  border-color: #E5E7EB;
+}
+
+.banner-toggle-btn:hover {
+  filter: brightness(0.95);
+}
+
+/* Modal Wide Layout for Live Preview */
+.banner-modal-wide {
+  width: 95%;
+  max-width: 1040px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.banner-editor-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 860px) {
+  .banner-editor-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Image Selection Tabs in Modal */
+.image-source-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  background: #F3F4F6;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.image-source-btn {
+  flex: 1;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4B5563;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.image-source-btn.active {
+  background: #FFFFFF;
+  color: #111827;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Preset Picker Grid */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 0.6rem;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: #FAFAFA;
+}
+
+.preset-item {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  background: #E5E7EB;
+}
+
+.preset-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.preset-item:hover {
+  border-color: #F97D01;
+  transform: translateY(-1px);
+}
+
+.preset-item.selected {
+  border-color: #F97D01;
+  box-shadow: 0 0 0 2px rgba(249, 125, 1, 0.3);
+}
+
+.preset-item-label {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFFFFF;
+  font-size: 0.6rem;
+  padding: 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Upload Dropzone */
+.banner-upload-box {
+  border: 2px dashed #D1D5DB;
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  background: #F9FAFB;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.banner-upload-box:hover {
+  border-color: #F97D01;
+  background: rgba(249, 125, 1, 0.02);
+}
+
+.banner-upload-icon {
+  color: #9CA3AF;
+  margin-bottom: 0.5rem;
+}
+
+.banner-upload-text {
+  font-size: 0.8rem;
+  color: #4B5563;
+  margin-bottom: 0.25rem;
+}
+
+.banner-upload-sub {
+  font-size: 0.7rem;
+  color: #9CA3AF;
+}
+
+/* ==========================================================================
+   LIVE STOREFRONT PREVIEW PANEL
+   ========================================================================== */
+
+.live-preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.live-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.live-preview-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.live-preview-indicator {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  animation: pulseLive 2s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Live Simulation Frame */
+.live-preview-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #E5E7EB;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.15);
+}
+
+.live-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.live-preview-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.6) 35%,
+    rgba(255, 255, 255, 0.1) 65%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  pointer-events: none;
+}
+
+/* Live Floating Glassmorphism Card in Preview */
+.live-preview-card {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  max-width: 250px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.live-preview-badge {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #F97D01;
+  background: rgba(249, 125, 1, 0.12);
+  padding: 2px 6px;
+  border-radius: 9999px;
+  margin-bottom: 0.35rem;
+  border: 1px solid rgba(249, 125, 1, 0.25);
+}
+
+.live-preview-heading {
+  font-family: var(--font-primary, 'Cinzel', serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #070707;
+  margin: 0 0 0.25rem 0;
+}
+
+.live-preview-sub {
+  font-size: 0.65rem;
+  color: #4B5563;
+  line-height: 1.35;
+  margin: 0 0 0.6rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.live-preview-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  background: #070707;
+  color: #FFFFFF;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+
+.live-preview-note {
+  font-size: 0.72rem;
+  color: #6B7280;
+  line-height: 1.4;
+  background: #F9FAFB;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border-left: 3px solid #F97D01;
+}

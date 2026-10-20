@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   HiOutlineHeart,
   HiOutlineShoppingBag,
   HiCheck,
   HiArrowRight,
+  HiArrowLeft,
   HiOutlineShieldCheck,
   HiOutlineSparkles,
   HiChevronDown,
@@ -16,6 +17,7 @@ import './ProductDetail.css';
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Product state
   const [product, setProduct] = useState(null);
@@ -163,8 +165,18 @@ export default function ProductDetail() {
 
   return (
     <div className="product-detail-page" id="product-detail-view">
-      {/* Breadcrumb Navigation */}
+      {/* Breadcrumb Navigation with Return Action */}
       <nav className="detail-breadcrumb container-editorial" aria-label="Breadcrumb">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="detail-back-button"
+          title="Return to previous location in list"
+        >
+          <HiArrowLeft size={14} />
+          <span>Back</span>
+        </button>
+        <span className="breadcrumb-separator" style={{ opacity: 0.3 }}>|</span>
         <Link to="/" className="breadcrumb-link">Atelier</Link>
         <span className="breadcrumb-separator">/</span>
         <Link to="/shop" className="breadcrumb-link">Archive</Link>
@@ -241,9 +253,9 @@ export default function ProductDetail() {
               <span className="rail-code">{product.code}</span>
               <h1 className="rail-title">{product.name}</h1>
               <div className="rail-price-row">
-                <span className="rail-price">${product.price} USD</span>
+                <span className="rail-price">৳{product.price}</span>
                 {product.comparePrice && (
-                  <span className="rail-compare-price">${product.comparePrice} USD</span>
+                  <span className="rail-compare-price">৳{product.comparePrice}</span>
                 )}
                 <span className="rail-shipping-badge">Complimentary Global Courier</span>
               </div>
@@ -323,7 +335,7 @@ export default function ProductDetail() {
                 ) : (
                   <>
                     <HiOutlineShoppingBag size={18} />
-                    <span>Add to Bag — ${product.price}</span>
+                    <span>Add to Bag — ৳{product.price}</span>
                   </>
                 )}
               </button>

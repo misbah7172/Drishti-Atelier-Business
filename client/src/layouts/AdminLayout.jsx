@@ -12,11 +12,13 @@ import './AdminLayout.css';
 
 const SECTION_TITLES = {
   '/admin': 'Dashboard',
+  '/admin/homepage': 'Homepage Layout',
   '/admin/products': 'Products',
   '/admin/products/new': 'Add Product',
   '/admin/orders': 'Orders',
   '/admin/users': 'Users',
   '/admin/categories': 'Categories',
+  '/admin/banners': 'Banners & Hero Slider',
   '/admin/coupons': 'Coupons',
   '/admin/reviews': 'Reviews',
   '/admin/settings': 'Settings',

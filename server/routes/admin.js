@@ -3,6 +3,7 @@ const router = express.Router();
 const admin = require('../controllers/adminController');
 const cat = require('../controllers/categoryController');
 const prod = require('../controllers/productController');
+const banner = require('../controllers/bannerController');
 const upload = require('../middleware/upload');
 const { authenticateToken } = require('../middleware/auth');
 const { requireAdmin } = require('../middleware/admin');
@@ -37,4 +38,18 @@ router.put('/reviews/:id/visibility', admin.toggleReviewVisibility);
 router.get('/settings', admin.getSettings);
 router.put('/settings', admin.updateSettings);
 
+// Banner Management (Hero Slider & Section Banners)
+router.get('/banners', banner.getAdminBanners);
+router.post('/banners', upload.single('image'), banner.createBanner);
+router.put('/banners/reorder', banner.reorderBanners);
+router.get('/banners/:id', banner.getBannerById);
+router.put('/banners/:id', upload.single('image'), banner.updateBanner);
+router.delete('/banners/:id', banner.deleteBanner);
+router.patch('/banners/:id/toggle', banner.toggleBannerStatus);
+
+// Homepage Sections Customization
+router.get('/homepage/sections', admin.getHomepageSections);
+router.put('/homepage/sections', admin.updateHomepageSections);
+
 module.exports = router;
+

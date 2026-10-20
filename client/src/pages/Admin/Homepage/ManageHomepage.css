@@ -1,0 +1,215 @@
+/* ==========================================================================
+   Admin Homepage Layout Customization Styles
+   ========================================================================== */
+
+.layout-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.layout-stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.layout-stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(249, 125, 1, 0.1);
+  color: #F97D01;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.layout-stat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #F97D01;
+}
+
+.layout-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-layout-reset {
+  padding: 0.55rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4B5563;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-layout-reset:hover {
+  background: #E5E7EB;
+  color: #111827;
+}
+
+/* Section Cards List */
+.layout-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.layout-section-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 1.1rem 1.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.layout-section-card:hover {
+  border-color: #D1D5DB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.layout-section-card.disabled {
+  opacity: 0.6;
+  background: #F9FAFB;
+  border-style: dashed;
+}
+
+.layout-section-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.layout-section-index {
+  font-family: var(--font-secondary, monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #9CA3AF;
+  width: 28px;
+  text-align: center;
+}
+
+.layout-section-card:not(.disabled) .layout-section-index {
+  color: #F97D01;
+}
+
+.layout-section-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.layout-section-name {
+  font-family: var(--font-heading, inherit);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.layout-section-desc {
+  font-size: 0.78rem;
+  color: #6B7280;
+}
+
+.layout-section-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Order Control Buttons */
+.layout-reorder-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.layout-arrow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #4B5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.layout-arrow-btn:hover:not(:disabled) {
+  background: #111827;
+  color: #FFFFFF;
+  border-color: #111827;
+}
+
+.layout-arrow-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Toggle Switch */
+.layout-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.layout-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.layout-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #D1D5DB;
+  transition: 0.25s;
+  border-radius: 9999px;
+}
+
+.layout-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.layout-toggle-switch input:checked + .layout-toggle-slider {
+  background-color: #10B981;
+}
+
+.layout-toggle-switch input:checked + .layout-toggle-slider:before {
+  transform: translateX(20px);
+}

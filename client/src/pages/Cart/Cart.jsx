@@ -155,10 +155,10 @@ export default function Cart() {
                     </div>
 
                     <div className="cart-item-price-col">
-                      <span className="cart-item-price">${price.toFixed(2)}</span>
+                      <span className="cart-item-price">৳{price.toFixed(2)}</span>
                       {item.quantity > 1 && (
                         <span className="cart-item-line-total">
-                          Total: ${typeof lineTotal === 'number' ? lineTotal.toFixed(2) : lineTotal}
+                          Total: ৳{typeof lineTotal === 'number' ? lineTotal.toFixed(2) : lineTotal}
                         </span>
                       )}
                     </div>
@@ -181,22 +181,22 @@ export default function Cart() {
             <div className="summary-rows">
               <div className="summary-row">
                 <span>Subtotal ({summary.items_count} item{summary.items_count !== 1 ? 's' : ''})</span>
-                <span>${summary.subtotal.toFixed(2)}</span>
+                <span>৳{summary.subtotal.toFixed(2)}</span>
               </div>
               <div className="summary-row">
                 <span>Shipping</span>
-                <span>{summary.shipping === 0 ? 'Complimentary' : `$${summary.shipping.toFixed(2)}`}</span>
+                <span>{summary.shipping === 0 ? 'Complimentary' : `৳${summary.shipping.toFixed(2)}`}</span>
               </div>
               {summary.discount > 0 && (
                 <div className="summary-row summary-discount">
                   <span>Discount</span>
-                  <span>−${summary.discount.toFixed(2)}</span>
+                  <span>−৳{summary.discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="summary-divider" />
               <div className="summary-row summary-total">
                 <span>Total</span>
-                <span>${summary.total.toFixed(2)} BDT</span>
+                <span>৳{summary.total.toFixed(2)}</span>
               </div>
             </div>
 

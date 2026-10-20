@@ -7,6 +7,7 @@ import { WishlistProvider } from './context/WishlistContext';
 
 // Components
 import CinematicGlassesIntro from './components/CinematicGlassesIntro';
+import ScrollRestorationManager from './components/ScrollRestorationManager';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
@@ -54,6 +55,8 @@ import AddProduct from './pages/Admin/Products/AddProduct';
 import ManageUsers from './pages/Admin/Users/ManageUsers';
 import ManageOrders from './pages/Admin/Orders/ManageOrders';
 import ManageCategories from './pages/Admin/Categories/ManageCategories';
+import ManageBanners from './pages/Admin/Banners/ManageBanners';
+import ManageHomepage from './pages/Admin/Homepage/ManageHomepage';
 import ManageCoupons from './pages/Admin/Coupons/ManageCoupons';
 import ManageReviews from './pages/Admin/Reviews/ManageReviews';
 import AdminSettings from './pages/Admin/Settings/Settings';
@@ -73,6 +76,7 @@ export default function App() {
           <CartProvider>
           <WishlistProvider>
           <BrowserRouter>
+            <ScrollRestorationManager />
             <CinematicGlassesIntro />
             <Toaster
               position="top-right"
@@ -139,12 +143,14 @@ export default function App() {
               <Route element={<AdminRoute />}>
                 <Route path="admin" element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
+                  <Route path="homepage" element={<ManageHomepage />} />
                   <Route path="products" element={<ManageProducts />} />
                   <Route path="products/new" element={<AddProduct />} />
                   <Route path="products/:id" element={<EditProduct />} />
                   <Route path="users" element={<ManageUsers />} />
                   <Route path="orders" element={<ManageOrders />} />
                   <Route path="categories" element={<ManageCategories />} />
+                  <Route path="banners" element={<ManageBanners />} />
                   <Route path="coupons" element={<ManageCoupons />} />
                   <Route path="reviews" element={<ManageReviews />} />
                   <Route path="settings" element={<AdminSettings />} />

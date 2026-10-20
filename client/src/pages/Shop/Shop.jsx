@@ -47,10 +47,10 @@ const GENDERS = [
 
 const PRICE_RANGES = [
   { value: 'all', label: 'All Prices' },
-  { value: 'under-1500', label: 'Under $1,500', min: null, max: 1500 },
-  { value: '1500-2500', label: '$1,500 – $2,500', min: 1500, max: 2500 },
-  { value: '2500-3500', label: '$2,500 – $3,500', min: 2500, max: 3500 },
-  { value: 'above-3500', label: '$3,500 & Above', min: 3500, max: null },
+  { value: 'under-1500', label: 'Under ৳1,500', min: null, max: 1500 },
+  { value: '1500-2500', label: '৳1,500 – ৳2,500', min: 1500, max: 2500 },
+  { value: '2500-3500', label: '৳2,500 – ৳3,500', min: 2500, max: 3500 },
+  { value: 'above-3500', label: '৳3,500 & Above', min: 3500, max: null },
 ];
 
 // Debounce hook

@@ -329,6 +329,61 @@ async function getPublicSettings(req, res, next) {
   } catch (e) { next(e); }
 }
 
+// ============ HOMEPAGE LAYOUT SECTIONS ============
+
+const DEFAULT_HOMEPAGE_SECTIONS = [
+  { id: 'hero', name: 'Hero Sliding Carousel', enabled: true, description: 'Top dynamic hero slider with editorial banners and CTAs' },
+  { id: 'top-categories', name: 'Curated Top Categories', enabled: true, description: 'Category cards taxonomy with image links' },
+  { id: 'banner-categories', name: 'Categories Slide Banner', enabled: true, description: '1500x500px slide banner below categories' },
+  { id: 'shape-guide', name: 'Eyeglasses Shape & Anatomy Guide', enabled: true, description: 'Interactive frame anatomy and facial proportion guide' },
+  { id: 'banner-anatomy', name: 'Tortoiseshell Showcase Banner', enabled: true, description: 'Firmoo-style 4 sub-items showcase banner' },
+  { id: 'featured-products', name: 'Featured Products Carousel', enabled: true, description: 'Auto-sliding horizontal product showcase' },
+  { id: 'hot-selling-products', name: 'Hot Selling Products Carousel', enabled: true, description: 'Auto-sliding bestseller carousel' },
+  { id: 'testimonials', name: 'High-Fashion Editorial Testimonials', enabled: true, description: 'Vogue/GQ social proof quotes and customer stories' },
+  { id: 'final-cta', name: 'High-Impact Conversion Finale', enabled: true, description: 'Signature privilege and global delivery CTA' },
+  { id: 'banner-finale', name: 'Titanium Architecture Showcase Banner', enabled: true, description: 'Titanium architecture showcase banner' },
+  { id: 'brands', name: 'Our House Brands', enabled: true, description: 'Partner brand logos above the footer' },
+];
+
+async function getHomepageSections(req, res, next) {
+  try {
+    const r = await query("SELECT value FROM site_settings WHERE key = 'homepage_sections'");
+    if (r.rows.length > 0 && r.rows[0].value) {
+      try {
+        const sections = JSON.parse(r.rows[0].value);
+        if (Array.isArray(sections) && sections.length > 0) {
+          return res.json({ status: 'success', data: sections });
+        }
+      } catch {
+        // Fall back to default
+      }
+    }
+    res.json({ status: 'success', data: DEFAULT_HOMEPAGE_SECTIONS });
+  } catch (e) {
+    next(e);
+  }
+}
+
+async function updateHomepageSections(req, res, next) {
+  try {
+    const { sections } = req.body;
+    if (!Array.isArray(sections)) {
+      return res.status(400).json({ status: 'fail', message: 'Sections array required.' });
+    }
+
+    await query(
+      `INSERT INTO site_settings (key, value, category, label)
+       VALUES ('homepage_sections', $1, 'layout', 'Homepage Sections Layout')
+       ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+      [JSON.stringify(sections)]
+    );
+
+    res.json({ status: 'success', message: 'Homepage layout sections updated successfully.', data: sections });
+  } catch (e) {
+    next(e);
+  }
+}
+
 module.exports = {
   getDashboardStats,
   getUsers, toggleUserStatus,
@@ -336,4 +391,6 @@ module.exports = {
   getCoupons, createCoupon, updateCoupon, deleteCoupon,
   getReviews, deleteReview, toggleReviewVisibility,
   getSettings, updateSettings, getPublicSettings,
+  getHomepageSections, updateHomepageSections,
 };
+

@@ -8,6 +8,8 @@ import {
   HiOutlineTag,
   HiOutlineTicket,
   HiOutlineStar,
+  HiOutlinePhoto,
+  HiOutlineViewColumns,
   HiOutlineCog6Tooth,
   HiOutlineChevronLeft,
   HiOutlineChevronRight,
@@ -17,10 +19,12 @@ import './AdminSidebar.css';
 
 const NAV_ITEMS = [
   { path: '/admin', icon: HiOutlineChartBarSquare, label: 'Dashboard', exact: true },
+  { path: '/admin/homepage', icon: HiOutlineViewColumns, label: 'Homepage Layout' },
   { path: '/admin/products', icon: HiOutlineCube, label: 'Products' },
   { path: '/admin/orders', icon: HiOutlineShoppingBag, label: 'Orders' },
   { path: '/admin/users', icon: HiOutlineUsers, label: 'Users' },
   { path: '/admin/categories', icon: HiOutlineTag, label: 'Categories' },
+  { path: '/admin/banners', icon: HiOutlinePhoto, label: 'Banners' },
   { path: '/admin/coupons', icon: HiOutlineTicket, label: 'Coupons' },
   { path: '/admin/reviews', icon: HiOutlineStar, label: 'Reviews' },
   { path: '/admin/settings', icon: HiOutlineCog6Tooth, label: 'Settings' },
