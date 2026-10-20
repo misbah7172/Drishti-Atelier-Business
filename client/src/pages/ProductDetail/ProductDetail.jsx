@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   HiOutlineHeart,
   HiOutlineShoppingBag,
   HiCheck,
   HiArrowRight,
+  HiArrowLeft,
   HiOutlineShieldCheck,
   HiOutlineSparkles,
   HiChevronDown,
@@ -16,6 +17,7 @@ import './ProductDetail.css';
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Product state
   const [product, setProduct] = useState(null);
@@ -163,8 +165,18 @@ export default function ProductDetail() {
 
   return (
     <div className="product-detail-page" id="product-detail-view">
-      {/* Breadcrumb Navigation */}
+      {/* Breadcrumb Navigation with Return Action */}
       <nav className="detail-breadcrumb container-editorial" aria-label="Breadcrumb">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="detail-back-button"
+          title="Return to previous location in list"
+        >
+          <HiArrowLeft size={14} />
+          <span>Back</span>
+        </button>
+        <span className="breadcrumb-separator" style={{ opacity: 0.3 }}>|</span>
         <Link to="/" className="breadcrumb-link">Atelier</Link>
         <span className="breadcrumb-separator">/</span>
         <Link to="/shop" className="breadcrumb-link">Archive</Link>

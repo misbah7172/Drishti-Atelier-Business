@@ -33,6 +33,28 @@
   color: #ffffff;
 }
 
+.detail-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  font-family: var(--font-secondary, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.detail-back-button:hover {
+  color: #F97D01;
+  transform: translateX(-2px);
+}
+
 .breadcrumb-separator {
   color: #444444;
 }

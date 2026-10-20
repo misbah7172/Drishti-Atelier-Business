@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiArrowRight } from 'react-icons/hi2';
+import { getPublicBanners } from '../../services/bannerService';
 import './HeroSlidingBanner.css';
 
-const HERO_SLIDES = [
+const DEFAULT_HERO_SLIDES = [
   {
     id: 'hero-slide-1',
     image: '/images/hero-banner-1.jpg',
@@ -57,17 +58,54 @@ const HERO_SLIDES = [
 ];
 
 export default function HeroSlidingBanner() {
+  const [slides, setSlides] = useState(DEFAULT_HERO_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
+  // Fetch dynamic banners from database
+  useEffect(() => {
+    let isMounted = true;
+    getPublicBanners('hero')
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          const mapped = data.map((b) => ({
+            id: `db-banner-${b.id}`,
+            image: b.image_url,
+            badge: b.badge || 'ATELIER COLLECTION',
+            title: b.title,
+            subtitle: b.subtitle || '',
+            ctaText: b.cta_text || 'Explore Collection',
+            link: b.cta_link || '/shop',
+            alt: b.title,
+          }));
+          setSlides(mapped);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using default hero banners:', err.message);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    setSlides((currentList) => {
+      if (currentList.length <= 1) return currentList;
+      setCurrentSlide((prev) => (prev + 1) % currentList.length);
+      return currentList;
+    });
   }, []);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+    setSlides((currentList) => {
+      if (currentList.length <= 1) return currentList;
+      setCurrentSlide((prev) => (prev - 1 + currentList.length) % currentList.length);
+      return currentList;
+    });
   }, []);
 
   const goToSlide = (index) => {
@@ -76,10 +114,12 @@ export default function HeroSlidingBanner() {
 
   // Autoplay every 5.5s, pause on hover
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(nextSlide, 5500);
+    if (isPaused || slides.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5500);
     return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
+  }, [isPaused, slides.length]);
 
   // Touch Swipe Handlers for mobile
   const handleTouchStart = (e) => {
@@ -96,9 +136,9 @@ export default function HeroSlidingBanner() {
     const diff = touchStartX.current - touchEndX.current;
     if (Math.abs(diff) > 40) {
       if (diff > 0) {
-        nextSlide();
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
       } else {
-        prevSlide();
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
       }
     }
   };
@@ -111,6 +151,8 @@ export default function HeroSlidingBanner() {
       nextSlide();
     }
   };
+
+  if (slides.length === 0) return null;
 
   return (
     <section
@@ -134,7 +176,7 @@ export default function HeroSlidingBanner() {
             className="hero-banner-track"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {HERO_SLIDES.map((slide, index) => {
+            {slides.map((slide, index) => {
               const isCurrent = index === currentSlide;
               return (
                 <div
@@ -179,58 +221,64 @@ export default function HeroSlidingBanner() {
           </div>
 
           {/* Navigation Arrows */}
-          <button
-            type="button"
-            className="hero-banner-arrow prev"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              prevSlide();
-            }}
-            aria-label="Previous Slide"
-          >
-            <HiOutlineChevronLeft size={22} />
-          </button>
-          <button
-            type="button"
-            className="hero-banner-arrow next"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              nextSlide();
-            }}
-            aria-label="Next Slide"
-          >
-            <HiOutlineChevronRight size={22} />
-          </button>
+          {slides.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="hero-banner-arrow prev"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  prevSlide();
+                }}
+                aria-label="Previous Slide"
+              >
+                <HiOutlineChevronLeft size={22} />
+              </button>
+              <button
+                type="button"
+                className="hero-banner-arrow next"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  nextSlide();
+                }}
+                aria-label="Next Slide"
+              >
+                <HiOutlineChevronRight size={22} />
+              </button>
+            </>
+          )}
 
-          {/* Editorial Counter & Progress */}
+          {/* Editorial Meta / Slide Counter */}
           <div className="hero-banner-meta">
             <span className="hero-banner-counter">
               <strong>0{currentSlide + 1}</strong>
               <span className="hero-banner-counter-sep">/</span>
-              <span>0{HERO_SLIDES.length}</span>
+              <span>0{slides.length}</span>
             </span>
           </div>
 
           {/* Bottom Pagination Dots / Bars */}
-          <div className="hero-banner-pagination" role="tablist" aria-label="Hero Slides">
-            {HERO_SLIDES.map((slide, idx) => (
-              <button
-                key={slide.id}
-                type="button"
-                role="tab"
-                aria-selected={idx === currentSlide}
-                aria-label={`Go to slide ${idx + 1}: ${slide.title}`}
-                className={`hero-banner-dot ${idx === currentSlide ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  goToSlide(idx);
-                }}
-              />
-            ))}
-          </div>
+          {slides.length > 1 && (
+            <div className="hero-banner-pagination" role="tablist" aria-label="Hero Slides">
+              {slides.map((slide, idx) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={idx === currentSlide}
+                  aria-label={`Go to slide ${idx + 1}: ${slide.title}`}
+                  className={`hero-banner-dot ${idx === currentSlide ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToSlide(idx);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

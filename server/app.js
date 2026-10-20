@@ -99,6 +99,7 @@ app.use('/api/cart', apiLimiter, require('./routes/cart'));
 app.use('/api/wishlist', apiLimiter, require('./routes/wishlist'));
 app.use('/api/orders', apiLimiter, require('./routes/orders'));
 app.use('/api/addresses', apiLimiter, require('./routes/addresses'));
+app.use('/api/banners', apiLimiter, require('./routes/banners'));
 app.use('/api/admin', apiLimiter, require('./routes/admin'));
 app.use('/api', contactLimiter, require('./routes/public'));
 
