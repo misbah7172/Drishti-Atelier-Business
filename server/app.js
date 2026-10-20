@@ -26,6 +26,10 @@ app.use(
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
+      // Allow Vercel preview and production deployments for this app
+      if (/^https:\/\/(drishti|vision)[a-z0-9\-]*\.vercel\.app$/.test(origin)) {
+        return callback(null, true);
+      }
       // Allow any localhost or 127.0.0.1 port (for local development only)
       if (process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
