@@ -9,6 +9,8 @@ import {
   HiOutlineShieldCheck,
   HiOutlineSparkles,
   HiChevronDown,
+  HiChevronLeft,
+  HiChevronRight,
 } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
 import { fetchProductByIdOrSlug, fetchProducts } from '../../services/productService';
@@ -31,6 +33,78 @@ export default function ProductDetail() {
   const [isAdded, setIsAdded] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [openAccordion, setOpenAccordion] = useState('details');
+
+  // Touch / Drag slider state
+  const [dragStartX, setDragStartX] = useState(null);
+  const [dragCurrentX, setDragCurrentX] = useState(null);
+
+  const handleNextImage = () => {
+    if (!product?.gallery?.length) return;
+    setActiveAngleIndex((prev) => (prev + 1) % product.gallery.length);
+  };
+
+  const handlePrevImage = () => {
+    if (!product?.gallery?.length) return;
+    setActiveAngleIndex((prev) => (prev - 1 + product.gallery.length) % product.gallery.length);
+  };
+
+  const onTouchStart = (e) => {
+    setDragStartX(e.touches[0].clientX);
+    setDragCurrentX(null);
+  };
+
+  const onTouchMove = (e) => {
+    setDragCurrentX(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (dragStartX !== null && dragCurrentX !== null) {
+      const diff = dragStartX - dragCurrentX;
+      if (diff > 45) {
+        handleNextImage();
+      } else if (diff < -45) {
+        handlePrevImage();
+      }
+    }
+    setDragStartX(null);
+    setDragCurrentX(null);
+  };
+
+  const onMouseDown = (e) => {
+    if (e.button === 0 && !e.target.closest('.detail-slide-arrow')) {
+      setDragStartX(e.clientX);
+      setDragCurrentX(null);
+    }
+  };
+
+  const onMouseMove = (e) => {
+    if (dragStartX !== null) {
+      setDragCurrentX(e.clientX);
+    }
+  };
+
+  const onMouseUp = () => {
+    if (dragStartX !== null && dragCurrentX !== null) {
+      const diff = dragStartX - dragCurrentX;
+      if (diff > 45) {
+        handleNextImage();
+      } else if (diff < -45) {
+        handlePrevImage();
+      }
+    }
+    setDragStartX(null);
+    setDragCurrentX(null);
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      handlePrevImage();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      handleNextImage();
+    }
+  };
 
   // Fetch product when ID changes
   useEffect(() => {
@@ -196,40 +270,107 @@ export default function ProductDetail() {
       <main className="detail-main-layout container-editorial">
         {/* Left: Expansive Editorial Visual Gallery */}
         <div className="detail-gallery-stage">
-          {/* Main Visual Display */}
-          <div className="detail-hero-canvas">
+          {/* Main Visual Display (Sliding Edge-to-Edge Canvas without padding) */}
+          <div
+            className="detail-hero-canvas"
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseUp}
+            aria-label="Product Image Carousel. Use left/right arrows or swipe to change images."
+          >
             {product.badge && <span className="detail-badge">{product.badge}</span>}
             {discountPercent && (
               <span className="detail-discount-badge">-{discountPercent}%</span>
             )}
-            <img
-              src={activeAngle.src}
-              alt={`${product.name} - ${activeAngle.label}`}
-              className="detail-hero-image"
-              key={activeAngle.src}
-            />
+
+            {/* Sliding Carousel Track */}
+            <div
+              className="detail-slider-track"
+              style={{ transform: `translateX(-${activeAngleIndex * 100}%)` }}
+            >
+              {product.gallery.map((item, idx) => (
+                <div key={item.id || idx} className="detail-slider-slide">
+                  <img
+                    src={item.src}
+                    alt={`${product.name} - ${item.label}`}
+                    className="detail-hero-image"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Slide Navigation Arrows (visible when more than 1 image) */}
+            {product.gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="detail-slide-arrow detail-slide-prev"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevImage();
+                  }}
+                  aria-label="Previous image"
+                >
+                  <HiChevronLeft size={22} />
+                </button>
+                <button
+                  type="button"
+                  className="detail-slide-arrow detail-slide-next"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextImage();
+                  }}
+                  aria-label="Next image"
+                >
+                  <HiChevronRight size={22} />
+                </button>
+              </>
+            )}
+
+            {/* Caption & Slide Counter Overlay */}
             <div className="detail-canvas-caption">
               <span className="caption-label">{activeAngle.label}</span>
               <span className="caption-text">{activeAngle.caption}</span>
+              {product.gallery.length > 1 && (
+                <span className="caption-counter">
+                  {activeAngleIndex + 1} / {product.gallery.length}
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Perspective Angle Switcher Pills */}
-          <div className="detail-angle-tabs" role="tablist">
-            {product.gallery.map((item, idx) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                aria-selected={activeAngleIndex === idx}
-                className={`angle-tab-btn ${activeAngleIndex === idx ? 'tab-active' : ''}`}
-                onClick={() => setActiveAngleIndex(idx)}
-              >
-                <span className="tab-idx">0{idx + 1}</span>
-                <span className="tab-label">{item.label}</span>
-              </button>
-            ))}
-          </div>
+          {/* Small Image Thumbnail Cards under the primary image */}
+          {product.gallery.length > 1 && (
+            <div className="detail-gallery-thumbs" role="tablist" aria-label="Product image gallery thumbnails">
+              {product.gallery.map((item, idx) => (
+                <button
+                  key={item.id || idx}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeAngleIndex === idx}
+                  className={`detail-thumb-card ${activeAngleIndex === idx ? 'thumb-active' : ''}`}
+                  onClick={() => setActiveAngleIndex(idx)}
+                  title={`${item.label} — click to view`}
+                >
+                  <img
+                    src={item.src}
+                    alt={item.label}
+                    className="detail-thumb-img"
+                    loading="lazy"
+                  />
+                  <div className="detail-thumb-badge">{idx + 1}</div>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Editorial Macro Story Callout */}
           <div className="detail-macro-callout">
