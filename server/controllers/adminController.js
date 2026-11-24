@@ -52,10 +52,12 @@ async function getDashboardStats(req, res, next) {
       // 7. Recent orders (latest 10)
       query(`
         SELECT o.id, o.order_number, o.total, o.order_status, o.payment_status,
-               o.created_at, u.name AS customer_name, u.email AS customer_email,
+               o.created_at,
+               COALESCE(u.name, o.shipping_name, 'Guest Customer') AS customer_name,
+               COALESCE(u.email, '—') AS customer_email,
                (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS items_count
         FROM orders o
-        JOIN users u ON o.user_id = u.id
+        LEFT JOIN users u ON o.user_id = u.id
         ORDER BY o.created_at DESC
         LIMIT 10
       `),
@@ -173,13 +175,17 @@ async function getOrders(req, res, next) {
     const { search, order_status, payment_status, page = 1 } = req.query;
     const limit = 20; const offset = (page - 1) * limit;
     let where = [], params = [], idx = 1;
-    if (search) { where.push(`(o.order_number ILIKE $${idx} OR u.name ILIKE $${idx})`); params.push(`%${search}%`); idx++; }
+    if (search) {
+      where.push(`(o.order_number ILIKE $${idx} OR COALESCE(u.name, o.shipping_name, '') ILIKE $${idx} OR COALESCE(o.shipping_phone, '') ILIKE $${idx})`);
+      params.push(`%${search}%`);
+      idx++;
+    }
     if (order_status) { where.push(`o.order_status = $${idx}`); params.push(order_status); idx++; }
     if (payment_status) { where.push(`o.payment_status = $${idx}`); params.push(payment_status); idx++; }
     const wc = where.length ? 'WHERE ' + where.join(' AND ') : '';
     const [ordersR, countR] = await Promise.all([
-      query(`SELECT o.*, u.name AS customer_name, u.email AS customer_email, (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS items_count FROM orders o JOIN users u ON o.user_id = u.id ${wc} ORDER BY o.created_at DESC LIMIT $${idx} OFFSET $${idx+1}`, [...params, limit, offset]),
-      query(`SELECT COUNT(*) FROM orders o JOIN users u ON o.user_id = u.id ${wc}`, params),
+      query(`SELECT o.*, COALESCE(u.name, o.shipping_name, 'Guest Customer') AS customer_name, COALESCE(u.email, '—') AS customer_email, (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS items_count FROM orders o LEFT JOIN users u ON o.user_id = u.id ${wc} ORDER BY o.created_at DESC LIMIT $${idx} OFFSET $${idx+1}`, [...params, limit, offset]),
+      query(`SELECT COUNT(*) FROM orders o LEFT JOIN users u ON o.user_id = u.id ${wc}`, params),
     ]);
     res.json({ status: 'success', data: { orders: ordersR.rows, total: parseInt(countR.rows[0].count, 10), page: +page, limit } });
   } catch (e) { next(e); }

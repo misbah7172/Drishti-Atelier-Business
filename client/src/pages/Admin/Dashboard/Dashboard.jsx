@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                 {recent_orders.map((order) => (
                   <tr key={order.id}>
                     <td>
-                      <Link to={`/admin/orders/${order.id}`} className="order-link">
+                      <Link to="/admin/orders" className="order-link">
                         {order.order_number}
                       </Link>
                       <span className="order-date-sm">
