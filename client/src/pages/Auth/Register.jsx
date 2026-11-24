@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   HiOutlineUser,
@@ -9,6 +9,8 @@ import {
   HiOutlineEyeSlash,
   HiOutlineArrowRight,
 } from 'react-icons/hi2';
+import { getRedirectResult } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 import { useAuth } from '../../context/AuthContext';
 import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
 import './Auth.css';
@@ -102,6 +104,32 @@ export default function Register() {
       setErrorMessage(result.error);
     }
   };
+
+  // Handle Firebase redirect result (if returning from a redirect sign-in)
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result && result.user) {
+          setSubmitting(true);
+          const idToken = await result.user.getIdToken();
+          await handleGoogleSuccess({
+            idToken,
+            email: result.user.email,
+            name: result.user.displayName,
+            photoURL: result.user.photoURL,
+            uid: result.user.uid,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error('Firebase redirect result:', err);
+        if (err.code === 'auth/unauthorized-domain') {
+          setErrorMessage('Domain drishti-atelier.vercel.app must be added to Authorized Domains in Firebase Console.');
+        } else if (err.code !== 'auth/popup-closed-by-user') {
+          setErrorMessage(err.message || 'Google enrollment failed.');
+        }
+      });
+  }, []);
 
   return (
     <div className="auth-page" id="register-view">
