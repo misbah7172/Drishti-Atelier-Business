@@ -218,7 +218,7 @@ export default function Shop() {
       newParams.set('page', String(newPage));
     }
     setSearchParams(newParams);
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    window.scrollTo({ top: 350, behavior: 'smooth' });
   };
 
   // Reset all filters
@@ -227,7 +227,7 @@ export default function Shop() {
     setSearchParams({});
   };
 
-  // Compute active filter count (excluding category if on main categories tab)
+  // Compute active filter count
   const activeFiltersCount =
     (selectedShape !== 'all' ? 1 : 0) +
     (selectedMaterial !== 'all' ? 1 : 0) +
@@ -262,7 +262,7 @@ export default function Shop() {
         description="Browse our curated collection of luxury sunglasses, optical frames, and blue light glasses crafted from titanium and premium acetate."
       />
 
-      {/* 1500x500 (3:1) Sliding Banner Section */}
+      {/* 1500x500 Sliding Banner Section */}
       <SlideBanner
         id="shop-catalog-banner"
         ariaLabel="Shop Eyewear Collection Banner"
@@ -273,11 +273,13 @@ export default function Shop() {
       {/* Primary Category Nav & Controls Bar */}
       <nav className="shop-category-nav container-editorial" aria-label="Product categories">
         {/* Category Pills Strip */}
-        <div className="category-pills">
+        <div className="category-pills" role="tablist">
           {categoryPills.map((cat) => (
             <button
               key={cat.slug}
               type="button"
+              role="tab"
+              aria-selected={activeCategory === cat.slug}
               className={`shop-category-btn ${activeCategory === cat.slug ? 'cat-active' : ''}`}
               onClick={() => updateFilter('category', cat.slug)}
             >
@@ -294,10 +296,10 @@ export default function Shop() {
         <div className="shop-controls-cluster">
           {/* Search Bar */}
           <div className="shop-search-bar">
-            <HiOutlineMagnifyingGlass size={17} className="shop-search-icon" aria-hidden="true" />
+            <HiOutlineMagnifyingGlass size={16} className="shop-search-icon" aria-hidden="true" />
             <input
               type="text"
-              placeholder="Search by model, shape, titanium..."
+              placeholder="Search frames, titanium, shape..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="shop-search-input"
@@ -354,101 +356,122 @@ export default function Shop() {
 
       {/* Expandable Sub-Filter Drawer */}
       {filtersDrawerOpen && (
-        <div className="shop-filters-drawer container-editorial" id="shop-filters-drawer">
-          <div className="drawer-filters-grid">
-            {/* Shape Filter */}
-            <div className="filter-block">
-              <span className="filter-block-title">Frame Shape</span>
-              <div className="filter-chip-row">
-                {SHAPES.map((shape) => (
-                  <button
-                    key={shape}
-                    type="button"
-                    className={`filter-chip ${selectedShape === shape ? 'chip-active' : ''}`}
-                    onClick={() => updateFilter('shape', shape)}
-                  >
-                    {shape === 'all' ? 'All Shapes' : shape}
-                  </button>
-                ))}
+        <div className="shop-filters-drawer-wrap container-editorial">
+          <div className="shop-filters-drawer" id="shop-filters-drawer">
+            {/* Drawer Header with Title & Close button */}
+            <div className="drawer-top-bar">
+              <div className="drawer-title-group">
+                <HiAdjustmentsHorizontal size={18} />
+                <span className="drawer-heading">Filter Catalog</span>
+                {activeFiltersCount > 0 && (
+                  <span className="filter-badge-count">{activeFiltersCount}</span>
+                )}
               </div>
-            </div>
-
-            {/* Material Filter */}
-            <div className="filter-block">
-              <span className="filter-block-title">Material Craft</span>
-              <div className="filter-chip-row">
-                {MATERIALS.map((mat) => (
-                  <button
-                    key={mat}
-                    type="button"
-                    className={`filter-chip ${selectedMaterial === mat ? 'chip-active' : ''}`}
-                    onClick={() => updateFilter('material', mat)}
-                  >
-                    {mat === 'all' ? 'All Materials' : mat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Gender Filter */}
-            <div className="filter-block">
-              <span className="filter-block-title">Gender & Fit</span>
-              <div className="filter-chip-row">
-                {GENDERS.map((g) => (
-                  <button
-                    key={g.value}
-                    type="button"
-                    className={`filter-chip ${selectedGender === g.value ? 'chip-active' : ''}`}
-                    onClick={() => updateFilter('gender', g.value)}
-                  >
-                    {g.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Price Filter */}
-            <div className="filter-block">
-              <span className="filter-block-title">Price Tier</span>
-              <div className="filter-chip-row">
-                {PRICE_RANGES.map((p) => (
-                  <button
-                    key={p.value}
-                    type="button"
-                    className={`filter-chip ${selectedPrice === p.value ? 'chip-active' : ''}`}
-                    onClick={() => updateFilter('price', p.value)}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Drawer Actions */}
-          <div className="drawer-footer-actions">
-            {hasAnyFilter && (
               <button
                 type="button"
-                onClick={resetFilters}
-                className="btn-editorial-reset"
+                className="drawer-close-btn"
+                onClick={() => setFiltersDrawerOpen(false)}
+                aria-label="Close filters"
               >
-                <HiXMark size={14} />
-                <span>Reset All Filters</span>
+                <HiXMark size={18} />
               </button>
-            )}
-            <button
-              type="button"
-              onClick={() => setFiltersDrawerOpen(false)}
-              className="btn-editorial-apply"
-            >
-              View Results ({pagination.total})
-            </button>
+            </div>
+
+            <div className="drawer-filters-grid">
+              {/* Shape Filter */}
+              <div className="filter-block">
+                <span className="filter-block-title">Frame Shape</span>
+                <div className="filter-chip-row">
+                  {SHAPES.map((shape) => (
+                    <button
+                      key={shape}
+                      type="button"
+                      className={`filter-chip ${selectedShape === shape ? 'chip-active' : ''}`}
+                      onClick={() => updateFilter('shape', shape)}
+                    >
+                      {shape === 'all' ? 'All Shapes' : shape}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Material Filter */}
+              <div className="filter-block">
+                <span className="filter-block-title">Material Craft</span>
+                <div className="filter-chip-row">
+                  {MATERIALS.map((mat) => (
+                    <button
+                      key={mat}
+                      type="button"
+                      className={`filter-chip ${selectedMaterial === mat ? 'chip-active' : ''}`}
+                      onClick={() => updateFilter('material', mat)}
+                    >
+                      {mat === 'all' ? 'All Materials' : mat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Gender Filter */}
+              <div className="filter-block">
+                <span className="filter-block-title">Gender & Fit</span>
+                <div className="filter-chip-row">
+                  {GENDERS.map((g) => (
+                    <button
+                      key={g.value}
+                      type="button"
+                      className={`filter-chip ${selectedGender === g.value ? 'chip-active' : ''}`}
+                      onClick={() => updateFilter('gender', g.value)}
+                    >
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Filter */}
+              <div className="filter-block">
+                <span className="filter-block-title">Price Tier</span>
+                <div className="filter-chip-row">
+                  {PRICE_RANGES.map((p) => (
+                    <button
+                      key={p.value}
+                      type="button"
+                      className={`filter-chip ${selectedPrice === p.value ? 'chip-active' : ''}`}
+                      onClick={() => updateFilter('price', p.value)}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Drawer Actions */}
+            <div className="drawer-footer-actions">
+              {hasAnyFilter && (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="btn-editorial-reset"
+                >
+                  <HiXMark size={14} />
+                  <span>Reset All Filters</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setFiltersDrawerOpen(false)}
+                className="btn-editorial-apply"
+              >
+                View Results ({pagination.total})
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Active Filter Chips Bar (Instant Visual Feedback & Quick Removal) */}
+      {/* Active Filter Chips Bar */}
       {hasAnyFilter && (
         <div className="shop-active-chips-bar container-editorial">
           <span className="active-chips-label">Active Filters:</span>

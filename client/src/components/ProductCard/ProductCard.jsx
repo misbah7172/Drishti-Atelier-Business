@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiOutlineHeart, HiHeart, HiOutlineShoppingBag, HiCheck } from 'react-icons/hi2';
+import { HiOutlineHeart, HiOutlineShoppingBag, HiCheck } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -93,7 +93,7 @@ export default function ProductCard({
           className={`card-wishlist-btn ${isLiked ? 'liked' : ''}`}
           aria-label="Save to wishlist"
         >
-          <HiOutlineHeart size={18} />
+          <HiOutlineHeart size={16} />
         </button>
 
         <div className="card-image-container">
@@ -109,23 +109,23 @@ export default function ProductCard({
           />
         </div>
 
-        {/* Slide-Up Quick Add Action */}
+        {/* Quick Add Action (Slide-Up on Desktop, Floating Circle on Mobile) */}
         {!outOfStock && (
           <button
             type="button"
             onClick={handleQuickAdd}
-            className="card-quick-add-btn"
+            className={`card-quick-add-btn ${isAdded ? 'is-added' : ''}`}
             aria-label={`Quick add ${name} to cart`}
           >
             {isAdded ? (
               <>
                 <HiCheck size={16} />
-                <span>Added to Cart</span>
+                <span className="card-quick-add-label">Added to Cart</span>
               </>
             ) : (
               <>
                 <HiOutlineShoppingBag size={16} />
-                <span>Quick Add — ৳{price}</span>
+                <span className="card-quick-add-label">Quick Add — ৳{price}</span>
               </>
             )}
           </button>
@@ -156,10 +156,12 @@ export default function ProductCard({
         </Link>
 
         <div className="card-price-row">
-          <span className="card-price">৳{price}</span>
-          {comparePrice && comparePrice > price && (
-            <span className="card-compare-price">৳{comparePrice}</span>
-          )}
+          <div className="card-price-wrap">
+            <span className="card-price">৳{price}</span>
+            {comparePrice && comparePrice > price && (
+              <span className="card-compare-price">৳{comparePrice}</span>
+            )}
+          </div>
           <span className="card-shipping-tag">Complimentary Shipping</span>
         </div>
       </div>

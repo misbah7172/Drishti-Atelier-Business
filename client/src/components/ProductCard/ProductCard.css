@@ -2,6 +2,7 @@
    Drishti Atelier — Editorial Product Card
    Supports Light Mode (active) and Dark Mode ([data-theme="dark"])
    Strict Palette: Black, White, Gray, and #F97D01
+   Fully Responsive for All Devices
    ========================================================================== */
 
 .editorial-product-card {
@@ -44,9 +45,9 @@
   padding: 1.25rem;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   .card-image-container {
-    padding: 0.75rem;
+    padding: 0.65rem;
   }
 }
 
@@ -69,14 +70,24 @@
   left: 0.75rem;
   font-family: var(--font-heading, 'Oswald', sans-serif);
   font-size: 0.65rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #ffffff;
   background-color: var(--color-accent, #F97D01);
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.55rem;
   border-radius: var(--radius-full, 9999px);
   font-weight: 500;
   z-index: 4;
+}
+
+@media (max-width: 767px) {
+  .card-badge {
+    top: 0.45rem;
+    left: 0.45rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.4rem;
+  }
 }
 
 /* Wishlist Button */
@@ -100,6 +111,15 @@
   transition: all var(--transition-fast, 0.15s ease);
 }
 
+@media (max-width: 767px) {
+  .card-wishlist-btn {
+    top: 0.45rem;
+    right: 0.45rem;
+    width: 28px;
+    height: 28px;
+  }
+}
+
 .card-wishlist-btn:hover {
   color: #000000;
   background-color: #ffffff;
@@ -112,7 +132,7 @@
   background-color: #ffffff;
 }
 
-/* Slide-Up Quick Add Button */
+/* Quick Add Button (Desktop: Full Width Slide-Up Bar on Hover; Mobile: Floating Circle Action) */
 .card-quick-add-btn {
   position: absolute;
   bottom: 0;
@@ -141,22 +161,69 @@
               background-color var(--transition-fast, 0.15s ease);
 }
 
-.editorial-product-card:hover .card-quick-add-btn {
-  transform: translateY(0);
-  opacity: 1;
+.card-quick-add-label {
+  display: inline;
 }
 
-.card-quick-add-btn:hover {
-  background-color: var(--color-accent, #F97D01);
-  color: #ffffff;
+@media (min-width: 768px) {
+  .editorial-product-card:hover .card-quick-add-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .card-quick-add-btn:hover {
+    background-color: var(--color-accent, #F97D01);
+    color: #ffffff;
+  }
+}
+
+/* Mobile Quick Add: Floating Tactile Circle in Bottom-Right Corner */
+@media (max-width: 767px) {
+  .card-quick-add-btn {
+    position: absolute;
+    bottom: 0.45rem;
+    right: 0.45rem;
+    left: auto;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: rgba(10, 10, 10, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: none;
+    opacity: 0.95;
+    z-index: 4;
+  }
+
+  .card-quick-add-btn:active,
+  .card-quick-add-btn.is-added {
+    background-color: var(--color-accent, #F97D01);
+    border-color: var(--color-accent, #F97D01);
+    color: #ffffff;
+    transform: scale(0.92);
+  }
+
+  .card-quick-add-label {
+    display: none;
+  }
 }
 
 /* Metadata */
 .card-meta {
-  padding-top: 0.875rem;
+  padding-top: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
+}
+
+@media (max-width: 767px) {
+  .card-meta {
+    padding-top: 0.45rem;
+    gap: 0.2rem;
+  }
 }
 
 .card-code-row {
@@ -168,15 +235,22 @@
 .card-code {
   font-family: var(--font-heading, 'Oswald', sans-serif);
   font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #888888;
+}
+
+@media (max-width: 767px) {
+  .card-code {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
 }
 
 .card-color-swatches {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
 .color-dot {
@@ -186,6 +260,13 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
+@media (max-width: 767px) {
+  .color-dot {
+    width: 7px;
+    height: 7px;
+  }
+}
+
 .card-title-link {
   text-decoration: none;
   color: inherit;
@@ -193,13 +274,25 @@
 
 .card-title {
   font-family: var(--font-heading, 'Oswald', sans-serif);
-  font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #0a0a0a;
-  line-height: 1.35;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   transition: color var(--transition-fast, 0.15s ease);
+}
+
+@media (max-width: 767px) {
+  .card-title {
+    font-size: 0.8rem;
+    line-height: 1.22;
+    min-height: 2.44em;
+  }
 }
 
 .card-title:hover {
@@ -210,7 +303,15 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem;
   margin-top: 0.2rem;
+}
+
+.card-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
 }
 
 .card-price {
@@ -220,10 +321,10 @@
   color: #0a0a0a;
 }
 
-.card-shipping-tag {
-  font-family: var(--font-sans, sans-serif);
-  font-size: 0.68rem;
-  color: #888888;
+@media (max-width: 767px) {
+  .card-price {
+    font-size: 0.85rem;
+  }
 }
 
 /* Compare Price Strikethrough */
@@ -232,8 +333,29 @@
   font-size: 0.8rem;
   color: #999999;
   text-decoration: line-through;
-  margin-left: 0.4rem;
   font-weight: 400;
+}
+
+@media (max-width: 767px) {
+  .card-compare-price {
+    font-size: 0.72rem;
+  }
+}
+
+.card-shipping-tag {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.65rem;
+  color: #888888;
+  white-space: nowrap;
+}
+
+@media (max-width: 639px) {
+  .card-shipping-tag {
+    font-size: 0.58rem;
+    width: 100%;
+    margin-top: -0.1rem;
+    color: #999999;
+  }
 }
 
 /* Out of Stock */
@@ -247,7 +369,7 @@
 }
 
 /* ==========================================================================
-   Dark Theme Variant (when container has .theme-dark or [data-theme="dark"])
+   Dark Theme Variant (when container has [data-theme="dark"])
    ========================================================================== */
 [data-theme="dark"] .card-image-wrapper {
   background-color: #121212;
