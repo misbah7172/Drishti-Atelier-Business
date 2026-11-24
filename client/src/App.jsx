@@ -22,15 +22,10 @@ import NotFound from './pages/NotFound/NotFound';
 import PlaceholderPage from './pages/PlaceholderPage/PlaceholderPage';
 
 // Auth Pages (Phase 3)
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import AuthCallback from './pages/Auth/AuthCallback';
 import Account from './pages/Account/Account';
-
-const GOOGLE_CLIENT_ID =
-  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-  '467831801487-st6pan7d82hsqqnbb0bm2t34ptaib88n.apps.googleusercontent.com';
 
 // Cart & Wishlist Pages (Phase 5)
 import Cart from './pages/Cart/Cart';
@@ -70,8 +65,7 @@ import Terms from './pages/Terms/Terms';
 
 export default function App() {
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <ThemeProvider>
+    <ThemeProvider>
         <AuthProvider>
           <CartProvider>
           <WishlistProvider>
@@ -162,6 +156,5 @@ export default function App() {
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>
-    </GoogleOAuthProvider>
   );
 }

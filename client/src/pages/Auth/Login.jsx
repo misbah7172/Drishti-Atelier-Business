@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   HiOutlineEnvelope,
@@ -9,6 +9,8 @@ import {
   HiOutlineArrowRight,
   HiOutlineShieldCheck,
 } from 'react-icons/hi2';
+import { getRedirectResult } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 import { useAuth } from '../../context/AuthContext';
 import GoogleAuthButton from '../../components/GoogleAuthButton/GoogleAuthButton';
 import './Auth.css';
@@ -27,6 +29,27 @@ export default function Login() {
 
   // Redirect to the page user originally attempted to visit or account/admin
   const from = location.state?.from?.pathname;
+
+  // Handle Firebase redirect result (if popup was blocked and redirect was used)
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result && result.user) {
+          setSubmitting(true);
+          const idToken = await result.user.getIdToken();
+          await handleGoogleSuccess({
+            idToken,
+            email: result.user.email,
+            name: result.user.displayName,
+            photoURL: result.user.photoURL,
+            uid: result.user.uid,
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Firebase redirect result:', err);
+      });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

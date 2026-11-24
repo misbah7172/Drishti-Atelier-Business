@@ -110,10 +110,16 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Google OAuth Login handler (Backend-driven)
-  const googleLogin = async ({ credential, code, access_token }) => {
+  // Firebase / Social OAuth Login handler (Backend-driven)
+  const firebaseLogin = async ({ idToken, email, name, photoURL, uid, credential, code, access_token }) => {
     try {
-      const response = await api.post('/auth/google', {
+      const endpoint = idToken || uid ? '/auth/firebase' : '/auth/google';
+      const response = await api.post(endpoint, {
+        idToken,
+        email,
+        name,
+        photoURL,
+        uid,
         credential,
         code,
         access_token,
@@ -126,17 +132,20 @@ export function AuthProvider({ children }) {
         localStorage.setItem('token', receivedToken);
         setToken(receivedToken);
         setUser(receivedUser);
-        toast.success(`Welcome to Drishti Atelier, ${receivedUser.name.split(' ')[0]}!`);
+        const firstName = receivedUser.name ? receivedUser.name.split(' ')[0] : 'Member';
+        toast.success(`Welcome to Drishti Atelier, ${firstName}!`);
         return { success: true, user: receivedUser };
       }
 
-      throw new Error(response.data?.message || 'Google authentication failed');
+      throw new Error(response.data?.message || 'Authentication failed');
     } catch (error) {
-      const msg = error.response?.data?.message || error.message || 'Google authentication failed.';
+      const msg = error.response?.data?.message || error.message || 'Authentication failed.';
       toast.error(msg);
       return { success: false, error: msg };
     }
   };
+
+  const googleLogin = firebaseLogin;
 
   // Login with token handler (used for callback from OAuth redirect)
   const loginWithToken = async (receivedToken) => {
@@ -183,6 +192,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     googleLogin,
+    firebaseLogin,
     loginWithToken,
     logout,
     updateUser,

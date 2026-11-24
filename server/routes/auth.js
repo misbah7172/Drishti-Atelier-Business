@@ -8,7 +8,8 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
 
-// Google OAuth 2.0 routes
+// Social & Firebase auth routes
+router.post('/firebase', authController.firebaseAuth);
 router.post('/google', authController.googleAuth);
 router.get('/google/url', authController.getGoogleAuthUrl);
 router.get('/google/callback', authController.handleGoogleRedirect);

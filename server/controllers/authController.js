@@ -650,6 +650,117 @@ async function handleGoogleRedirect(req, res, next) {
   }
 }
 
+/**
+ * Handle Firebase Authentication from frontend
+ * POST /api/auth/firebase
+ * Body: { idToken, email, name, photoURL, uid }
+ */
+async function firebaseAuth(req, res, next) {
+  try {
+    const { idToken, email, name, photoURL, uid } = req.body;
+
+    if (!email && !idToken) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Firebase authentication requires an email or ID token.',
+      });
+    }
+
+    let verifiedEmail = email ? email.trim().toLowerCase() : null;
+    let verifiedName = name ? name.trim() : null;
+    let verifiedPicture = photoURL || null;
+    let verifiedUid = uid || null;
+
+    // Verify or decode Firebase ID token if present
+    if (idToken) {
+      try {
+        const decoded = jwt.decode(idToken);
+        if (decoded && decoded.email) {
+          verifiedEmail = decoded.email.trim().toLowerCase();
+          verifiedName = decoded.name || verifiedName || verifiedEmail.split('@')[0];
+          verifiedPicture = decoded.picture || verifiedPicture;
+          verifiedUid = decoded.user_id || decoded.sub || verifiedUid;
+        }
+      } catch (tokenErr) {
+        console.warn('Firebase JWT decode note:', tokenErr.message);
+      }
+    }
+
+    if (!verifiedEmail) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Could not resolve email from Firebase credentials.',
+      });
+    }
+
+    if (!verifiedName) {
+      verifiedName = verifiedEmail.split('@')[0];
+    }
+
+    // Look for existing user by google_id/uid OR email
+    const userResult = await query(
+      `SELECT id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider
+       FROM users 
+       WHERE (google_id IS NOT NULL AND google_id = $1) OR LOWER(email) = $2`,
+      [verifiedUid, verifiedEmail]
+    );
+
+    let user;
+
+    if (userResult.rows.length > 0) {
+      user = userResult.rows[0];
+
+      if (!user.is_active) {
+        return res.status(403).json({
+          status: 'fail',
+          message: 'Your account has been deactivated. Please contact support.',
+        });
+      }
+
+      // Update uid and avatar if missing
+      const updatedResult = await query(
+        `UPDATE users 
+         SET google_id = COALESCE(google_id, $1),
+             avatar_url = COALESCE($2, avatar_url),
+             auth_provider = COALESCE(auth_provider, 'firebase'),
+             updated_at = NOW() 
+         WHERE id = $3
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [verifiedUid, verifiedPicture, user.id]
+      );
+      user = updatedResult.rows[0];
+    } else {
+      // Auto-register new customer account via Firebase
+      const newUserResult = await query(
+        `INSERT INTO users (name, email, google_id, avatar_url, auth_provider, role, is_active)
+         VALUES ($1, $2, $3, $4, 'firebase', 'customer', true)
+         RETURNING id, name AS full_name, name, email, phone, role, is_active, created_at, avatar_url, google_id, auth_provider`,
+        [verifiedName, verifiedEmail, verifiedUid, verifiedPicture]
+      );
+      user = newUserResult.rows[0];
+    }
+
+    const token = generateToken(user);
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Logged in with Firebase successfully!',
+      token,
+      user,
+      data: {
+        token,
+        user,
+      },
+    });
+  } catch (error) {
+    console.error('Firebase Auth Error:', error);
+    return res.status(500).json({
+      status: 'error',
+      message: error.message || 'Firebase authentication failed.',
+    });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -658,6 +769,7 @@ module.exports = {
   updateProfile,
   changePassword,
   googleAuth,
+  firebaseAuth,
   getGoogleAuthUrl,
   handleGoogleRedirect,
 };
