@@ -59,20 +59,22 @@ export default function GoogleAuthButton({
         uid: user.uid,
       });
     } catch (err) {
-      console.warn('Firebase popup sign-in:', err.code, err.message);
+      console.error('Firebase sign-in error:', err);
 
-      // If popup is blocked by browser, seamlessly fallback to signInWithRedirect!
-      if (
-        err.code === 'auth/popup-blocked' ||
-        err.code === 'auth/popup-closed-by-user' ||
-        (err.message && err.message.includes('popup'))
-      ) {
-        try {
-          await signInWithRedirect(auth, googleProvider);
-          return;
-        } catch (redirectErr) {
-          onError?.(redirectErr.message || 'Firebase redirect failed.');
-        }
+      if (err.code === 'auth/unauthorized-domain') {
+        onError?.(
+          'Firebase Error: Domain (drishti-atelier.vercel.app) is not authorized in Firebase Console. Please add it under Authentication > Settings > Authorized Domains.'
+        );
+      } else if (err.code === 'auth/operation-not-allowed') {
+        onError?.(
+          'Firebase Error: Google sign-in is not enabled in Firebase Console. Please enable Google under Authentication > Sign-in method.'
+        );
+      } else if (err.code === 'auth/popup-blocked') {
+        onError?.(
+          'Pop-up window was blocked by your browser. Please allow pop-ups for this site in your browser bar.'
+        );
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        // User voluntarily dismissed popup — do not error or reload
       } else {
         onError?.(err.message || 'Firebase authentication failed.');
       }

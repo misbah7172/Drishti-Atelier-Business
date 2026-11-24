@@ -29,7 +29,26 @@ export default function Login() {
   // Redirect to the page user originally attempted to visit or account/admin
   const from = location.state?.from?.pathname;
 
-  // Handle Firebase redirect result (if popup was blocked and redirect was used)
+  const handleGoogleSuccess = async (googleData) => {
+    setErrorMessage('');
+    setSubmitting(true);
+    const result = await googleLogin(googleData);
+    setSubmitting(false);
+
+    if (result.success) {
+      if (result.user?.role === 'admin') {
+        navigate((from && from.startsWith('/admin')) ? from : '/admin', { replace: true });
+      } else if (from) {
+        navigate(from, { replace: true });
+      } else {
+        navigate('/account', { replace: true });
+      }
+    } else {
+      setErrorMessage(result.error);
+    }
+  };
+
+  // Handle Firebase redirect result (if returning from a redirect sign-in)
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
@@ -46,7 +65,12 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.warn('Firebase redirect result:', err);
+        console.error('Firebase redirect result:', err);
+        if (err.code === 'auth/unauthorized-domain') {
+          setErrorMessage('Domain drishti-atelier.vercel.app must be added to Authorized Domains in Firebase Console.');
+        } else if (err.code !== 'auth/popup-closed-by-user') {
+          setErrorMessage(err.message || 'Google authentication failed.');
+        }
       });
   }, []);
 
@@ -61,25 +85,6 @@ export default function Login() {
 
     setSubmitting(true);
     const result = await login(identifier, password);
-    setSubmitting(false);
-
-    if (result.success) {
-      if (result.user?.role === 'admin') {
-        navigate((from && from.startsWith('/admin')) ? from : '/admin', { replace: true });
-      } else if (from) {
-        navigate(from, { replace: true });
-      } else {
-        navigate('/account', { replace: true });
-      }
-    } else {
-      setErrorMessage(result.error);
-    }
-  };
-
-  const handleGoogleSuccess = async (googleData) => {
-    setErrorMessage('');
-    setSubmitting(true);
-    const result = await googleLogin(googleData);
     setSubmitting(false);
 
     if (result.success) {
