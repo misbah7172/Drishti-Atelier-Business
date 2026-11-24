@@ -229,8 +229,6 @@ export default function ProductDetail() {
     );
   }
 
-  const activeAngle = product.gallery[activeAngleIndex] || product.gallery[0];
-
   // Discount percentage
   const discountPercent =
     product.comparePrice && product.comparePrice > product.price
@@ -334,17 +332,6 @@ export default function ProductDetail() {
                 </button>
               </>
             )}
-
-            {/* Caption & Slide Counter Overlay */}
-            <div className="detail-canvas-caption">
-              <span className="caption-label">{activeAngle.label}</span>
-              <span className="caption-text">{activeAngle.caption}</span>
-              {product.gallery.length > 1 && (
-                <span className="caption-counter">
-                  {activeAngleIndex + 1} / {product.gallery.length}
-                </span>
-              )}
-            </div>
           </div>
 
           {/* Small Image Thumbnail Cards under the primary image */}
