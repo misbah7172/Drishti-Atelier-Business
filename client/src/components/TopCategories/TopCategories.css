@@ -91,14 +91,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   height: 100%;
-  background: #FFFFFF;
+  aspect-ratio: 1 / 1;
+  min-height: 230px;
+  background: #111111;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-lg, 12px);
   overflow: hidden;
   text-decoration: none;
-  color: #0A0A0A;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s ease,
               box-shadow 0.35s ease;
@@ -108,29 +111,30 @@
 .top-category-card:hover {
   transform: translateY(-5px);
   border-color: #F97D01;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08),
-              0 0 20px rgba(249, 125, 1, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14),
+              0 0 20px rgba(249, 125, 1, 0.2);
 }
 
-/* Card Image Wrap */
+/* Card Image Wrap (Full Size Background Image, zero padding) */
 .top-category-image-wrap {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 16 / 11;
-  background: #FFFFFF;
+  height: 100%;
+  background: #111111;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;
+  display: block;
+  padding: 0;
+  margin: 0;
 }
 
 .top-category-image {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .top-category-wrapper:hover .top-category-image {
@@ -142,10 +146,17 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    transparent 65%,
-    rgba(0, 0, 0, 0.02) 100%
+    rgba(0, 0, 0, 0.02) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.6) 70%,
+    rgba(0, 0, 0, 0.88) 100%
   );
   pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.top-category-wrapper:hover .top-category-image-sheen {
+  opacity: 0.95;
 }
 
 .top-category-badge {
@@ -162,14 +173,19 @@
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius-full, 9999px);
   font-weight: 500;
+  z-index: 3;
 }
 
-/* Card Body (Desktop / Tablet) */
+/* Card Body (Desktop / Tablet - Overlayed on bottom of the full size image) */
 .top-category-body {
-  padding: 1.15rem 1rem 1rem;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1.25rem 1rem 0.95rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  justify-content: flex-end;
+  pointer-events: none;
 }
 
 .top-category-top-row {
@@ -197,20 +213,21 @@
 
 .top-category-card-title {
   font-family: var(--font-heading);
-  font-size: 1.12rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  color: #0A0A0A;
+  color: #FFFFFF !important;
   margin-bottom: 0.35rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
   transition: color var(--transition-fast, 0.2s);
 }
 
 .top-category-wrapper:hover .top-category-card-title {
-  color: #F97D01;
+  color: #F97D01 !important;
 }
 
 .top-category-card-sub {
-  color: #666666;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.76rem;
   line-height: 1.45;
   margin-bottom: 1rem;
@@ -231,8 +248,9 @@
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #444444;
+  color: rgba(255, 255, 255, 0.9) !important;
   font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
   transition: color var(--transition-fast, 0.2s);
 }
 
@@ -243,9 +261,10 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #F2F2F2;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  color: #0A0A0A;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
   transition: all var(--transition-fast, 0.2s);
 }
 
@@ -254,7 +273,7 @@
 }
 
 .top-category-wrapper:hover .top-category-action-link {
-  color: #F97D01;
+  color: #F97D01 !important;
 }
 
 .top-category-wrapper:hover .action-link-icon {
@@ -486,6 +505,10 @@
    ========================================================================== */
 
 @media (max-width: 1023px) and (min-width: 768px) {
+  .top-category-card {
+    min-height: 190px;
+  }
+
   .top-category-body {
     padding: 0.85rem 0.65rem 0.75rem;
   }
@@ -567,16 +590,19 @@
 
   /* Compact Circular Eyewear Silhouette Thumbnail */
   .top-category-image-wrap {
+    position: relative;
+    inset: auto;
     width: 52px;
     height: 52px;
     max-width: 52px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    background: #FFFFFF;
+    background: #111111;
     border: 1.5px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin: 0 auto;
-    padding: 6px;
+    padding: 0;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -591,9 +617,9 @@
   }
 
   .top-category-image {
-    width: 85%;
-    height: 85%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Hide desktop body elements on mobile */
@@ -819,7 +845,7 @@
     width: 44px;
     height: 44px;
     max-width: 44px;
-    padding: 4px;
+    padding: 0;
   }
 
   .mobile-cat-name {

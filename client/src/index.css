@@ -606,27 +606,27 @@ div.card,
 }
 
 [data-theme="light"] .top-category-card {
-  background: #FFFFFF;
+  background: #111111;
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .top-category-card:hover {
   border-color: var(--color-accent);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08),
-              0 0 20px rgba(249, 125, 1, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14),
+              0 0 20px rgba(249, 125, 1, 0.2);
 }
 
 [data-theme="light"] .top-category-card-title {
-  color: #0A0A0A;
+  color: #FFFFFF;
 }
 
 [data-theme="light"] .top-category-card-sub {
-  color: #666666;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="light"] .top-category-action-link {
-  color: #444444;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme="light"] .top-category-action-link:hover {
