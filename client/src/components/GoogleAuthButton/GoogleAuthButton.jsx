@@ -40,11 +40,13 @@ export default function GoogleAuthButton({
   id = 'google-auth-btn',
 }) {
   const [loading, setLoading] = useState(false);
+  const [popupBlocked, setPopupBlocked] = useState(false);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     if (disabled || loading) return;
     setLoading(true);
+    setPopupBlocked(false);
 
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -70,8 +72,9 @@ export default function GoogleAuthButton({
           'Firebase Error: Google sign-in is not enabled in Firebase Console. Please enable Google under Authentication > Sign-in method.'
         );
       } else if (err.code === 'auth/popup-blocked') {
+        setPopupBlocked(true);
         onError?.(
-          'Pop-up window was blocked by your browser. Please allow pop-ups for this site in your browser bar.'
+          'Pop-up window was blocked by your browser. Please allow pop-ups from the address bar icon, or click "Redirect instead" below.'
         );
       } else if (err.code === 'auth/popup-closed-by-user') {
         // User voluntarily dismissed popup — do not error or reload
@@ -83,29 +86,52 @@ export default function GoogleAuthButton({
     }
   };
 
+  const handleRedirectSignIn = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await signInWithRedirect(auth, googleProvider);
+    } catch (err) {
+      onError?.(err.message || 'Redirect sign-in failed.');
+      setLoading(false);
+    }
+  };
+
   return (
-    <button
-      id={id}
-      type="button"
-      onClick={handleSignIn}
-      disabled={disabled || loading}
-      className="w-full bg-[#FFFFFF] hover:bg-[#F8F8FA] active:scale-[0.99] border border-[#DCDCE0] hover:border-[#A0A0A8] text-[#0A0A0A] text-xs font-semibold uppercase tracking-wider py-3 px-4 rounded-md transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group shadow-sm cursor-pointer"
-    >
-      {loading ? (
-        <>
-          <div className="w-4 h-4 border-2 border-stone-400 border-t-[#0A0A0A] rounded-full animate-spin" />
-          <span className="text-stone-600">Connecting to Google...</span>
-        </>
-      ) : (
-        <>
-          <div className="flex items-center justify-center w-5 h-5 bg-white rounded-full p-0.5 shadow-sm group-hover:scale-105 transition-transform">
-            <GoogleIcon className="w-3.5 h-3.5" />
-          </div>
-          <span className="font-medium text-[#111111] group-hover:text-[#000000] transition-colors">
-            {text}
-          </span>
-        </>
+    <div className="google-auth-btn-wrapper w-full">
+      <button
+        id={id}
+        type="button"
+        onClick={handleSignIn}
+        disabled={disabled || loading}
+        className="w-full bg-[#FFFFFF] hover:bg-[#F8F8FA] active:scale-[0.99] border border-[#DCDCE0] hover:border-[#A0A0A8] text-[#0A0A0A] text-xs font-semibold uppercase tracking-wider py-3 px-4 rounded-md transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group shadow-sm cursor-pointer"
+      >
+        {loading ? (
+          <>
+            <div className="w-4 h-4 border-2 border-stone-400 border-t-[#0A0A0A] rounded-full animate-spin" />
+            <span className="text-stone-600">Connecting to Google...</span>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-center w-5 h-5 bg-white rounded-full p-0.5 shadow-sm group-hover:scale-105 transition-transform">
+              <GoogleIcon className="w-3.5 h-3.5" />
+            </div>
+            <span className="font-medium text-[#111111] group-hover:text-[#000000] transition-colors">
+              {text}
+            </span>
+          </>
+        )}
+      </button>
+
+      {popupBlocked && (
+        <button
+          type="button"
+          onClick={handleRedirectSignIn}
+          className="w-full mt-2 text-center text-xs text-[#F97D01] hover:underline cursor-pointer font-medium py-1.5 transition-colors block"
+        >
+          Pop-up blocked? Click here to sign in with redirect instead →
+        </button>
       )}
-    </button>
+    </div>
   );
 }
