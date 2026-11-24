@@ -589,54 +589,41 @@ div.card,
   background-color: #F8F8F8;
 }
 
-/* Top Categories in Light Mode */
-[data-theme="light"] .top-categories-section {
-  background-color: #F8F8F8;
-  color: #0A0A0A;
-  border-top-color: rgba(0, 0, 0, 0.06);
-  border-bottom-color: rgba(0, 0, 0, 0.06);
+/* Editorial Category Section — Light Theme */
+[data-theme="light"] .ed-categories-section {
+  background-color: #FFFFFF;
+  color: #171717;
 }
 
-[data-theme="light"] .top-categories-title {
-  color: #0A0A0A;
+[data-theme="light"] .ed-categories-heading {
+  color: #171717;
 }
 
-[data-theme="light"] .top-categories-desc {
-  color: #555555;
+[data-theme="light"] .ed-categories-eyebrow,
+[data-theme="light"] .ed-categories-subtitle {
+  color: #777777;
 }
 
-[data-theme="light"] .top-category-card {
-  background: #111111;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+[data-theme="light"] .ed-tile-bg-primary {
+  background-color: #F0F0E9;
 }
 
-[data-theme="light"] .top-category-card:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14),
-              0 0 20px rgba(249, 125, 1, 0.2);
+[data-theme="light"] .ed-tile-bg-alt {
+  background-color: #F8F8F5;
 }
 
-[data-theme="light"] .top-category-card-title {
-  color: #FFFFFF;
+[data-theme="light"] .ed-tile-name,
+[data-theme="light"] .ed-tile-explore {
+  color: #171717;
 }
 
-[data-theme="light"] .top-category-card-sub {
-  color: rgba(255, 255, 255, 0.8);
+[data-theme="light"] .ed-filter-btn {
+  color: #777777;
 }
 
-[data-theme="light"] .top-category-action-link {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-[data-theme="light"] .top-category-action-link:hover {
-  color: var(--color-accent);
-}
-
-[data-theme="light"] .action-link-icon {
-  background: #F2F2F2;
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #0A0A0A;
+[data-theme="light"] .ed-filter-btn.ed-filter-active,
+[data-theme="light"] .ed-filter-btn:hover {
+  color: #171717;
 }
 
 /* Eyeglasses Shape Guide in Light Mode */

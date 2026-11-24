@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiArrowRight, HiChevronDown, HiChevronRight, HiXMark } from 'react-icons/hi2';
 import './TopCategories.css';
 
 const CATEGORIES = [
@@ -30,6 +29,7 @@ const CATEGORIES = [
     badge: 'Sunwear',
     image: '/images/banner-sunglasses.jpg',
     link: '/shop?category=sunglasses',
+    featured: true,
     subcategories: [
       { label: 'Polarized Collection', link: '/shop?category=sunglasses&type=polarized', desc: '100% glare neutralization' },
       { label: 'UV400 Classic Aviators', link: '/shop?category=sunglasses&shape=Aviator', desc: 'Iconic tear-drop geometry' },
@@ -91,222 +91,88 @@ const CATEGORIES = [
   },
 ];
 
+const FILTERS = [
+  { key: 'all', label: 'ALL' },
+  { key: 'eyeglasses', label: 'EYEGLASSES' },
+  { key: 'sunglasses', label: 'SUNGLASSES' },
+  { key: 'blue-light-glasses', label: 'BLUE LIGHT' },
+  { key: 'reading-glasses', label: 'READING' },
+  { key: 'power-sunglasses', label: 'POWER SUN' },
+];
+
 export default function TopCategories() {
-  const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [mobileActiveCategory, setMobileActiveCategory] = useState(null);
-  const sectionRef = useRef(null);
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (sectionRef.current && !sectionRef.current.contains(event.target)) {
-        setMobileActiveCategory(null);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, []);
+  const visibleCategories =
+    activeFilter === 'all'
+      ? CATEGORIES
+      : CATEGORIES.filter((cat) => cat.id === activeFilter);
 
-  const handleCategoryMobileClick = (catId, e) => {
-    // On mobile screens, tap toggles the subcategory dropdown view
-    if (window.innerWidth < 768) {
-      if (mobileActiveCategory === catId) {
-        setMobileActiveCategory(null);
-      } else {
-        e.preventDefault();
-        setMobileActiveCategory(catId);
-      }
-    }
-  };
-
-  const getDropdownAlignmentClass = (index, total) => {
-    if (index === 0) return 'dropdown-align-left';
-    if (index === 1) return 'dropdown-align-left';
-    if (index === total - 1) return 'dropdown-align-right';
-    if (index === total - 2) return 'dropdown-align-right';
-    return 'dropdown-align-center';
-  };
-
-  const activeMobileCat = CATEGORIES.find((c) => c.id === mobileActiveCategory);
+  const isSingle = visibleCategories.length === 1;
 
   return (
-    <section className="top-categories-section" id="top-categories" ref={sectionRef}>
-      <div className="container-editorial">
+    <section className="ed-categories-section" id="top-categories">
+      <div className="ed-categories-container">
         {/* Section Header */}
-        <div className="top-categories-header">
-          <div className="top-categories-intro">
-            <span className="editorial-eyebrow">OPTICAL TAXONOMY</span>
-            <h2 className="editorial-section-title top-categories-title">
-              TOP CATEGORIES
-            </h2>
-          </div>
+        <header className="ed-categories-header">
+          <span className="ed-categories-eyebrow">SHOP BY CATEGORY</span>
+          <h2 className="ed-categories-heading">EXPLORE OUR COLLECTION</h2>
+          <p className="ed-categories-subtitle">
+            Discover eyewear designed for every perspective.
+          </p>
+        </header>
 
-          <div className="top-categories-view-all">
-            <Link to="/shop" className="btn-editorial-outline" id="categories-view-catalog">
-              <span>View All Frames</span>
-              <HiArrowRight size={15} />
-            </Link>
-          </div>
-        </div>
+        {/* Filter Navigation */}
+        <nav className="ed-categories-filters" aria-label="Category filters">
+          {FILTERS.map((f, i) => (
+            <span key={f.key} className="ed-filter-item-wrap">
+              {i > 0 && <span className="ed-filter-dot" aria-hidden="true">·</span>}
+              <button
+                type="button"
+                className={`ed-filter-btn ${activeFilter === f.key ? 'ed-filter-active' : ''}`}
+                onClick={() => setActiveFilter(f.key)}
+                aria-pressed={activeFilter === f.key}
+              >
+                {f.label}
+              </button>
+            </span>
+          ))}
+        </nav>
 
-        {/* Categories Grid: 1 Row Desktop (5 columns), 5 In Row Mobile */}
-        <div className="top-categories-grid">
-          {CATEGORIES.map((cat, index) => {
-            const isHovered = hoveredCategory === cat.id;
-            const isMobileActive = mobileActiveCategory === cat.id;
-            const alignClass = getDropdownAlignmentClass(index, CATEGORIES.length);
+        {/* Category Grid */}
+        <div
+          className={`ed-categories-grid ${isSingle ? 'ed-grid-single' : ''}`}
+          role="list"
+        >
+          {visibleCategories.map((cat) => {
+            const isFeatured = cat.featured && !isSingle;
+            const tileIndex = CATEGORIES.indexOf(cat);
+            const bgClass = tileIndex % 2 === 0 ? 'ed-tile-bg-primary' : 'ed-tile-bg-alt';
 
             return (
               <div
                 key={cat.id}
-                className={`top-category-wrapper ${alignClass} ${isHovered ? 'is-hovered' : ''} ${isMobileActive ? 'is-active' : ''}`}
-                onMouseEnter={() => setHoveredCategory(cat.id)}
-                onMouseLeave={() => setHoveredCategory(null)}
+                className={`ed-category-tile ${bgClass} ${isFeatured ? 'ed-tile-featured' : ''} ${isSingle ? 'ed-tile-single' : ''}`}
+                role="listitem"
               >
-                {/* Category Card */}
-                <Link
-                  to={cat.link}
-                  className="top-category-card"
-                  id={`top-cat-${cat.id}`}
-                  onClick={(e) => handleCategoryMobileClick(cat.id, e)}
-                  aria-expanded={isHovered || isMobileActive}
-                  aria-haspopup="true"
-                >
-                  {/* Image Frame */}
-                  <div className="top-category-image-wrap">
+                <Link to={cat.link} className="ed-tile-link">
+                  <span className="ed-tile-name">{cat.shortTitle}</span>
+                  <div className="ed-tile-image-wrap">
                     <img
                       src={cat.image}
                       alt={cat.title}
-                      className="top-category-image"
+                      className="ed-tile-image"
                       loading="lazy"
                     />
-                    <div className="top-category-image-sheen" />
                   </div>
-
-                  {/* Card Meta (Desktop & Tablet) */}
-                  <div className="top-category-body">
-                    <h3 className="top-category-card-title">{cat.title}</h3>
-
-                    <div className="top-category-action-link">
-                      <span className="action-link-text">Explore</span>
-                      <span className="action-link-icon">
-                        <HiChevronDown size={13} className="action-dropdown-icon" />
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Mobile Compact Label (5 in a row on mobile) */}
-                  <div className="top-category-mobile-label">
-                    <span className="mobile-cat-name">{cat.shortTitle}</span>
-                    <span className="mobile-cat-indicator">▾</span>
-                  </div>
+                  {isFeatured && (
+                    <span className="ed-tile-explore">EXPLORE MORE</span>
+                  )}
                 </Link>
-
-                {/* Desktop Subcategory Dropdown (appears on mouse hover) */}
-                <div
-                  className={`top-category-dropdown ${alignClass} ${isHovered ? 'dropdown-visible' : ''}`}
-                  role="menu"
-                  aria-label={`${cat.title} Subcategories`}
-                >
-                  <div className="dropdown-header">
-                    <div className="dropdown-header-top">
-                      <span className="dropdown-eyebrow">COLLECTION</span>
-                      <span className="dropdown-count-badge">{cat.count}</span>
-                    </div>
-                    <h4 className="dropdown-cat-title">{cat.title}</h4>
-                  </div>
-
-                  <ul className="dropdown-sub-list">
-                    {cat.subcategories.map((sub, sIdx) => (
-                      <li key={sIdx} className="dropdown-sub-item">
-                        <Link
-                          to={sub.link}
-                          className="dropdown-sub-link"
-                          onClick={() => {
-                            setHoveredCategory(null);
-                            setMobileActiveCategory(null);
-                          }}
-                        >
-                          <div className="dropdown-sub-text">
-                            <span className="dropdown-sub-label">{sub.label}</span>
-                            <span className="dropdown-sub-desc">{sub.desc}</span>
-                          </div>
-                          <HiChevronRight size={13} className="dropdown-sub-arrow" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="dropdown-footer">
-                    <Link
-                      to={cat.link}
-                      className="dropdown-view-all"
-                      onClick={() => {
-                        setHoveredCategory(null);
-                        setMobileActiveCategory(null);
-                      }}
-                    >
-                      <span>Explore All {cat.title}</span>
-                      <HiArrowRight size={13} />
-                    </Link>
-                  </div>
-                </div>
               </div>
             );
           })}
         </div>
-
-        {/* Mobile Subcategories Dropdown Panel (Below Row when tapped on mobile) */}
-        {activeMobileCat && (
-          <div className="top-categories-mobile-panel" id="mobile-subcategories-panel">
-            <div className="mobile-panel-header">
-              <div className="mobile-panel-info">
-                <span className="mobile-panel-eyebrow">SUBCATEGORIES</span>
-                <h4 className="mobile-panel-title">{activeMobileCat.title}</h4>
-              </div>
-              <button
-                type="button"
-                className="mobile-panel-close"
-                onClick={() => setMobileActiveCategory(null)}
-                aria-label="Close subcategories"
-              >
-                <HiXMark size={18} />
-              </button>
-            </div>
-
-            <div className="mobile-panel-sub-list">
-              {activeMobileCat.subcategories.map((sub, sIdx) => (
-                <Link
-                  key={sIdx}
-                  to={sub.link}
-                  className="mobile-panel-sub-link"
-                  onClick={() => setMobileActiveCategory(null)}
-                >
-                  <div className="mobile-panel-sub-text">
-                    <span className="mobile-panel-sub-label">{sub.label}</span>
-                    <span className="mobile-panel-sub-desc">{sub.desc}</span>
-                  </div>
-                  <HiChevronRight size={14} className="mobile-panel-arrow" />
-                </Link>
-              ))}
-            </div>
-
-            <div className="mobile-panel-footer">
-              <Link
-                to={activeMobileCat.link}
-                className="mobile-panel-view-all"
-                onClick={() => setMobileActiveCategory(null)}
-              >
-                <span>View Full {activeMobileCat.title} Collection</span>
-                <HiArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
