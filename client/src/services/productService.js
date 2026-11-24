@@ -213,15 +213,25 @@ export async function fetchProducts(params = {}) {
     });
 
     const response = await api.get('/products', { params: cleanParams });
-    const { products, pagination } = response.data.data;
+    const payload = response.data?.data;
+    const rawList = Array.isArray(payload) ? payload : (payload?.products || []);
+    const pagination = payload?.pagination || {
+      page: Number(cleanParams.page) || 1,
+      limit: Number(cleanParams.limit) || 12,
+      total: rawList.length,
+      totalPages: Math.max(1, Math.ceil(rawList.length / (Number(cleanParams.limit) || 12))),
+    };
 
     return {
-      products: products.map(normalizeProduct),
+      products: rawList.map(normalizeProduct),
       pagination,
     };
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    throw error;
+    return {
+      products: [],
+      pagination: { page: 1, limit: 12, total: 0, totalPages: 1 },
+    };
   }
 }
 
@@ -231,10 +241,11 @@ export async function fetchProducts(params = {}) {
 export async function fetchFeaturedProducts() {
   try {
     const response = await api.get('/products/featured');
-    return response.data.data.map(normalizeProduct);
+    const items = Array.isArray(response.data?.data) ? response.data.data : [];
+    return items.map(normalizeProduct);
   } catch (error) {
     console.error('Failed to fetch featured products:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -246,13 +257,16 @@ export async function fetchBestsellerProducts(limit = 10) {
     const response = await api.get('/products', {
       params: { bestseller: 'true', limit, sort: 'bestseller' },
     });
-    return response.data.data.products.map(normalizeProduct);
+    const payload = response.data?.data;
+    const rawList = Array.isArray(payload) ? payload : (payload?.products || []);
+    return rawList.map(normalizeProduct);
   } catch (error) {
     console.error('Failed to fetch bestseller products:', error);
     // Fallback: try featured endpoint
     try {
       const fallback = await api.get('/products/featured');
-      return fallback.data.data.map(normalizeProduct).slice(0, limit);
+      const items = Array.isArray(fallback.data?.data) ? fallback.data.data : [];
+      return items.map(normalizeProduct).slice(0, limit);
     } catch {
       return [];
     }
@@ -265,6 +279,9 @@ export async function fetchBestsellerProducts(limit = 10) {
 export async function fetchProductByIdOrSlug(idOrSlug) {
   try {
     const response = await api.get(`/products/${idOrSlug}`);
+    if (!response.data?.data) {
+      throw new Error(`Product ${idOrSlug} data missing from response`);
+    }
     return normalizeProduct(response.data.data);
   } catch (error) {
     console.error('Failed to fetch product:', error);
@@ -278,10 +295,10 @@ export async function fetchProductByIdOrSlug(idOrSlug) {
 export async function fetchCategories() {
   try {
     const response = await api.get('/categories');
-    return response.data.data;
+    return Array.isArray(response.data?.data) ? response.data.data : [];
   } catch (error) {
     console.error('Failed to fetch categories:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -291,7 +308,7 @@ export async function fetchCategories() {
 export async function fetchCategoryByIdOrSlug(idOrSlug) {
   try {
     const response = await api.get(`/categories/${idOrSlug}`);
-    return response.data.data;
+    return response.data?.data || null;
   } catch (error) {
     console.error('Failed to fetch category:', error);
     throw error;

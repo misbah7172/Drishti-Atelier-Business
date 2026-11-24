@@ -27,9 +27,23 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor — handle auth errors
+// Response interceptor — handle auth errors & SPA fallback misroutes
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Detect if API endpoint returned HTML instead of expected JSON
+    // (Happens when static hosting rewrites /api/* to index.html or backend is down)
+    if (
+      typeof response.data === 'string' &&
+      (response.data.includes('<!doctype html') || response.data.includes('<html'))
+    ) {
+      const error = new Error(
+        `[API Error] Endpoint '${response.config?.url}' returned HTML instead of JSON. Ensure the backend is deployed and Vercel Root Directory is './'.`
+      );
+      error.isHtmlFallback = true;
+      return Promise.reject(error);
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid

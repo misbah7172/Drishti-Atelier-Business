@@ -5,8 +5,13 @@ import api from './api';
  * @param {string} section - 'hero' | 'categories' | 'anatomy' | 'finale'
  */
 export async function getPublicBanners(section = 'hero') {
-  const res = await api.get(`/banners?section=${encodeURIComponent(section)}`);
-  return res.data.data;
+  try {
+    const res = await api.get(`/banners?section=${encodeURIComponent(section)}`);
+    return Array.isArray(res.data?.data) ? res.data.data : [];
+  } catch (err) {
+    console.warn(`Failed to fetch banners for section '${section}':`, err);
+    return [];
+  }
 }
 
 /**

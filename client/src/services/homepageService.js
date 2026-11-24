@@ -18,8 +18,13 @@ export const DEFAULT_HOMEPAGE_SECTIONS = [
  * Fetch homepage sections for public storefront
  */
 export async function getPublicHomepageSections() {
-  const res = await api.get('/homepage/sections');
-  return res.data.data;
+  try {
+    const res = await api.get('/homepage/sections');
+    return Array.isArray(res.data?.data) ? res.data.data : DEFAULT_HOMEPAGE_SECTIONS;
+  } catch (err) {
+    console.warn('Failed to fetch public homepage sections, falling back to defaults:', err);
+    return DEFAULT_HOMEPAGE_SECTIONS;
+  }
 }
 
 /**
