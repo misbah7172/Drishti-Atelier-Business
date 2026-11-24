@@ -7,7 +7,6 @@ import {
   HiOutlineEye,
   HiOutlineEyeSlash,
   HiOutlineArrowRight,
-  HiOutlineShieldCheck,
 } from 'react-icons/hi2';
 import { getRedirectResult } from 'firebase/auth';
 import { auth } from '../../firebase/config';
@@ -94,12 +93,6 @@ export default function Login() {
     } else {
       setErrorMessage(result.error);
     }
-  };
-
-  const handleDemoFill = (demoId, demoPass) => {
-    setIdentifier(demoId);
-    setPassword(demoPass);
-    setErrorMessage('');
   };
 
   const isPhone = identifier && !identifier.includes('@') && /\d/.test(identifier);
@@ -238,34 +231,6 @@ export default function Login() {
             disabled={submitting}
             text="Continue with Google"
           />
-
-          {/* Demo Accounts — development only */}
-          {import.meta.env.DEV && (
-            <div className="auth-demo-section">
-              <div className="auth-demo-header">
-                <HiOutlineShieldCheck size={14} />
-                <span>Dev Evaluation Credentials</span>
-              </div>
-              <div className="auth-demo-grid">
-                <button
-                  type="button"
-                  onClick={() => handleDemoFill('admin@drishtiatelier.com', 'Admin@123')}
-                  className="auth-demo-btn"
-                >
-                  <span className="auth-demo-btn-title">Atelier Admin</span>
-                  <span className="auth-demo-btn-email">admin@drishtiatelier.com</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDemoFill('rahim@example.com', 'Customer@123')}
-                  className="auth-demo-btn"
-                >
-                  <span className="auth-demo-btn-title">Patron Client</span>
-                  <span className="auth-demo-btn-email">rahim@example.com</span>
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Register Footer Link */}

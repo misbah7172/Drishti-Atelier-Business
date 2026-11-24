@@ -351,74 +351,7 @@
   color: #888888;
 }
 
-/* Demo Credentials */
-.auth-demo-section {
-  margin-top: 1.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #ebebeb;
-}
-
-.auth-demo-header {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-heading, 'Oswald', sans-serif);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #777777;
-  margin-bottom: 0.75rem;
-}
-
-.auth-demo-header svg {
-  color: var(--color-accent, #F97D01);
-}
-
-.auth-demo-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-.auth-demo-btn {
-  text-align: left;
-  padding: 0.65rem 0.75rem;
-  background: #f8f8fa;
-  border: 1px solid #e2e2e8;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.auth-demo-btn:hover {
-  background: #f0f0f4;
-  border-color: #c8c8d0;
-}
-
-.auth-demo-btn-title {
-  font-family: var(--font-heading, 'Oswald', sans-serif);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #0a0a0a;
-  display: block;
-  letter-spacing: 0.04em;
-  transition: color 0.2s ease;
-}
-
-.auth-demo-btn:hover .auth-demo-btn-title {
-  color: var(--color-accent, #F97D01);
-}
-
-.auth-demo-btn-email {
-  font-family: var(--font-sans, sans-serif);
-  font-size: 0.68rem;
-  color: #666666;
-  display: block;
-  margin-top: 0.2rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+/* Register footer link */
 
 /* Footer Link */
 .auth-footer {
@@ -519,28 +452,6 @@
 
 [data-theme="dark"] .auth-divider-text {
   background: #0e0e0e;
-  color: #555555;
-}
-
-[data-theme="dark"] .auth-demo-section {
-  border-top-color: #1a1a1a;
-}
-
-[data-theme="dark"] .auth-demo-btn {
-  background: #141414;
-  border-color: #252525;
-}
-
-[data-theme="dark"] .auth-demo-btn:hover {
-  background: #1a1a1a;
-  border-color: #383838;
-}
-
-[data-theme="dark"] .auth-demo-btn-title {
-  color: #ffffff;
-}
-
-[data-theme="dark"] .auth-demo-btn-email {
   color: #555555;
 }
 
