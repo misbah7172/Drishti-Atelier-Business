@@ -11,7 +11,7 @@ const CATEGORIES = [
     subtitle: 'Single Vision & Progressive Optics',
     count: '18 Silhouettes',
     badge: 'Prescription',
-    image: '/images/hero-glasses.png',
+    image: '/images/banner-titanium.jpg',
     link: '/shop?category=prescription-glasses',
     subcategories: [
       { label: 'Single Vision', link: '/shop?category=prescription-glasses&type=single-vision', desc: 'Distance or reading clarity' },
@@ -28,7 +28,7 @@ const CATEGORIES = [
     subtitle: 'UV400 Polarized & Gradient Tints',
     count: '24 Silhouettes',
     badge: 'Sunwear',
-    image: '/images/amber-aviator.png',
+    image: '/images/banner-sunglasses.jpg',
     link: '/shop?category=sunglasses',
     subcategories: [
       { label: 'Polarized Collection', link: '/shop?category=sunglasses&type=polarized', desc: '100% glare neutralization' },
@@ -45,7 +45,7 @@ const CATEGORIES = [
     subtitle: 'Digital Screen Anti-Fatigue Filters',
     count: '12 Silhouettes',
     badge: 'Workspace',
-    image: '/images/blue-aviator.png',
+    image: '/images/banner-screen.jpg',
     link: '/shop?category=blue-light-glasses',
     subcategories: [
       { label: 'Computer & Office Glasses', link: '/shop?category=blue-light-glasses&type=computer', desc: 'High-contrast desk comfort' },
@@ -62,7 +62,7 @@ const CATEGORIES = [
     subtitle: 'Precision Magnification Powers',
     count: '10 Silhouettes',
     badge: 'Readers',
-    image: '/images/dark-silhouette.png',
+    image: '/images/banner-bespoke.jpg',
     link: '/shop?category=prescription-glasses&type=reading',
     subcategories: [
       { label: 'Low Power (+1.00 to +1.75)', link: '/shop?category=prescription-glasses&type=reading&power=low', desc: 'Subtle daily focal boost' },
@@ -79,7 +79,7 @@ const CATEGORIES = [
     subtitle: 'Prescription Sun & Photochromic',
     count: '15 Silhouettes',
     badge: 'Rx Sunwear',
-    image: '/images/heart-sunglasses.png',
+    image: '/images/banner-acetate.jpg',
     link: '/shop?category=sunglasses&type=power',
     subcategories: [
       { label: 'Prescription Polarized', link: '/shop?category=sunglasses&type=rx-polarized', desc: 'Custom vision with sun cut' },

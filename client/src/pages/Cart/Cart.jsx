@@ -98,7 +98,7 @@ export default function Cart() {
         {/* Cart Items */}
         <div className="cart-items-column">
           {items.map((item) => {
-            const imgSrc = item.image_url || item.image || '/images/blue-aviator.png';
+            const imgSrc = item.image_url || item.image || '/images/frame-placeholder.svg';
             const name = item.name || 'Product';
             const price = parseFloat(item.price) || 0;
             const lineTotal = item.line_total || price * item.quantity;

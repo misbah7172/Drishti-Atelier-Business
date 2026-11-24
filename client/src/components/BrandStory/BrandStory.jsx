@@ -41,7 +41,7 @@ export default function BrandStory() {
         <div className="container-editorial manifesto-grid">
           <div className="manifesto-image-side">
             <img
-              src="/images/lifestyle-model.png"
+              src="/images/banner-bespoke.jpg"
               alt="Drishti Atelier Fashion Campaign"
               className="manifesto-image"
               loading="lazy"

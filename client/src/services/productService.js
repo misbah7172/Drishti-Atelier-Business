@@ -5,32 +5,9 @@
 import api from './api';
 
 // ============================================
-// Fallback images for products without uploads
+// Placeholder for products without uploaded images
 // ============================================
-const FALLBACK_IMAGES = [
-  '/images/blue-aviator.png',
-  '/images/amber-aviator.png',
-  '/images/hero-glasses.png',
-  '/images/heart-sunglasses.png',
-  '/images/dark-silhouette.png',
-  '/images/lifestyle-model.png',
-];
-
-/**
- * Get a deterministic fallback image based on product ID
- */
-function getFallbackImage(productId) {
-  const idx = (productId || 1) % FALLBACK_IMAGES.length;
-  return FALLBACK_IMAGES[idx];
-}
-
-/**
- * Get a second fallback for hover effect
- */
-function getFallbackHoverImage(productId) {
-  const idx = ((productId || 1) + 1) % FALLBACK_IMAGES.length;
-  return FALLBACK_IMAGES[idx];
-}
+export const PLACEHOLDER_FRAME_IMAGE = '/images/frame-placeholder.svg';
 
 /**
  * Derive a badge label from product flags
@@ -118,8 +95,8 @@ export function normalizeProduct(apiProduct) {
     comparePrice: apiProduct.compare_price ? parseFloat(apiProduct.compare_price) : null,
 
     // Visuals
-    image: apiProduct.primary_image || getFallbackImage(apiProduct.id),
-    hoverImage: getFallbackHoverImage(apiProduct.id),
+    image: apiProduct.primary_image || PLACEHOLDER_FRAME_IMAGE,
+    hoverImage: apiProduct.hover_image || null,
     colors: parseColors(apiProduct.frame_color),
 
     // Badge
@@ -169,26 +146,14 @@ function buildGallery(product) {
     }));
   }
 
-  // Fallback gallery from local images
-  const fallbackIdx = (product.id || 1) % FALLBACK_IMAGES.length;
+  // Fallback single view with placeholder or primary image
+  const primary = product.primary_image || PLACEHOLDER_FRAME_IMAGE;
   return [
     {
-      id: 'front',
-      label: 'Front Symmetry',
-      src: FALLBACK_IMAGES[fallbackIdx],
-      caption: 'Symmetrical optical balance with dual caustics.',
-    },
-    {
-      id: 'profile45',
-      label: '45° Angle',
-      src: FALLBACK_IMAGES[(fallbackIdx + 1) % FALLBACK_IMAGES.length],
-      caption: 'Three-quarter depth showing brow arch & lens bevel.',
-    },
-    {
-      id: 'temple',
-      label: 'Temple Detail',
-      src: FALLBACK_IMAGES[(fallbackIdx + 2) % FALLBACK_IMAGES.length],
-      caption: 'Precision hinge architecture and tapered earstems.',
+      id: 'primary',
+      label: 'Main View',
+      src: primary,
+      caption: product.name || 'Drishti Atelier Eyewear',
     },
   ];
 }

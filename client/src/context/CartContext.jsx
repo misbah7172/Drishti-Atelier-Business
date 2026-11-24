@@ -179,7 +179,7 @@ export function CartProvider({ children }) {
           slug: product.slug,
           price: parseFloat(product.price),
           compare_price: product.comparePrice || product.compare_price || null,
-          image: product.image || product.primary_image || '/images/blue-aviator.png',
+          image: product.image || product.primary_image || '/images/frame-placeholder.svg',
           stock: product.stock || 999,
           brand: product.brand || '',
           frame_color: product.frame_color || '',

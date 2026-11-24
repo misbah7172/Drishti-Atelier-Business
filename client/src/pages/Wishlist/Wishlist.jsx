@@ -116,7 +116,7 @@ export default function Wishlist() {
       <div className="container-editorial">
         <div className="wishlist-grid">
           {items.map((item) => {
-            const imgSrc = item.image_url || '/images/blue-aviator.png';
+            const imgSrc = item.image_url || '/images/frame-placeholder.svg';
             const price = parseFloat(item.price) || 0;
             const comparePrice = item.compare_price ? parseFloat(item.compare_price) : null;
             const outOfStock = item.stock <= 0 || item.status !== 'active';

@@ -96,7 +96,7 @@ export default function OrderDetail() {
               {order.items?.map((item) => (
                 <div key={item.id} className="od-item">
                   <img
-                    src={item.image_url || '/images/blue-aviator.png'}
+                    src={item.image_url || '/images/frame-placeholder.svg'}
                     alt={item.product_name}
                     className="od-item-img"
                   />

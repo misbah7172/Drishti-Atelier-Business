@@ -11,7 +11,7 @@
  */
 export function optimizeImage(url, { width = 800, quality = 'auto' } = {}) {
   if (!url || typeof url !== 'string') {
-    return '/images/blue-aviator.png';
+    return '/images/frame-placeholder.svg';
   }
 
   // Check if it is a Cloudinary URL

@@ -53,8 +53,10 @@ export default function GoogleAuthButton({
     onError: (errorResponse) => {
       console.warn('Google Sign-In popup closed or failed:', errorResponse);
       setLoading(false);
-      if (errorResponse?.error !== 'popup_closed_by_user') {
-        onError?.(errorResponse?.error_description || 'Google sign-in was interrupted.');
+      if (errorResponse?.error === 'popup_blocked_by_browser') {
+        onError?.('Pop-up window was blocked by your browser. Please click the pop-up icon in your address bar to allow pop-ups.');
+      } else if (errorResponse?.error !== 'popup_closed_by_user') {
+        onError?.(errorResponse?.error_description || 'Google sign-in was interrupted. Please ensure pop-ups are allowed.');
       }
     },
   });

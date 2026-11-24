@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#0c0c0c"/>
+  <g stroke="#262626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120 150 C120 135 135 125 155 125 C175 125 185 135 185 150 C185 165 175 175 155 175 C135 175 120 165 120 150 Z" />
+    <path d="M215 150 C215 135 225 125 245 125 C265 125 280 135 280 150 C280 165 265 175 245 175 C225 175 215 165 215 150 Z" />
+    <path d="M185 145 C195 140 205 140 215 145" />
+    <path d="M120 145 L85 140" />
+    <path d="M280 145 L315 140" />
+  </g>
+  <text x="200" y="215" text-anchor="middle" fill="#444444" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" letter-spacing="0.2em">ARCHITECTURAL ARCHIVE</text>
+  <text x="200" y="232" text-anchor="middle" fill="#2a2a2a" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8" letter-spacing="0.15em">IMAGE PENDING</text>
+</svg>

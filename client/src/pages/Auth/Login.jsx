@@ -92,7 +92,7 @@ export default function Login() {
               DRISHTI <span className="auth-brand-tag">ATELIER</span>
             </span>
           </Link>
-          <h1 className="auth-title">Client Authentication</h1>
+          <h1 className="auth-title">User Authentication</h1>
           <p className="auth-subtitle">Access your curated bespoke eyewear archive</p>
         </div>
 
@@ -218,30 +218,30 @@ export default function Login() {
 
           {/* Demo Accounts — development only */}
           {import.meta.env.DEV && (
-          <div className="auth-demo-section">
-            <div className="auth-demo-header">
-              <HiOutlineShieldCheck size={14} />
-              <span>Dev Evaluation Credentials</span>
+            <div className="auth-demo-section">
+              <div className="auth-demo-header">
+                <HiOutlineShieldCheck size={14} />
+                <span>Dev Evaluation Credentials</span>
+              </div>
+              <div className="auth-demo-grid">
+                <button
+                  type="button"
+                  onClick={() => handleDemoFill('admin@drishtiatelier.com', 'Admin@123')}
+                  className="auth-demo-btn"
+                >
+                  <span className="auth-demo-btn-title">Atelier Admin</span>
+                  <span className="auth-demo-btn-email">admin@drishtiatelier.com</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDemoFill('rahim@example.com', 'Customer@123')}
+                  className="auth-demo-btn"
+                >
+                  <span className="auth-demo-btn-title">Patron Client</span>
+                  <span className="auth-demo-btn-email">rahim@example.com</span>
+                </button>
+              </div>
             </div>
-            <div className="auth-demo-grid">
-              <button
-                type="button"
-                onClick={() => handleDemoFill('admin@drishtiatelier.com', 'Admin@123')}
-                className="auth-demo-btn"
-              >
-                <span className="auth-demo-btn-title">Atelier Admin</span>
-                <span className="auth-demo-btn-email">admin@drishtiatelier.com</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoFill('rahim@example.com', 'Customer@123')}
-                className="auth-demo-btn"
-              >
-                <span className="auth-demo-btn-title">Patron Client</span>
-                <span className="auth-demo-btn-email">rahim@example.com</span>
-              </button>
-            </div>
-          </div>
           )}
         </div>
 

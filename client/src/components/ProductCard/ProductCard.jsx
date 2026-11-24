@@ -13,8 +13,8 @@ export default function ProductCard({
   code = '',
   price = 0,
   comparePrice,
-  image = '/images/blue-aviator.png',
-  hoverImage = '/images/amber-aviator.png',
+  image = '/images/frame-placeholder.svg',
+  hoverImage = null,
   colors = [],
   badge = null,
   stock,
@@ -98,10 +98,14 @@ export default function ProductCard({
 
         <div className="card-image-container">
           <img
-            src={isHovered && hoverImage ? hoverImage : image}
+            src={isHovered && hoverImage ? hoverImage : (image || '/images/frame-placeholder.svg')}
             alt={name}
             className="card-main-image"
             loading="lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/images/frame-placeholder.svg';
+            }}
           />
         </div>
 

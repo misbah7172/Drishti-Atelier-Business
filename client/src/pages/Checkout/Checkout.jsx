@@ -290,7 +290,7 @@ export default function Checkout() {
               {items.map((item) => (
                 <div key={item.id} className="checkout-item">
                   <img
-                    src={item.image_url || item.image || '/images/blue-aviator.png'}
+                    src={item.image_url || item.image || '/images/frame-placeholder.svg'}
                     alt={item.name}
                     className="checkout-item-img"
                   />

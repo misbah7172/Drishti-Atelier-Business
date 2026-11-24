@@ -227,7 +227,7 @@ export default function AdminDashboard() {
                 <div key={product.id} className="bs-item">
                   <span className="bs-rank">#{idx + 1}</span>
                   <img
-                    src={product.image_url || '/images/blue-aviator.png'}
+                    src={product.image_url || '/images/frame-placeholder.svg'}
                     alt={product.name}
                     className="bs-img"
                   />
