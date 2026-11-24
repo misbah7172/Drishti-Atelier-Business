@@ -55,3 +55,7 @@ server/uploads/*
 # Testing & Coverage
 coverage/
 .clinic/
+
+# Local spreadsheets & media scratch
+*.xlsx
+image-*.jpg

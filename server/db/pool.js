@@ -2,12 +2,15 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 // Create connection pool using Neon PostgreSQL
+// In serverless environments (Vercel), keep max connections small per instance
+const isServerless = !!process.env.VERCEL;
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: process.env.NODE_ENV === 'production',
   },
-  max: 20,
+  max: isServerless ? 3 : 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 30000,
 });

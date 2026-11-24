@@ -1,11 +1,27 @@
 const multer = require('multer');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
+const fs = require('fs');
+
+// Serverless-friendly upload directory (Vercel has read-only filesystem except os.tmpdir())
+const uploadDir = process.env.VERCEL
+  ? os.tmpdir()
+  : path.join(__dirname, '../uploads');
+
+// Ensure local uploads directory exists
+if (!fs.existsSync(uploadDir)) {
+  try {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  } catch (err) {
+    // Ignore if directory already exists or filesystem is read-only
+  }
+}
 
 // Configure disk storage for temp upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads'));
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
     // H-06: Use crypto-random filename to prevent path traversal
