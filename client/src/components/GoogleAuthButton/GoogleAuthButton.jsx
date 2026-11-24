@@ -42,7 +42,7 @@ export default function GoogleAuthButton({
         size="large"
         shape="rectangular"
         text="continue_with"
-        width="100%"
+        width="360"
       />
     </div>
   );
